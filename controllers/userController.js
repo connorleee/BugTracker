@@ -13,6 +13,7 @@ module.exports = {
       res.json(rows);
     } catch (err) {
       console.log("Error getting users from database: ", err);
+      res.status(500).json({ msg: "Unable to get users from database" });
     } finally {
       await client.release();
     }
@@ -40,6 +41,7 @@ module.exports = {
         "\n",
         err
       );
+      res.status(400).json({ msg: "Please review user add query" });
     } finally {
       await client.release();
     }
@@ -59,6 +61,47 @@ module.exports = {
       res.json(rows[0]);
     } catch (err) {
       console.log(`Failed to get user ${id}: `, "\n", err);
+      res.status(400).json({ msg: "Please review user request query" });
+    } finally {
+      await client.release();
+    }
+  },
+  updateUser: async (req, res) => {
+    const { id } = req.params;
+    const { firstName, lastName, phone, email, password, userAuth } = req.body;
+    const client = await pool.connect();
+
+    //password encryption before adding to DB
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+
+    try {
+      const updateUser = await client.query(
+        "UPDATE users SET (first_name, last_name, phone, email, password_hash, user_authority) = ($1, $2, $3, $4, $5, $6) WHERE id = $7",
+        [firstName, lastName, phone, email, hash, userAuth, id]
+      );
+
+      res.json(`${firstName} ${lastName} profile: updated successfully`);
+    } catch (err) {
+      console.log(`Failed to update user ${id}: `, "\n", err);
+      res.status(400).json({ msg: "Please review user update query" });
+    } finally {
+      await client.release();
+    }
+  },
+  deleteUser: async (req, res) => {
+    const { id } = req.params;
+    const client = await pool.connect();
+
+    try {
+      const deleteUser = await client.query("DELETE FROM users WHERE id = $1", [
+        id,
+      ]);
+
+      res.status(200).json({ msg: `User ${id} succesfully deleted` });
+    } catch (err) {
+      console.log(`Failed to delete user ${id}: `, "\n", err);
+      res.status(500).json({ msg: `Project deletion of ${id} failed` });
     } finally {
       await client.release();
     }

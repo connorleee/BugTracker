@@ -4,6 +4,11 @@ const userController = require("../../controllers/userController");
 // Matches route with "/api/user/"
 router.route("/").get(userController.getAll).post(userController.addUser);
 
-router.route("/:id").get(userController.getUser);
+// Matches route with "/api/user/:id"
+router
+  .route("/:id")
+  .get(userController.getUser)
+  .put(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;

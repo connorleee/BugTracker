@@ -27,6 +27,11 @@ module.exports = {
       res.json(rows[0]);
     } catch (e) {
       console.log("getProject query error: ", e);
+      res
+        .status(400)
+        .json({
+          msg: "Unable to get project from database. Please review query",
+        });
     } finally {
       await client.release();
     }
@@ -80,7 +85,7 @@ module.exports = {
         [name, description, id]
       );
 
-      res.json("Projected updated successfully");
+      res.json(`Project: ${name} updated successfully`);
     } catch (e) {
       console.log("updateProject query error: ", e);
       res.status(400).json({ msg: "Please review project update query" });
