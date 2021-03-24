@@ -1,6 +1,11 @@
-const { Pool } = require("pg");
+const pool = require("../db");
 
-const pool = new Pool();
+// the pool will emit an error on behalf of any idle clients
+// it contains if a backend error or network partition happens
+pool.on("error", (err, client) => {
+  console.error("Unexpected error on idle client", err);
+  process.exit(-1);
+});
 
 module.exports = {
   getAll: (req, res) => {
@@ -20,16 +25,17 @@ module.exports = {
         });
     });
   },
+  getProject: (req, res) => {},
   createProject: (req, res) => {
-    // const { name, description } = req.body;
+    const { name, description } = req.body;
 
     //May need some logic to ensure project doesn't already exist
 
     pool.connect().then((client) => {
       return client
         .query("INSERT INTO projects (name, description) VALUES ($1, $2)", [
-          req.body.name,
-          req.body.description,
+          name,
+          description,
         ])
         .then((results) => {
           client.release();
@@ -60,5 +66,27 @@ module.exports = {
           return res.status(500).json({ msg: "Project deletion failed" });
         });
     });
+  },
+  updateProject: async (req, res) => {
+    const id = req.params.id;
+    const { name, description } = req.body;
+
+    const client = await pool.connect();
+
+    try {
+      const updateProject = await client.query(
+        "UPDATE projects SET (name, description) = ($1, $2) WHERE id = $3",
+        [name, description, id]
+      );
+
+      res.json("Projected updated successfully");
+    } catch (e) {
+      console.log("updateProject query error: ", e);
+      return res
+        .status(400)
+        .json({ msg: "Please review project update query" });
+    } finally {
+      client.release();
+    }
   },
 };

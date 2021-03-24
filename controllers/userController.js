@@ -1,6 +1,4 @@
-const { Pool } = require("pg");
-
-const pool = new Pool();
+const pool = require("../db");
 
 module.exports = {
   getAll: (req, res) => {},
