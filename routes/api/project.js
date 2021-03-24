@@ -7,4 +7,6 @@ router
   .get(projectController.getAll)
   .post(projectController.createProject);
 
+router.route("/:id").delete(projectController.deleteProject);
+
 module.exports = router;
