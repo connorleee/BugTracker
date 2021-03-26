@@ -2,9 +2,9 @@ const pool = require("../db");
 
 module.exports = {
   createIssue: async (req, res) => {
-    const { projectId } = req.params;
     const {
       title,
+      projectId,
       description,
       authorId,
       assignedAuthorId,
@@ -40,7 +40,7 @@ module.exports = {
     }
   },
   getProjectIssues: async (req, res) => {
-    const { projectId } = req.params;
+    const { projectId } = req.body;
     const client = await pool.connect();
 
     try {
@@ -107,10 +107,10 @@ module.exports = {
     try {
       await client.query("DELETE FROM tickets WHERE id = $1", [ticketId]);
 
-      res.send(200).json({ msg: `Ticket ${ticketId} deleted` });
+      res.status(200).json({ msg: `Ticket ${ticketId} deleted` });
     } catch (err) {
       console.log("Failed to delete ticket: ", "\n", err);
-      res.send(500).json({ msg: "Review deletion query" });
+      res.status(500).json({ msg: "Review deletion query" });
     } finally {
       client.release();
     }
