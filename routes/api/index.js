@@ -3,10 +3,12 @@ const projectRoutes = require("./project");
 const userRoutes = require("./user");
 const userProjectRoutes = require("./userProjects");
 const ticketRoutes = require("./ticket");
+const commentRoutes = require("./comment");
 
-router.use("/project", projectRoutes);
-router.use("/user", userRoutes);
-router.use("/userproject", userProjectRoutes);
-router.use("/ticket", ticketRoutes);
+router.use("/projects", projectRoutes);
+router.use("/users", userRoutes);
+router.use("/userprojects", userProjectRoutes);
+router.use("/tickets", ticketRoutes);
+router.use("/comments", commentRoutes);
 
 module.exports = router;
