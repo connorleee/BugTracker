@@ -100,5 +100,19 @@ module.exports = {
       await client.release();
     }
   },
-  deleteIssue: async (req, res) => {},
+  deleteIssue: async (req, res) => {
+    const { ticketId } = req.params;
+    const client = await pool.connect();
+
+    try {
+      await client.query("DELETE FROM tickets WHERE id = $1", [ticketId]);
+
+      res.send(200).json({ msg: `Ticket ${ticketId} deleted` });
+    } catch (err) {
+      console.log("Failed to delete ticket: ", "\n", err);
+      res.send(500).json({ msg: "Review deletion query" });
+    } finally {
+      client.release();
+    }
+  },
 };
