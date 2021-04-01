@@ -8,21 +8,22 @@ const UsersCell = (props) => {
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${props.projectId}`;
 
   useEffect(() => {
-    console.log(getProjectUsersUrl);
     API.getProjectUsers(getProjectUsersUrl).then((json) => {
-      const { user_id } = json;
-
-      console.log(user_id);
+      setProjectUsers(json);
     });
   }, [getProjectUsersUrl]);
 
-  if (projectUsers) {
+  if (projectUsers.length) {
     return (
       <>
         {projectUsers.map((user) => {
           return (
             <Row>
-              <span>{user.user_id}</span>
+              <a href="#" onClick={(e) => e.preventDefault()}>
+                <span id={user.user_id}>
+                  {user.first_name} {user.last_name}
+                </span>
+              </a>
             </Row>
           );
         })}
@@ -30,7 +31,13 @@ const UsersCell = (props) => {
     );
   }
 
-  return <></>;
+  return (
+    <>
+      <Row>
+        <span>No Users Assigned</span>
+      </Row>
+    </>
+  );
 };
 
 export default UsersCell;
