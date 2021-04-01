@@ -5,6 +5,9 @@ const userProjectController = require("../../controllers/userProjectController")
 router.route("/").delete(userProjectController.removeUser);
 
 // Matches route with "/api/userProject/:projectId"
-router.route("/:projectId").post(userProjectController.assignUser);
+router
+  .route("/:projectId")
+  .post(userProjectController.assignUser)
+  .get(userProjectController.getProjectUsers);
 
 module.exports = router;

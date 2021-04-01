@@ -42,4 +42,24 @@ module.exports = {
       await client.release();
     }
   },
+  getProjectUsers: async (req, res) => {
+    const { projectId } = req.params;
+    const client = await pool.connect();
+
+    try {
+      const {
+        rows,
+      } = await client.query(
+        "SELECT user_id, id FROM user_projects WHERE project_id = $1",
+        [projectId]
+      );
+
+      res.json(rows);
+    } catch (err) {
+      console.log("getProjectUsers query error: ", err);
+      res.status(400).json({ msg: "Please review query" });
+    } finally {
+      client.release();
+    }
+  },
 };

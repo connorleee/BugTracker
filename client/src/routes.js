@@ -6,6 +6,7 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Projects from "views/Projects";
+import Tickets from "views/Tickets";
 
 var routes = [
   {
@@ -20,6 +21,13 @@ var routes = [
     name: "Projects",
     icon: "ni ni-collection text-red",
     component: Projects,
+    layout: "/admin",
+  },
+  {
+    path: "/tickets",
+    name: "Tickets",
+    icon: "ni ni-single-copy-04 text-teal",
+    component: Tickets,
     layout: "/admin",
   },
   {
