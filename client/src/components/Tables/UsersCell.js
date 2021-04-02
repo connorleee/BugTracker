@@ -13,7 +13,7 @@ const UsersCell = (props) => {
     });
   }, [getProjectUsersUrl]);
 
-  if (projectUsers.length) {
+  if (projectUsers && projectUsers.length) {
     return (
       <>
         {projectUsers.map((user) => {

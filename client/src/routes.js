@@ -7,6 +7,7 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Projects from "views/Projects";
 import Tickets from "views/Tickets";
+import Project from "views/Project";
 
 var routes = [
   {
@@ -71,6 +72,11 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
+  },
+  {
+    path: "/project/:id",
+    component: Project,
+    layout: "/admin",
   },
 ];
 export default routes;
