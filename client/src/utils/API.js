@@ -12,14 +12,13 @@ const API = {
   getProjectUsers: function (url) {
     return fetch(url).then((res) => res.json());
   },
+  getProjectIssues: function (projectId) {
+    return fetch("http://localhost:3001/api/tickets/" + projectId).then((res) =>
+      res.json()
+    );
+  },
   createProject: function (projectData) {
     return axios.post("http://localhost:3001/api/projects", projectData);
-  },
-  // Deletes the user with the given id
-  deleteUser: function (userId, contactId) {
-    return axios.delete(
-      "http://localhost:3001/api/users/" + userId + "/" + contactId
-    );
   },
   // Saves a user to the database
   saveUser: function (userData) {

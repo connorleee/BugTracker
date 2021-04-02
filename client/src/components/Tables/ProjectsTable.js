@@ -71,8 +71,8 @@ const ProjectsTable = () => {
             <tbody>
               {projects.map((project) => {
                 return (
-                  <tr>
-                    <th scope="row" id={project.id}>
+                  <tr id={project.id}>
+                    <th scope="row">
                       <a href="#" onClick={(e) => e.preventDefault()}>
                         <Media>
                           <span>{project.name} </span>

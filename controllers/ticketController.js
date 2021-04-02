@@ -2,9 +2,9 @@ const pool = require("../db");
 
 module.exports = {
   createIssue: async (req, res) => {
+    const { projectId } = req.params;
     const {
       title,
-      projectId,
       description,
       authorId,
       assignedAuthorId,
@@ -40,7 +40,7 @@ module.exports = {
     }
   },
   getProjectIssues: async (req, res) => {
-    const { projectId } = req.body;
+    const { projectId } = req.params;
     const client = await pool.connect();
 
     try {

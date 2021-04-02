@@ -1,14 +1,14 @@
 const router = require("express").Router();
 const ticketController = require("../../controllers/ticketController");
 
-// Matches route with "/api/issue/"
+// Matches route with "/api/tickets/"
 router
-  .route("/")
+  .route("/:projectId")
   .post(ticketController.createIssue)
   .get(ticketController.getProjectIssues);
 
 router
-  .route("/:ticketId")
+  .route("/:projectId/:ticketId")
   .put(ticketController.updateIssue)
   .delete(ticketController.deleteIssue);
 
