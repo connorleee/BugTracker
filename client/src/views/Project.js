@@ -31,6 +31,7 @@ const Project = (props) => {
   const [projectTeam, setProjectTeam] = useState(null);
   const [projectIssues, setProjectIssues] = useState(null);
   const [isNewMemberOpen, setIsNewMemberOpen] = useState(false);
+  const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
 
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
 
@@ -78,7 +79,6 @@ const Project = (props) => {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        // href="#pablo"
                         onClick={() => setIsNewMemberOpen(true)}
                         size="sm"
                       >
@@ -161,12 +161,18 @@ const Project = (props) => {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
+                        onClick={() => setIsNewTicketOpen(true)}
                         size="sm"
                       >
-                        New Issue
+                        New Ticket
                       </Button>
+
+                      <Modal
+                        open={isNewTicketOpen}
+                        onClose={() => setIsNewTicketOpen(false)}
+                      >
+                        *New Ticket Form*
+                      </Modal>
                     </div>
                   </Row>
                 </CardHeader>

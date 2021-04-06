@@ -8,35 +8,33 @@ const CreateTicket = () => {
   const [propertiesArr, setPropertiesArr] = useState([]);
   const [unitsArr, setUnitsArr] = useState([]);
 
-  const initialLeaseFormValues = {
-    property: "Maple",
-    unit: "101",
-    startDate: "",
-    endDate: "",
-    isMonthToMonth: false,
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
+  const initialTicketValues = {
+    title: "Maple",
+    description: "101",
+    assignees: [],
+    priority: "",
+    type: "",
+    status: "",
+    timeEstimate: "",
   };
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
     validate,
-    initialLeaseFormValues
+    initialTicketValues
   );
 
   async function submit() {
     const {
-      property,
-      unit,
-      startDate,
-      endDate,
-      isMonthToMonth,
-      firstName,
-      lastName,
-      phone,
-      email,
+      title,
+      projectId,
+      description,
+      author_id,
+      assignees,
+      priority,
+      type,
+      status,
+      timeEstimate,
     } = values;
 
     const propertyId = await API.getPropertyId(property).then(
