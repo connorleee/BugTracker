@@ -68,7 +68,7 @@ const Project = (props) => {
             </Col>
           </Row>
           <Row>
-            <Col xl="3">
+            <Col xl="4">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -92,13 +92,13 @@ const Project = (props) => {
                       <th scope="col">Name</th>
                       <th scope="col">Email</th>
                       <th scope="col">Phone</th>
-                      <th scope="col" /> {/* edit button */}
+                      <th scope="col" />
                     </tr>
                   </thead>
                   <tbody>
                     {projectTeam.map((user) => {
                       return (
-                        <tr id={user.user_id}>
+                        <tr key={user.user_id}>
                           <th>
                             <a href="#" onClick={(e) => e.preventDefault()}>
                               <Media>
@@ -144,7 +144,7 @@ const Project = (props) => {
                 </Table>
               </Card>
             </Col>
-            <Col xl="9">
+            <Col xl="8">
               <Card className="shadow">
                 <CardHeader>
                   <Row className="align-items-center">
@@ -167,20 +167,20 @@ const Project = (props) => {
                       <th scope="col">Ticket Title</th>
                       <th scope="col">Description</th>
                       <th scope="col">Ticket Author</th>
-                      <th scope="col" /> {/* edit button */}
+                      <th scope="col" />
                     </tr>
                   </thead>
                   <tbody>
                     {projectIssues.map((issue) => {
                       return (
-                        <tr id={issue.id}>
+                        <tr key={issue.id}>
                           <th>
                             <a href="#" onClick={(e) => e.preventDefault()}>
                               <Media>{issue.title}</Media>
                             </a>
                           </th>
                           <td>{issue.description}</td>
-                          <td id={issue.user_id}>
+                          <td key={issue.user_id}>
                             {issue.first_name} {issue.last_name}
                           </td>
                           <td className="text-right">
