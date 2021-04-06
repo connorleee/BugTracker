@@ -18,9 +18,9 @@ const UsersCell = (props) => {
       <>
         {projectUsers.map((user) => {
           return (
-            <Row>
+            <Row key={user.user_id}>
               <a href="#" onClick={(e) => e.preventDefault()}>
-                <span id={user.user_id}>
+                <span>
                   {user.first_name} {user.last_name}
                 </span>
               </a>

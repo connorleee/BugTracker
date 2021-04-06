@@ -46,9 +46,10 @@ module.exports = {
     try {
       const {
         rows,
-      } = await client.query("SELECT * FROM tickets WHERE project_id = $1", [
-        projectId,
-      ]);
+      } = await client.query(
+        "SELECT tickets.id, tickets.title, tickets.description, users.id AS user_id , users.first_name, users.last_name FROM tickets JOIN users ON tickets.author_id = users.id WHERE project_id = $1",
+        [projectId]
+      );
 
       res.json(rows);
     } catch (err) {

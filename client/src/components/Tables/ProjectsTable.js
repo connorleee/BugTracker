@@ -23,6 +23,8 @@ import {
   //   UncontrolledTooltip,
 } from "reactstrap";
 
+import { Link } from "react-router-dom";
+
 import API from "../../utils/API";
 import UsersCell from "./UsersCell";
 
@@ -71,13 +73,15 @@ const ProjectsTable = () => {
             <tbody>
               {projects.map((project) => {
                 return (
-                  <tr id={project.id}>
+                  <tr key={project.id}>
                     <th scope="row">
-                      <a href="#" onClick={(e) => e.preventDefault()}>
+                      <Link to={`/admin/project/${project.id}`}>
+                        {/* <a href="#" onClick={(e) => e.preventDefault()}> */}
                         <Media>
                           <span>{project.name} </span>
                         </Media>
-                      </a>
+                        {/* </a> */}
+                      </Link>
                     </th>
                     <td>
                       <span>{project.description}</span>

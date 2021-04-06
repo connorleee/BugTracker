@@ -75,6 +75,7 @@ var routes = [
   },
   {
     path: "/project/:id",
+    Name: "Project",
     component: Project,
     layout: "/admin",
   },

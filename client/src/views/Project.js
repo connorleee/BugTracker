@@ -5,15 +5,11 @@ import {
   //   Badge,
   Card,
   CardHeader,
-  CardFooter,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   //   Progress,
   Table,
   Button,
@@ -36,22 +32,25 @@ const Project = (props) => {
 
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
 
-  useEffect(async () => {
-    try {
-      const projectDataRes = await API.getProject(projectId);
-      setProjectData(projectDataRes.data);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const projectDataRes = await API.getProject(projectId);
+        setProjectData(projectDataRes.data);
 
-      const projectTeamRes = await API.getProjectUsers(getProjectUsersUrl);
-      const projectIssuesRes = await API.getProjectIssues(projectId);
+        const projectTeamRes = await API.getProjectUsers(getProjectUsersUrl);
+        setProjectTeam(projectTeamRes);
 
-      setProjectTeam(projectTeamRes);
-      setProjectIssues(projectIssuesRes);
-    } catch (err) {
-      alert(`Error requesting project data: ${err}`);
+        const projectIssuesRes = await API.getProjectIssues(projectId);
+        setProjectIssues(projectIssuesRes);
+      } catch (err) {
+        alert(`Error requesting project data: ${err}`);
+      }
     }
-  }, []);
+    fetchData();
+  }, [projectId, getProjectUsersUrl]);
 
-  if (projectData) {
+  if (projectData && projectTeam && projectIssues) {
     return (
       <>
         <Header />
@@ -113,6 +112,31 @@ const Project = (props) => {
                             </a>
                           </td>
                           <td>{user.phone}</td>
+                          <td className="text-right">
+                            <UncontrolledDropdown>
+                              <DropdownToggle
+                                className="btn-icon-only text-light"
+                                href="#pablo"
+                                role="button"
+                                size="sm"
+                                color=""
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                <i className="fas fa-ellipsis-v" />
+                              </DropdownToggle>
+                              <DropdownMenu
+                                className="dropdown-menu-arrow"
+                                right
+                              >
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  Remove Team Member
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </td>
                         </tr>
                       );
                     })}
@@ -156,7 +180,40 @@ const Project = (props) => {
                             </a>
                           </th>
                           <td>{issue.description}</td>
-                          <td>{issue.author_id}</td>
+                          <td id={issue.user_id}>
+                            {issue.first_name} {issue.last_name}
+                          </td>
+                          <td className="text-right">
+                            <UncontrolledDropdown>
+                              <DropdownToggle
+                                className="btn-icon-only text-light"
+                                href="#pablo"
+                                role="button"
+                                size="sm"
+                                color=""
+                                onClick={(e) => e.preventDefault()}
+                              >
+                                <i className="fas fa-ellipsis-v" />
+                              </DropdownToggle>
+                              <DropdownMenu
+                                className="dropdown-menu-arrow"
+                                right
+                              >
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  Edit Issue
+                                </DropdownItem>
+                                <DropdownItem
+                                  href="#pablo"
+                                  onClick={(e) => e.preventDefault()}
+                                >
+                                  Remove Issue
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </UncontrolledDropdown>
+                          </td>
                         </tr>
                       );
                     })}
