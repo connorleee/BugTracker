@@ -20,15 +20,17 @@ import {
 } from "reactstrap";
 
 import Header from "../components/Headers/Header";
+import Modal from "../components/Modal/Modal";
 
 import API from "../utils/API";
 
 const Project = (props) => {
   const projectId = props.match.params.id;
 
-  let [projectData, setProjectData] = useState(null);
-  let [projectTeam, setProjectTeam] = useState(null);
-  let [projectIssues, setProjectIssues] = useState(null);
+  const [projectData, setProjectData] = useState(null);
+  const [projectTeam, setProjectTeam] = useState(null);
+  const [projectIssues, setProjectIssues] = useState(null);
+  const [isNewMemberOpen, setIsNewMemberOpen] = useState(false);
 
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
 
@@ -76,12 +78,19 @@ const Project = (props) => {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
+                        // href="#pablo"
+                        onClick={() => setIsNewMemberOpen(true)}
                         size="sm"
                       >
                         New Member
                       </Button>
+
+                      <Modal
+                        open={isNewMemberOpen}
+                        onClose={() => setIsNewMemberOpen(false)}
+                      >
+                        *New Member Form*
+                      </Modal>
                     </div>
                   </Row>
                 </CardHeader>
