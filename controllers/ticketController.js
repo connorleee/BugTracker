@@ -1,7 +1,7 @@
 const pool = require("../db");
 
 module.exports = {
-  createIssue: async (req, res) => {
+  createTicket: async (req, res) => {
     const { projectId } = req.params;
     const {
       title,
@@ -39,7 +39,7 @@ module.exports = {
       await client.release();
     }
   },
-  getProjectIssues: async (req, res) => {
+  getProjectTickets: async (req, res) => {
     const { projectId } = req.params;
     const client = await pool.connect();
 
@@ -63,7 +63,7 @@ module.exports = {
       await client.release();
     }
   },
-  updateIssue: async (req, res) => {
+  updateTicket: async (req, res) => {
     const { ticketId } = req.params;
     const {
       title,
@@ -101,7 +101,7 @@ module.exports = {
       await client.release();
     }
   },
-  deleteIssue: async (req, res) => {
+  deleteTicket: async (req, res) => {
     const { ticketId } = req.params;
     const client = await pool.connect();
 
@@ -112,6 +112,24 @@ module.exports = {
     } catch (err) {
       console.log("Failed to delete ticket: ", "\n", err);
       res.status(500).json({ msg: "Review deletion query" });
+    } finally {
+      client.release();
+    }
+  },
+  getTicket: async (req, res) => {
+    const { ticketId } = req.params;
+    const client = await pool.connect();
+
+    try {
+      const { rows } = await client.query(
+        "SELECT * FROM tickets WHERE id = $1",
+        [ticketId]
+      );
+
+      res.json(rows[0]);
+    } catch (err) {
+      console.log(`Failed to get ticket for`, "\n", err);
+      res.status(500).json({ msg: `Please review query` });
     } finally {
       client.release();
     }

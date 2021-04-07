@@ -1,4 +1,5 @@
 import axios from "axios";
+import Tickets from "views/Tickets";
 
 const API = {
   // Gets all projects
@@ -12,7 +13,7 @@ const API = {
   getProjectUsers: function (url) {
     return fetch(url).then((res) => res.json());
   },
-  getProjectIssues: function (projectId) {
+  getProjectTickets: function (projectId) {
     return fetch("http://localhost:3001/api/tickets/" + projectId).then((res) =>
       res.json()
     );
@@ -26,6 +27,11 @@ const API = {
   },
   addContact: function (id, data) {
     return axios.put("http://localhost:3001/api/users/" + id, data);
+  },
+  getTicket: function (projectId, ticketId) {
+    return fetch(
+      `http://localhost:3001/api/tickets/${projectId}/${ticketId}`
+    ).then((res) => res.json());
   },
 };
 
