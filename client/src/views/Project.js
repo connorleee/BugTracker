@@ -35,6 +35,7 @@ const Project = (props) => {
   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [assignedDevs, setAssignedDevs] = useState(null);
   const [comments, setComments] = useState(null);
 
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
@@ -65,8 +66,14 @@ const Project = (props) => {
           setSelectedTicket(ticket);
           const comments = await API.getTicketComments(selectedTicketId);
           setComments(comments);
-          console.log(ticket);
-          console.log(comments);
+
+          //assigned Devs
+          const assignedDevs = await API.getDevAssignments(selectedTicketId);
+          setAssignedDevs(assignedDevs);
+
+          console.log("Ticket: ", ticket);
+          console.log("Comments: ", comments);
+          console.log("Assigned Devs: ", assignedDevs);
         }
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
@@ -215,12 +222,9 @@ const Project = (props) => {
                           <th
                             onClick={() => {
                               setSelectedTicketId(ticket.id);
-                              console.log(selectedTicketId);
                             }}
                           >
-                            {/* <a href="#" onClick={(e) => e.preventDefault()}> */}
                             <Media>{ticket.title}</Media>
-                            {/* </a> */}
                           </th>
                           <td>{ticket.description}</td>
                           <td key={ticket.user_id}>
@@ -284,16 +288,28 @@ const Project = (props) => {
                             <Col xl="6">
                               <h2>Ticket: {selectedTicket.title}</h2>
                               <span color="primary">
-                                Author:{" "}
-                                <mark>
-                                  API needed to grab author and other asignees
-                                </mark>
+                                Author: {selectedTicket.first_name}{" "}
+                                {selectedTicket.last_name}
                               </span>
                             </Col>
                             <Col xl="6">{selectedTicket.description}</Col>
                           </Row>
                           <Row>
-                            <Col></Col>
+                            <Col>
+                              <span>Assigned Devs: </span>
+                              {assignedDevs ? (
+                                assignedDevs.map((dev, index) => {
+                                  return (
+                                    <span key={dev.user_id}>
+                                      {(index ? ", " : "") +
+                                        `${dev.first_name} ${dev.last_name}`}
+                                    </span>
+                                  );
+                                })
+                              ) : (
+                                <span>No devs assigned</span>
+                              )}
+                            </Col>
                           </Row>
                         </Card>
                       </Col>
@@ -302,22 +318,26 @@ const Project = (props) => {
                           <Row>
                             <h2>Comments</h2>
                           </Row>
-                          {comments.map((comment) => {
-                            return (
-                              <Row>
-                                <Col>
-                                  <span>{comment.comment}</span>
-                                </Col>
-                                <Col>
-                                  <span>
-                                    {moment(comment.created_at).format(
-                                      "MMMM Do YYYY, h:mm:ss a"
-                                    )}
-                                  </span>
-                                </Col>
-                              </Row>
-                            );
-                          })}
+                          {comments ? (
+                            comments.map((comment) => {
+                              return (
+                                <Row key={comment.id}>
+                                  <Col>
+                                    <span>{comment.comment}</span>
+                                  </Col>
+                                  <Col>
+                                    <span>
+                                      {moment(comment.created_at).format(
+                                        "MMMM Do YYYY, h:mm:ss a"
+                                      )}
+                                    </span>
+                                  </Col>
+                                </Row>
+                              );
+                            })
+                          ) : (
+                            <></>
+                          )}
                         </Card>
                       </Col>
                     </Row>

@@ -38,6 +38,11 @@ const API = {
       res.json()
     );
   },
+  getDevAssignments: function (ticketId) {
+    return fetch(
+      `http://localhost:3001/api/devassignments/${ticketId}`
+    ).then((res) => res.json());
+  },
 };
 
 export default API;

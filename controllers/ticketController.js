@@ -121,8 +121,10 @@ module.exports = {
     const client = await pool.connect();
 
     try {
-      const { rows } = await client.query(
-        "SELECT * FROM tickets WHERE id = $1",
+      const {
+        rows,
+      } = await client.query(
+        "SELECT tickets.id, tickets.title, tickets.description, tickets.priority, tickets.status, tickets.type, tickets.time_estimate, users.first_name, users.last_name FROM tickets JOIN users ON tickets.author_id = users.id WHERE tickets.id = $1",
         [ticketId]
       );
 
