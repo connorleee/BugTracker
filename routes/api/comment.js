@@ -1,14 +1,14 @@
 const router = require("express").Router();
 const commentController = require("../../controllers/commentController");
 
-// Matches route with "/api/issue/"
+// Matches route with "/api/comments/"
 router
-  .route("/")
+  .route("/:ticketId")
   .post(commentController.createComment)
-  .get(commentController.getIssueComments);
+  .get(commentController.getTicketComments);
 
 router
-  .route("/:commentId")
+  .route("/:ticketId/:commentId")
   .put(commentController.updateComment)
   .delete(commentController.deleteComment);
 

@@ -33,6 +33,11 @@ const API = {
       `http://localhost:3001/api/tickets/${projectId}/${ticketId}`
     ).then((res) => res.json());
   },
+  getTicketComments: function (ticketId) {
+    return fetch(`http://localhost:3001/api/comments/${ticketId}`).then((res) =>
+      res.json()
+    );
+  },
 };
 
 export default API;

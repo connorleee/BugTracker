@@ -21,6 +21,7 @@ import {
 
 import Header from "../components/Headers/Header";
 import Modal from "../components/Modal/Modal";
+import moment from "moment";
 
 import API from "../utils/API";
 
@@ -34,6 +35,7 @@ const Project = (props) => {
   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [comments, setComments] = useState(null);
 
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
 
@@ -61,7 +63,10 @@ const Project = (props) => {
         if (selectedTicketId) {
           const ticket = await API.getTicket(projectId, selectedTicketId);
           setSelectedTicket(ticket);
+          const comments = await API.getTicketComments(selectedTicketId);
+          setComments(comments);
           console.log(ticket);
+          console.log(comments);
         }
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
@@ -265,10 +270,59 @@ const Project = (props) => {
               <Card className="shadow">
                 <CardHeader>
                   <Row className="align-items-center">
-                    <h3 className="mb-0">Selected Ticket</h3>
+                    <h3 className="mb-0">Selected Ticket Info</h3>
                   </Row>
                 </CardHeader>
-                {!selectedTicket ? "No ticket selected" : <></>}
+                {!selectedTicket ? (
+                  "No ticket selected"
+                ) : (
+                  <>
+                    <Row>
+                      <Col xl="6">
+                        <Card className="shadow">
+                          <Row>
+                            <Col xl="6">
+                              <h2>Ticket: {selectedTicket.title}</h2>
+                              <span color="primary">
+                                Author:{" "}
+                                <mark>
+                                  API needed to grab author and other asignees
+                                </mark>
+                              </span>
+                            </Col>
+                            <Col xl="6">{selectedTicket.description}</Col>
+                          </Row>
+                          <Row>
+                            <Col></Col>
+                          </Row>
+                        </Card>
+                      </Col>
+                      <Col xl="6">
+                        <Card className="shadow">
+                          <Row>
+                            <h2>Comments</h2>
+                          </Row>
+                          {comments.map((comment) => {
+                            return (
+                              <Row>
+                                <Col>
+                                  <span>{comment.comment}</span>
+                                </Col>
+                                <Col>
+                                  <span>
+                                    {moment(comment.created_at).format(
+                                      "MMMM Do YYYY, h:mm:ss a"
+                                    )}
+                                  </span>
+                                </Col>
+                              </Row>
+                            );
+                          })}
+                        </Card>
+                      </Col>
+                    </Row>
+                  </>
+                )}
               </Card>
             </Col>
           </Row>

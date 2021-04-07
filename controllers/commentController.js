@@ -2,7 +2,8 @@ const pool = require("../db");
 
 module.exports = {
   createComment: async (req, res) => {
-    const { authorId, ticketId, comment } = req.body;
+    const { ticketId } = req.params;
+    const { authorId, comment } = req.body;
     const client = await pool.connect();
 
     try {
@@ -19,8 +20,8 @@ module.exports = {
       await client.release();
     }
   },
-  getIssueComments: async (req, res) => {
-    const { ticketId } = req.body;
+  getTicketComments: async (req, res) => {
+    const { ticketId } = req.params;
     const client = await pool.connect();
 
     try {
@@ -32,14 +33,14 @@ module.exports = {
 
       res.json(rows);
     } catch (err) {
-      console.log(`Failed to get comments for ticket ${ticketId}: `, "\n", err);
+      console.log(`Failed to get ticket for`, "\n", err);
       res.status(500).json({ msg: `Please review query` });
     } finally {
-      await client.release();
+      client.release();
     }
   },
   updateComment: async (req, res) => {
-    const { commentId } = req.params;
+    const { ticketId, commentId } = req.params;
     const { authorId, comment } = req.body;
     const client = await pool.connect();
 
@@ -60,7 +61,7 @@ module.exports = {
     }
   },
   deleteComment: async (req, res) => {
-    const { commentId } = req.params;
+    const { ticketId, commentId } = req.params;
     const client = await pool.connect();
 
     try {
