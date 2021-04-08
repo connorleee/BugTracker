@@ -27,9 +27,10 @@ module.exports = {
     try {
       const {
         rows,
-      } = await client.query("SELECT * FROM comments WHERE ticket_id = $1", [
-        ticketId,
-      ]);
+      } = await client.query(
+        "SELECT comments.id, comments.ticket_id, comments.comment, comments.created_at, users.id AS author_id, users.first_name, users.last_name FROM comments JOIN users ON comments.author_id = users.id WHERE ticket_id = $1",
+        [ticketId]
+      );
 
       res.json(rows);
     } catch (err) {

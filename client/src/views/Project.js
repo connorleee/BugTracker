@@ -21,7 +21,6 @@ import {
 
 import Header from "../components/Headers/Header";
 import Modal from "../components/Modal/Modal";
-import moment from "moment";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
 
 import API from "../utils/API";

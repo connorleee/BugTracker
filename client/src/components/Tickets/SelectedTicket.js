@@ -1,12 +1,15 @@
-import React from "react";
-import { Card, CardHeader, Row, Col } from "reactstrap";
+import React, { useState } from "react";
+import { Card, CardHeader, Row, Col, CardTitle, Button } from "reactstrap";
 import moment from "moment";
+import Modal from "../../components/Modal/Modal";
 
 export default function SelectedTicket({
   selectedTicket,
   assignedDevs,
   comments,
 }) {
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
+
   return (
     <>
       <Card className="shadow">
@@ -55,22 +58,41 @@ export default function SelectedTicket({
                 <Card className="shadow">
                   <Row>
                     <h2>Comments</h2>
+                    <div className="col text-right">
+                      <Button
+                        color="primary"
+                        onClick={() => setIsCommentOpen(true)}
+                        size="sm"
+                      >
+                        New Comment
+                      </Button>
+                      <Modal
+                        open={isCommentOpen}
+                        onClose={() => setIsCommentOpen(false)}
+                      >
+                        *New comment form*
+                      </Modal>
+                    </div>
                   </Row>
                   {comments ? (
                     comments.map((comment) => {
                       return (
-                        <Row key={comment.id}>
-                          <Col>
-                            <span>{comment.comment}</span>
-                          </Col>
-                          <Col>
+                        <Card key={comment.id}>
+                          <CardTitle className="text-muted mb-0">
+                            <span id={comment.author_id}>
+                              {comment.first_name} {comment.last_name}
+                            </span>
+                          </CardTitle>
+                          <p>
                             <span>
                               {moment(comment.created_at).format(
                                 "MMMM Do YYYY, h:mm:ss a"
                               )}
                             </span>
-                          </Col>
-                        </Row>
+                          </p>
+
+                          <span>{comment.comment}</span>
+                        </Card>
                       );
                     })
                   ) : (
