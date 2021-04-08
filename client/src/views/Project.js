@@ -22,6 +22,7 @@ import {
 import Header from "../components/Headers/Header";
 import Modal from "../components/Modal/Modal";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
+import CreateTicket from "../components/Forms/CreateTicket";
 
 import API from "../utils/API";
 
@@ -201,7 +202,7 @@ const Project = (props) => {
                         open={isNewTicketOpen}
                         onClose={() => setIsNewTicketOpen(false)}
                       >
-                        *New Ticket Form*
+                        <CreateTicket />
                       </Modal>
                     </div>
                   </Row>

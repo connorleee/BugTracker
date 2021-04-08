@@ -7,9 +7,6 @@ import {
   CardTitle,
   CardText,
   Button,
-  ToastHeader,
-  Toast,
-  ToastBody,
 } from "reactstrap";
 import moment from "moment";
 import Modal from "../../components/Modal/Modal";
@@ -36,18 +33,22 @@ export default function SelectedTicket({
             <Row className=" p-2">
               <Col xl="6">
                 <Card className="shadow p-2">
-                  <Row>
+                  <Row className="mb-2">
                     <Col xl="6">
                       <h2>Ticket: {selectedTicket.title}</h2>
+                    </Col>
+                    <Col xl="6">
+                      <span>{selectedTicket.description}</span>
+                    </Col>
+                  </Row>
+                  <Row className="mb-2">
+                    <Col xl="6">
                       <span color="primary">
                         Author: {selectedTicket.first_name}{" "}
                         {selectedTicket.last_name}
                       </span>
                     </Col>
-                    <Col xl="6">{selectedTicket.description}</Col>
-                  </Row>
-                  <Row>
-                    <Col>
+                    <Col xl="6">
                       <span>Assigned Devs: </span>
                       {assignedDevs ? (
                         assignedDevs.map((dev, index) => {
@@ -62,6 +63,11 @@ export default function SelectedTicket({
                         <span>No devs assigned</span>
                       )}
                     </Col>
+                  </Row>
+                  <Row>
+                    <Col xl="4">{selectedTicket.status}</Col>
+                    <Col xl="4">{selectedTicket.priority}</Col>
+                    <Col xl="4">{selectedTicket.type}</Col>
                   </Row>
                 </Card>
               </Col>
