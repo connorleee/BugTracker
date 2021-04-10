@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import validate from "./validateRegistration";
 
 const useForm = (callback, validate, initialValues) => {
   const [values, setValues] = useState(initialValues);
@@ -11,12 +10,26 @@ const useForm = (callback, validate, initialValues) => {
 
   const handleChange = (event) => {
     // let { name, value } = event.target;
+    // not using destructuring in order to handle the specific case where a form has a checkbox or select
 
-    // not using destructuring in order to handle the specific case where a form has a checkbox
-    const value =
-      event.target.type === "checkbox"
-        ? event.target.checked
-        : event.target.value;
+    console.log(event.target);
+
+    let value;
+
+    if (event.target.type === "checkbox") {
+      value = event.target.checked;
+    } else if (event.target.type === "select") {
+      console.log(event.target);
+      // value = event.target
+    } else {
+      value = event.target.value;
+    }
+
+    // const value =
+    //   event.target.type === "checkbox"
+    //     ? event.target.checked
+    //     : event.target.value;
+
     const name = event.target.name;
 
     setValues({

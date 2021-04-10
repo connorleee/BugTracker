@@ -16,11 +16,13 @@ import {
   Row,
   Col,
   Container,
+  Modal,
+  ModalHeader,
   //   UncontrolledTooltip,
 } from "reactstrap";
 
 import Header from "../components/Headers/Header";
-import Modal from "../components/Modal/Modal";
+// import Modal from "../components/Modal/Modal";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
 import CreateTicket from "../components/Forms/CreateTicket";
 
@@ -40,6 +42,8 @@ const Project = (props) => {
   const [comments, setComments] = useState(null);
 
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
+
+  const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
 
   useEffect(() => {
     async function fetchData() {
@@ -192,17 +196,22 @@ const Project = (props) => {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        onClick={() => setIsNewTicketOpen(true)}
+                        onClick={toggleCreateTicket}
                         size="sm"
                       >
                         New Ticket
                       </Button>
 
                       <Modal
-                        open={isNewTicketOpen}
-                        onClose={() => setIsNewTicketOpen(false)}
+                        isOpen={isNewTicketOpen}
+                        toggle={toggleCreateTicket}
                       >
-                        <CreateTicket />
+                        <Container className="m-4 align-self-center" fluid>
+                          <ModalHeader toggle={toggleCreateTicket}>
+                            Create Ticket
+                          </ModalHeader>
+                          <CreateTicket team={projectTeam} />
+                        </Container>
                       </Modal>
                     </div>
                   </Row>

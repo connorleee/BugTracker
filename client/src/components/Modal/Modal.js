@@ -9,6 +9,7 @@ const MODAL_STYLES = {
   transform: "translate(-50%, -50%)",
   backgroundColor: "#FFF",
   padding: "50px",
+  width: "800px",
   zIndex: 1000,
 };
 
@@ -29,8 +30,8 @@ export default function Modal({ open, onClose, children }) {
     <>
       <div style={OVERLAY_STYLES} onClick={onClose} />
       <div style={MODAL_STYLES}>
-        <Button color="primary" onClick={onClose} size="sm">
-          Cancel
+        <Button color="danger" onClick={onClose} size="sm" className="mb-4">
+          X Cancel
         </Button>
         {children}
       </div>
