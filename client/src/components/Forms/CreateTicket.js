@@ -47,7 +47,7 @@ const CreateTicket = (props) => {
       timeEstimate,
     } = values;
 
-    console.log(assignees);
+    console.log(title, description, assignees, timeEstimate);
 
     values.title = "";
     values.description = "";
@@ -119,9 +119,11 @@ const CreateTicket = (props) => {
         <Row>
           <Col>
             <FormGroup>
-              <Label for="timeEstimate">Time Estimate</Label>
+              <Label for="timeEstimate">Time Estimate (Hours)</Label>
               <Input
-                type="time"
+                type="number"
+                min="0"
+                step="0.5"
                 name="timeEstimate"
                 id="timeEstimate"
                 value={values.timeEstimate}
