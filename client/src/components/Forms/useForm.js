@@ -12,15 +12,23 @@ const useForm = (callback, validate, initialValues) => {
     // let { name, value } = event.target;
     // not using destructuring in order to handle the specific case where a form has a checkbox or select
 
-    console.log(event.target);
+    // console.log(event.target.type);
 
     let value;
 
     if (event.target.type === "checkbox") {
       value = event.target.checked;
-    } else if (event.target.type === "select") {
-      console.log(event.target);
-      // value = event.target
+    } else if (
+      event.target.type === "select" ||
+      event.target.type === "select-multiple"
+    ) {
+      // console.log(
+      //   Array.from(event.target.selectedOptions, (option) => option.value)
+      // );
+      value = Array.from(
+        event.target.selectedOptions,
+        (option) => option.value
+      );
     } else {
       value = event.target.value;
     }

@@ -47,6 +47,8 @@ const CreateTicket = (props) => {
       timeEstimate,
     } = values;
 
+    console.log(assignees);
+
     values.title = "";
     values.description = "";
     values.assignees = [];
@@ -96,20 +98,91 @@ const CreateTicket = (props) => {
 
           <Col>
             <FormGroup>
-              <Label for="assignedDevs">Assign Devs</Label>
+              <Label for="assignees">Assign Devs</Label>
               <Input
                 type="select"
-                name="assignedDevs"
-                id="assignedDevs"
+                name="assignees"
+                id="assignees"
                 value={values.assignees}
                 onChange={handleChange}
                 multiple
               >
                 {props.team.map((dev, key) => (
-                  <option id={dev.user_id} key={key}>
+                  <option id={dev.user_id} key={key} value={dev.user_id}>
                     {dev.first_name} {dev.last_name}
                   </option>
                 ))}
+              </Input>
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label for="timeEstimate">Time Estimate</Label>
+              <Input
+                type="time"
+                name="timeEstimate"
+                id="timeEstimate"
+                value={values.timeEstimate}
+                onChange={handleChange}
+              ></Input>
+            </FormGroup>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <FormGroup>
+              <Label for="type">Type</Label>
+              <Input
+                type="select"
+                name="type"
+                id="type"
+                value={values.type}
+                onChange={handleChange}
+              >
+                <option>issue</option>
+                <option>bug</option>
+                <option>high</option>
+                <option>error</option>
+                <option>feature request</option>
+                <option>other</option>
+              </Input>
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+              <Label for="type">Priority</Label>
+              <Input
+                type="select"
+                name="priority"
+                id="priority"
+                value={values.priority}
+                onChange={handleChange}
+              >
+                <option>low</option>
+                <option>medium</option>
+                <option>high</option>
+                <option>immediate</option>
+              </Input>
+            </FormGroup>
+          </Col>
+          <Col>
+            <FormGroup>
+              <Label for="type">Status</Label>
+              <Input
+                type="select"
+                name="status"
+                id="status"
+                value={values.status}
+                onChange={handleChange}
+              >
+                <option>new</option>
+                <option>open</option>
+                <option>in progress</option>
+                <option>resolved</option>
+                <option>additional info required</option>
               </Input>
             </FormGroup>
           </Col>
