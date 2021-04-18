@@ -16,14 +16,15 @@ module.exports = {
     const client = await pool.connect();
 
     try {
-      await client.query(
-        "INSERT INTO tickets (title, project_id, description, author_id, assigned_dev_id, priority, type, status, time_estimate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+      const {
+        rows,
+      } = await client.query(
+        "INSERT INTO tickets (title, project_id, description, author_id, priority, type, status, time_estimate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
         [
           title,
           projectId,
           description,
           authorId,
-          assignedAuthorId,
           priority,
           type,
           status,
@@ -31,7 +32,10 @@ module.exports = {
         ]
       );
 
-      res.status(201).json({ msg: `Ticket to ${title} created` });
+      res.status(201).json({
+        msg: `Ticket to ${title} created`,
+        ticketId: rows[0].id,
+      });
     } catch (err) {
       console.log(`Failed to create ticket for ${title}: `, "\n", err);
       res.status(500).json({ msg: `Please review query` });

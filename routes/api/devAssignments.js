@@ -4,7 +4,7 @@ const devAssignmentsController = require("../../controllers/devAssignmentsContro
 // Matches route with "/api/assigneddev/"
 router.route("/").delete(devAssignmentsController.removeDev);
 
-// Matches route with "/api/assigneddev/:projectId"
+// Matches route with "/api/assigneddev/:ticketId"
 router
   .route("/:ticketId")
   .post(devAssignmentsController.assignDev)

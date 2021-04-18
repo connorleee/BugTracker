@@ -12,11 +12,16 @@ import {
   Button,
 } from "reactstrap";
 import API from "../../utils/API";
+import { createAssignment } from "typescript";
 
 const CreateTicket = (props) => {
   const team = props.team.map(
     (teammate) => `${teammate.first_name} ${teammate.last_name}`
   );
+
+  const url = window.location.pathname;
+
+  const projectId = url.split("/")[url.split("/").length - 1];
 
   const initialTicketValues = {
     title: "",
@@ -37,7 +42,6 @@ const CreateTicket = (props) => {
   async function submit() {
     const {
       title,
-      projectId,
       description,
       author_id,
       assignees,
@@ -47,11 +51,24 @@ const CreateTicket = (props) => {
       timeEstimate,
     } = values;
 
-    console.log(title, description, assignees, timeEstimate);
+    console.log(assignees);
+    console.log(projectId);
+    console.log(timeEstimate);
+
+    const { ticketId } = await API.createTicket(projectId, values);
+    console.log(ticketId);
+
+    for (let i = 0; i < assignees.length; i++) {
+      await API.createDevAssignment(ticketId, assignees[i]);
+    }
 
     values.title = "";
     values.description = "";
     values.assignees = [];
+    values.priority = "";
+    values.type = "";
+    values.status = "";
+    values.timeEstimate = "";
   }
 
   return (

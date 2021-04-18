@@ -43,6 +43,20 @@ const API = {
       `http://localhost:3001/api/devassignments/${ticketId}`
     ).then((res) => res.json());
   },
+  createTicket: function (projectId, payload) {
+    return fetch(`http://localhost:3001/api/tickets/${projectId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  },
+  createDevAssignment: function (ticketId, payload) {
+    return fetch(`http://localhost:3001/api/devassignments/${ticketId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  },
 };
 
 export default API;
