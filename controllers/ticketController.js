@@ -32,10 +32,7 @@ module.exports = {
         ]
       );
 
-      res.status(201).json({
-        msg: `Ticket to ${title} created`,
-        ticketId: rows[0].id,
-      });
+      res.json(rows[0]);
     } catch (err) {
       console.log(`Failed to create ticket for ${title}: `, "\n", err);
       res.status(500).json({ msg: `Please review query` });

@@ -27,9 +27,9 @@ const CreateTicket = (props) => {
     title: "",
     description: "",
     assignees: [],
-    priority: "",
-    type: "",
-    status: "",
+    priority: "low",
+    type: "issue",
+    status: "new",
     timeEstimate: "",
   };
 
@@ -53,21 +53,20 @@ const CreateTicket = (props) => {
 
     console.log(assignees);
     console.log(projectId);
-    console.log(timeEstimate);
+    console.log(type);
 
-    const { ticketId } = await API.createTicket(projectId, values);
-    console.log(ticketId);
+    const { id } = await API.createTicket(projectId, values);
 
     for (let i = 0; i < assignees.length; i++) {
-      await API.createDevAssignment(ticketId, assignees[i]);
+      await API.createDevAssignment(id, assignees[i]);
     }
 
     values.title = "";
     values.description = "";
     values.assignees = [];
-    values.priority = "";
-    values.type = "";
-    values.status = "";
+    values.priority = "low";
+    values.type = "issue";
+    values.status = "new";
     values.timeEstimate = "";
   }
 

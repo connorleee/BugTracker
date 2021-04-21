@@ -12,7 +12,7 @@ const useForm = (callback, validate, initialValues) => {
     // let { name, value } = event.target;
     // not using destructuring in order to handle the specific case where a form has a checkbox or select
 
-    // console.log(event.target.type);
+    // console.log(event.target);
 
     let value;
 
