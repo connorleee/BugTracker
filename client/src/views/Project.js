@@ -56,6 +56,7 @@ const Project = (props) => {
 
         const projectTicketsRes = await API.getProjectTickets(projectId);
         setProjectTickets(projectTicketsRes);
+        console.log(projectTickets);
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
       }
@@ -75,10 +76,6 @@ const Project = (props) => {
           //assigned Devs
           const assignedDevs = await API.getDevAssignments(selectedTicketId);
           setAssignedDevs(assignedDevs);
-
-          console.log("Ticket: ", ticket);
-          console.log("Comments: ", comments);
-          console.log("Assigned Devs: ", assignedDevs);
         }
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
