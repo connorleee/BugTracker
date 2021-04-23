@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useForm = (callback, validate, initialValues) => {
+const useForm = (callback, initialValues, validate) => {
   const [values, setValues] = useState(initialValues);
 
   //new state for errors

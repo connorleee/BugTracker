@@ -34,8 +34,8 @@ const CreateTicket = (props) => {
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
-    validate,
-    initialTicketValues
+    initialTicketValues,
+    validate
   );
 
   async function submit() {

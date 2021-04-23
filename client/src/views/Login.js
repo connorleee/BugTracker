@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import useForm from "../components/Forms/useForm";
+import validate from "../utils/formValidation/loginValidation";
 
 // reactstrap components
 import {
@@ -16,12 +18,30 @@ import {
 } from "reactstrap";
 
 const Login = () => {
+  const initialLoginValues = {
+    email: "",
+    password: "",
+  };
+
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    submit,
+    initialLoginValues,
+    validate
+  );
+
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
+
+  async function submit() {
+    console.log("submitting");
+  }
   return (
     <>
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
           <CardBody className="px-lg-5 py-lg-5">
-            <Form role="form">
+            <Form role="form" onSubmit={handleSubmit}>
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
@@ -31,9 +51,17 @@ const Login = () => {
                   </InputGroupAddon>
                   <Input
                     placeholder="Email"
+                    name="email"
                     type="email"
                     autoComplete="new-email"
+                    value={values.email}
+                    onChange={handleChange}
                   />
+                  {errors.email && (
+                    <div style={{ fontSize: 12, color: "red" }}>
+                      {errors.title}
+                    </div>
+                  )}
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -45,9 +73,17 @@ const Login = () => {
                   </InputGroupAddon>
                   <Input
                     placeholder="Password"
+                    name="password"
                     type="password"
                     autoComplete="new-password"
+                    value={values.password}
+                    onChange={handleChange}
                   />
+                  {errors.password && (
+                    <div style={{ fontSize: 12, color: "red" }}>
+                      {errors.title}
+                    </div>
+                  )}
                 </InputGroup>
               </FormGroup>
               <div className="custom-control custom-control-alternative custom-checkbox">
@@ -64,7 +100,7 @@ const Login = () => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button">
+                <Button className="my-4" color="primary" type="submit">
                   Sign in
                 </Button>
               </div>
