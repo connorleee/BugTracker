@@ -56,7 +56,11 @@ const Project = (props) => {
 
         const projectTicketsRes = await API.getProjectTickets(projectId);
         setProjectTickets(projectTicketsRes);
-        console.log(projectTickets);
+
+        console.log(
+          projectTickets,
+          "Come back here once authentication logic is done"
+        );
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
       }

@@ -1,5 +1,6 @@
 const pool = require("../db");
 const bcrypt = require("bcryptjs");
+const jwtGenerator = require("../utils/jwtGenerator");
 
 module.exports = {
   getAll: async (req, res) => {
@@ -22,19 +23,30 @@ module.exports = {
     const { firstName, lastName, phone, email, password, userAuth } = req.body;
     const client = await pool.connect();
 
-    //password encryption before adding to DB
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
-
     try {
-      const addUser = await client.query(
-        "INSERT INTO users (first_name, last_name, phone, email, password_hash, user_authority) VALUES ($1, $2, $3, $4, $5, $6)",
+      //Look if user already exists
+      const user = await client.query("SELECT id FROM users WHERE email = $1", [
+        email,
+      ]);
+
+      if (user.rows.length !== 0) {
+        return res.status(401).send("User already exists");
+      }
+
+      //password encryption before adding to DB
+      const salt = await bcrypt.genSaltSync(10);
+      const hash = await bcrypt.hashSync(password, salt);
+
+      //Add new user to DB
+      const newUser = await client.query(
+        "INSERT INTO users (first_name, last_name, phone, email, password_hash, user_authority) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
         [firstName, lastName, phone, email, hash, userAuth]
       );
 
-      res.json({
-        msg: `${firstName} ${lastName} successfully added to the db`,
-      });
+      //Generate Token
+      const token = jwtGenerator(newUser.rows[0].id);
+
+      res.json({ token });
     } catch (err) {
       console.log(
         `Failed to add ${firstName} ${lastName} to the database: `,

@@ -1,5 +1,4 @@
 import axios from "axios";
-import Tickets from "views/Tickets";
 
 const API = {
   // Gets all projects

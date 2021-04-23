@@ -1,5 +1,3 @@
-import API from "../API";
-
 export default async function validate(values) {
   let errors = {};
 

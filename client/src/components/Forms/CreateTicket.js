@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
 import {
@@ -12,7 +12,6 @@ import {
   Button,
 } from "reactstrap";
 import API from "../../utils/API";
-import { createAssignment } from "typescript";
 
 const CreateTicket = (props) => {
   const team = props.team.map(
@@ -41,14 +40,14 @@ const CreateTicket = (props) => {
 
   async function submit() {
     const {
-      title,
-      description,
-      author_id,
+      // title,
+      // description,
+      // author_id,
       assignees,
-      priority,
+      // priority,
       type,
-      status,
-      timeEstimate,
+      // status,
+      // timeEstimate,
     } = values;
 
     console.log(assignees);
