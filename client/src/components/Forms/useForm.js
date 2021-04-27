@@ -9,11 +9,6 @@ const useForm = (callback, initialValues, validate) => {
   const [isSubmitting, setIsSubmitting] = useState(false); //isolates the submit callback function to only run if there is an error change.
 
   const handleChange = (event) => {
-    // let { name, value } = event.target;
-    // not using destructuring in order to handle the specific case where a form has a checkbox or select
-
-    // console.log(event.target);
-
     let value;
 
     if (event.target.type === "checkbox") {
@@ -22,9 +17,6 @@ const useForm = (callback, initialValues, validate) => {
       event.target.type === "select" ||
       event.target.type === "select-multiple"
     ) {
-      // console.log(
-      //   Array.from(event.target.selectedOptions, (option) => option.value)
-      // );
       value = Array.from(
         event.target.selectedOptions,
         (option) => option.value
@@ -32,11 +24,6 @@ const useForm = (callback, initialValues, validate) => {
     } else {
       value = event.target.value;
     }
-
-    // const value =
-    //   event.target.type === "checkbox"
-    //     ? event.target.checked
-    //     : event.target.value;
 
     const name = event.target.name;
 

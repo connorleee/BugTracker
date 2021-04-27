@@ -1,6 +1,5 @@
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
-// import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/Login.js";
 import Tables from "views/examples/Tables.js";
@@ -16,6 +15,7 @@ var routes = [
     icon: "ni ni-tv-2 text-primary",
     component: Index,
     layout: "/admin",
+    display: true,
   },
   {
     path: "/projects",
@@ -23,6 +23,7 @@ var routes = [
     icon: "ni ni-collection text-red",
     component: Projects,
     layout: "/admin",
+    display: true,
   },
   {
     path: "/tickets",
@@ -30,6 +31,7 @@ var routes = [
     icon: "ni ni-single-copy-04 text-teal",
     component: Tickets,
     layout: "/admin",
+    display: true,
   },
   {
     path: "/icons",
@@ -37,20 +39,15 @@ var routes = [
     icon: "ni ni-planet text-blue",
     component: Icons,
     layout: "/admin",
+    display: true,
   },
-  // {
-  //   path: "/maps",
-  //   name: "Maps",
-  //   icon: "ni ni-pin-3 text-orange",
-  //   component: Maps,
-  //   layout: "/admin",
-  // },
   {
     path: "/user-profile",
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin",
+    display: true,
   },
   {
     path: "/tables",
@@ -58,6 +55,7 @@ var routes = [
     icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
     layout: "/admin",
+    display: true,
   },
   {
     path: "/login",
@@ -78,6 +76,7 @@ var routes = [
     Name: "Project",
     component: Project,
     layout: "/admin",
+    display: false,
   },
 ];
 export default routes;

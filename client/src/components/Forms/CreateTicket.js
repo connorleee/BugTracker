@@ -14,9 +14,9 @@ import {
 import API from "../../utils/API";
 
 const CreateTicket = (props) => {
-  const team = props.team.map(
-    (teammate) => `${teammate.first_name} ${teammate.last_name}`
-  );
+  // const team = props.team.map(
+  //   (teammate) => `${teammate.first_name} ${teammate.last_name}`
+  // );
 
   const url = window.location.pathname;
 

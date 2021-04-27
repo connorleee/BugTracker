@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useForm from "../components/Forms/useForm";
 import validate from "../utils/formValidation/loginValidation";
+import API from "../utils/API";
 
 // reactstrap components
 import {
@@ -17,7 +18,7 @@ import {
   Col,
 } from "reactstrap";
 
-const Login = () => {
+const Login = (props) => {
   const initialLoginValues = {
     email: "",
     password: "",
@@ -29,13 +30,23 @@ const Login = () => {
     validate
   );
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
-
   async function submit() {
-    console.log("submitting");
+    const response = await API.login(values);
+
+    if (response.ok) {
+      const { token } = await response.json();
+
+      localStorage.setItem("token", token);
+
+      props.setAuth(true);
+
+      values.email = "";
+      values.password = "";
+    } else {
+      alert("Invalid login");
+    }
   }
+
   return (
     <>
       <Col lg="5" md="7">

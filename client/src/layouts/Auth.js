@@ -30,7 +30,7 @@ const Auth = (props) => {
         return (
           <Route
             path={prop.layout + prop.path}
-            component={prop.component}
+            render={() => <prop.component {...props} />}
             key={key}
           />
         );
