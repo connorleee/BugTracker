@@ -49,7 +49,6 @@ const ProjectsTable = () => {
               <div className="col text-right">
                 <Button
                   color="primary"
-                  href="#pablo"
                   onClick={(e) => e.preventDefault()}
                   size="sm"
                 >
@@ -76,11 +75,9 @@ const ProjectsTable = () => {
                   <tr key={project.id}>
                     <th scope="row">
                       <Link to={`/admin/project/${project.id}`}>
-                        {/* <a href="#" onClick={(e) => e.preventDefault()}> */}
                         <Media>
                           <span>{project.name} </span>
                         </Media>
-                        {/* </a> */}
                       </Link>
                     </th>
                     <td>

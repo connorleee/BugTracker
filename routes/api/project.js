@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const projectController = require("../../controllers/projectController");
 
-// Matches route with "/api/project/"
+// Matches route with "/api/projects/"
 router
   .route("/")
   .get(projectController.getAll)

@@ -62,13 +62,6 @@ const API = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userInfo),
     });
-    // .then((res) => {
-    //   if (res.ok) {
-    //     return res.json();
-    //   } else {
-    //     console.log("Login failed");
-    //   }
-    // });
   },
 };
 

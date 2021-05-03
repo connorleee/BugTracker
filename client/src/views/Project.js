@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -28,8 +29,8 @@ import CreateTicket from "../components/Forms/CreateTicket";
 
 import API from "../utils/API";
 
-const Project = (props) => {
-  const projectId = props.match.params.id;
+const Project = () => {
+  const projectId = useParams().id;
 
   const [projectData, setProjectData] = useState(null);
   const [projectTeam, setProjectTeam] = useState(null);
