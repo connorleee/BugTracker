@@ -52,9 +52,9 @@ import {
   Col,
 } from "reactstrap";
 
-var ps;
-
 const Sidebar = (props) => {
+  console.log(props);
+
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -87,6 +87,11 @@ const Sidebar = (props) => {
         );
       }
     });
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    props.setAuth(false);
   };
 
   const { bgColor, routes, logo } = props;
@@ -222,7 +227,8 @@ const Sidebar = (props) => {
             <InputGroup className="input-group-rounded input-group-merge">
               <Input
                 aria-label="Search"
-                className="form-control-rounded form-control-prepended"
+                className="form-control-rounded form-control-
+                epended"
                 placeholder="Search"
                 type="search"
               />
@@ -262,6 +268,9 @@ const Sidebar = (props) => {
           </Nav>
           <Nav className="mb-md-3" navbar>
             <NavItem className="active-pro active">
+              <Button color="danger" onClick={logout}>
+                Logout
+              </Button>
               <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-sidebar">
                 <i className="ni ni-spaceship" />
                 Upgrade to PRO
