@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const ticketController = require("../../controllers/ticketController");
+const authorization = require("../../middleware/authorization");
 
 // Matches route with "/api/tickets/"
 router
   .route("/:projectId")
-  .post(ticketController.createTicket)
+  .post(authorization, ticketController.createTicket)
   .get(ticketController.getProjectTickets);
 
 router

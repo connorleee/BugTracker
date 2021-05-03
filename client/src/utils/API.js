@@ -45,7 +45,10 @@ const API = {
   createTicket: function (projectId, payload) {
     return fetch(`http://localhost:3001/api/tickets/${projectId}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
       body: JSON.stringify(payload),
     }).then((res) => res.json());
   },

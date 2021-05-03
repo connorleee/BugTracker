@@ -3,11 +3,10 @@ const pool = require("../db");
 module.exports = {
   createTicket: async (req, res) => {
     const { projectId } = req.params;
+    const authorId = req.user;
     const {
       title,
       description,
-      authorId,
-      assignedAuthorId,
       priority,
       type,
       status,
