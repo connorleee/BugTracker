@@ -45,19 +45,20 @@ const CreateTicket = (props) => {
       // author_id,
       assignees,
       // priority,
-      type,
+      // type,
       // status,
       // timeEstimate,
     } = values;
 
-    console.log(assignees);
-    console.log(projectId);
-    console.log(type);
+    // console.log(assignees);
+    // console.log(projectId);
+    // console.log(type);
 
     const { id } = await API.createTicket(projectId, values);
 
     for (let i = 0; i < assignees.length; i++) {
-      await API.createDevAssignment(id, assignees[i]);
+      const devId = { devId: assignees[i] };
+      await API.createDevAssignment(id, devId);
     }
 
     values.title = "";
