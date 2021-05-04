@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -37,6 +37,7 @@ const Project = () => {
   const [projectTickets, setProjectTickets] = useState(null);
   const [isNewMemberOpen, setIsNewMemberOpen] = useState(false);
   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
+  const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [assignedDevs, setAssignedDevs] = useState(null);
@@ -45,6 +46,7 @@ const Project = () => {
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
 
   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
+  const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
   useEffect(() => {
     async function fetchData() {
@@ -57,11 +59,6 @@ const Project = () => {
 
         const projectTicketsRes = await API.getProjectTickets(projectId);
         setProjectTickets(projectTicketsRes);
-
-        console.log(
-          projectTickets,
-          "Come back here once authentication logic is done"
-        );
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
       }
@@ -146,16 +143,16 @@ const Project = () => {
                       return (
                         <tr key={user.user_id}>
                           <th>
-                            <a href="#" onClick={(e) => e.preventDefault()}>
-                              <Media>
-                                {user.first_name} {user.last_name}
-                              </Media>
-                            </a>
+                            {/* <Link onClick={(e) => e.preventDefault()}> */}
+                            <Media>
+                              {user.first_name} {user.last_name}
+                            </Media>
+                            {/* </Link> */}
                           </th>
                           <td>
-                            <a href="#" onClick={(e) => e.preventDefault()}>
-                              {user.email}
-                            </a>
+                            {/* <Link onClick={(e) => e.preventDefault()}> */}
+                            {user.email}
+                            {/* </Link> */}
                           </td>
                           <td>{user.phone}</td>
                           <td className="text-right">
@@ -246,11 +243,12 @@ const Project = () => {
                             <UncontrolledDropdown>
                               <DropdownToggle
                                 className="btn-icon-only text-light"
-                                href="#pablo"
                                 role="button"
                                 size="sm"
                                 color=""
-                                onClick={(e) => e.preventDefault()}
+                                onClick={() => {
+                                  setSelectedTicketId(ticket.id);
+                                }}
                               >
                                 <i className="fas fa-ellipsis-v" />
                               </DropdownToggle>
@@ -258,12 +256,26 @@ const Project = () => {
                                 className="dropdown-menu-arrow"
                                 right
                               >
-                                <DropdownItem
-                                  href="#pablo"
-                                  onClick={(e) => e.preventDefault()}
-                                >
+                                <DropdownItem onClick={toggleEditTicket}>
                                   Edit Ticket
                                 </DropdownItem>
+                                <Modal
+                                  isOpen={isEditTicketOpen}
+                                  toggle={toggleEditTicket}
+                                >
+                                  <Container
+                                    className="m-4 align-self-center"
+                                    fluid
+                                  >
+                                    <ModalHeader toggle={toggleEditTicket}>
+                                      Edit Ticket
+                                    </ModalHeader>
+                                    <CreateTicket
+                                      team={projectTeam}
+                                      ticketData={selectedTicket}
+                                    />
+                                  </Container>
+                                </Modal>
                                 <DropdownItem
                                   href="#pablo"
                                   onClick={(e) => e.preventDefault()}

@@ -1,6 +1,7 @@
 import React from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
+import { useParams } from "react-router-dom";
 import {
   Container,
   Row,
@@ -14,13 +15,7 @@ import {
 import API from "../../utils/API";
 
 const CreateTicket = (props) => {
-  // const team = props.team.map(
-  //   (teammate) => `${teammate.first_name} ${teammate.last_name}`
-  // );
-
-  const url = window.location.pathname;
-
-  const projectId = url.split("/")[url.split("/").length - 1];
+  const projectId = useParams().id;
 
   const initialTicketValues = {
     title: "",
@@ -39,20 +34,7 @@ const CreateTicket = (props) => {
   );
 
   async function submit() {
-    const {
-      // title,
-      // description,
-      // author_id,
-      assignees,
-      // priority,
-      // type,
-      // status,
-      // timeEstimate,
-    } = values;
-
-    // console.log(assignees);
-    // console.log(projectId);
-    // console.log(type);
+    const { assignees } = values;
 
     const { id } = await API.createTicket(projectId, values);
 
@@ -108,10 +90,12 @@ const CreateTicket = (props) => {
                 placeholder="Enter description"
                 value={values.description}
                 onChange={handleChange}
+                rows="5"
               />
             </FormGroup>
           </Col>
-
+        </Row>
+        <Row>
           <Col>
             <FormGroup>
               <Label for="assignees">Assign Devs</Label>
@@ -131,8 +115,6 @@ const CreateTicket = (props) => {
               </Input>
             </FormGroup>
           </Col>
-        </Row>
-        <Row>
           <Col>
             <FormGroup>
               <Label for="timeEstimate">Time Estimate (Hours)</Label>

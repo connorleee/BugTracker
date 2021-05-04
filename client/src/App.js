@@ -5,7 +5,6 @@ import AuthLayout from "layouts/Auth.js";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  console.log(isAuthenticated);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
