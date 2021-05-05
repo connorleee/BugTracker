@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
 import { useParams } from "react-router-dom";
@@ -24,8 +24,29 @@ const CreateTicket = (props) => {
     priority: "low",
     type: "issue",
     status: "new",
-    timeEstimate: "",
+    timeEstimate: 0,
   };
+
+  useEffect(async () => {
+    console.log("touched");
+    if (props.ticketData) {
+      try {
+        const devAssignments = await API.getDevAssignments(props.ticketData.id);
+
+        devAssignments.forEach((dev) => {
+          initialTicketValues.assignees.push(dev.user_id);
+        });
+      } catch (err) {
+        console.error(err.message);
+      }
+      initialTicketValues.title = props.ticketData.title;
+      initialTicketValues.description = props.ticketData.description;
+      initialTicketValues.priority = props.ticketData.priority;
+      initialTicketValues.type = props.ticketData.type;
+      initialTicketValues.status = props.ticketData.status;
+      initialTicketValues.timeEstimate = props.ticketData.timeEstimate;
+    }
+  }, [props.ticketData]);
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,

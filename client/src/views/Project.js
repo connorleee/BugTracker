@@ -259,23 +259,7 @@ const Project = () => {
                                 <DropdownItem onClick={toggleEditTicket}>
                                   Edit Ticket
                                 </DropdownItem>
-                                <Modal
-                                  isOpen={isEditTicketOpen}
-                                  toggle={toggleEditTicket}
-                                >
-                                  <Container
-                                    className="m-4 align-self-center"
-                                    fluid
-                                  >
-                                    <ModalHeader toggle={toggleEditTicket}>
-                                      Edit Ticket
-                                    </ModalHeader>
-                                    <CreateTicket
-                                      team={projectTeam}
-                                      ticketData={selectedTicket}
-                                    />
-                                  </Container>
-                                </Modal>
+
                                 <DropdownItem
                                   href="#pablo"
                                   onClick={(e) => e.preventDefault()}
@@ -288,6 +272,18 @@ const Project = () => {
                         </tr>
                       );
                     })}
+
+                    <Modal isOpen={isEditTicketOpen} toggle={toggleEditTicket}>
+                      <Container className="m-4 align-self-center" fluid>
+                        <ModalHeader toggle={toggleEditTicket}>
+                          Edit Ticket
+                        </ModalHeader>
+                        <CreateTicket
+                          team={projectTeam}
+                          ticketData={selectedTicket}
+                        />
+                      </Container>
+                    </Modal>
                   </tbody>
                 </Table>
               </Card>
