@@ -49,7 +49,7 @@ const CreateTicket = (props) => {
     values.priority = "low";
     values.type = "issue";
     values.status = "new";
-    values.timeEstimate = "";
+    values.timeEstimate = 0;
   }
 
   return (

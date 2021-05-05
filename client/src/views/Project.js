@@ -19,11 +19,9 @@ import {
   Container,
   Modal,
   ModalHeader,
-  //   UncontrolledTooltip,
 } from "reactstrap";
 
 import Header from "../components/Headers/Header";
-// import Modal from "../components/Modal/Modal";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
 import CreateTicket from "../components/Forms/CreateTicket";
 import UpdateTicket from "../components/Forms/UpdateTicket";
@@ -65,7 +63,7 @@ const Project = () => {
       }
     }
     fetchData();
-  }, [projectId, getProjectUsersUrl]);
+  }, [projectId, getProjectUsersUrl, isEditTicketOpen, isNewTicketOpen]);
 
   useEffect(() => {
     async function fetchTicket() {
@@ -86,7 +84,7 @@ const Project = () => {
     }
 
     fetchTicket();
-  }, [selectedTicketId]);
+  }, [selectedTicketId, isEditTicketOpen, isNewTicketOpen]);
 
   if (projectData && projectTeam && projectTickets) {
     return (
@@ -282,6 +280,7 @@ const Project = () => {
                         <UpdateTicket
                           team={projectTeam}
                           ticketData={selectedTicket}
+                          toggle={toggleEditTicket}
                         />
                       </Container>
                     </Modal>

@@ -46,11 +46,11 @@ const UpdateTicket = (props) => {
         initialTicketValues.priority = props.ticketData.priority;
         initialTicketValues.type = props.ticketData.type;
         initialTicketValues.status = props.ticketData.status;
-        initialTicketValues.timeEstimate = props.ticketData.timeEstimate;
+        initialTicketValues.timeEstimate = props.ticketData.time_estimate;
       }
     }
     fillAssignees();
-  }, []);
+  }, [initialTicketValues, props.ticketData]);
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
@@ -72,18 +72,20 @@ const UpdateTicket = (props) => {
         await API.createDevAssignment(props.ticketData.id, devId);
       }
       console.log("devs updated");
+
+      values.title = "";
+      values.description = "";
+      values.assignees = [];
+      values.priority = "low";
+      values.type = "issue";
+      values.status = "new";
+      values.timeEstimate = 0;
+
+      props.toggle();
     } catch (err) {
       console.log(err);
       console.error(err.message);
     }
-
-    values.title = "";
-    values.description = "";
-    values.assignees = [];
-    values.priority = "low";
-    values.type = "issue";
-    values.status = "new";
-    values.timeEstimate = "";
   }
 
   return (
