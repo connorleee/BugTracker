@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
 import { useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ import {
 } from "reactstrap";
 import API from "../../utils/API";
 
-const CreateTicket = (props) => {
+const UpdateTicket = (props) => {
   const projectId = useParams().id;
 
   const initialTicketValues = {
@@ -27,6 +27,31 @@ const CreateTicket = (props) => {
     timeEstimate: 0,
   };
 
+  useEffect(() => {
+    async function fillAssignees() {
+      if (props.ticketData) {
+        try {
+          const devAssignments = await API.getDevAssignments(
+            props.ticketData.id
+          );
+
+          devAssignments.forEach((dev) => {
+            initialTicketValues.assignees.push(dev.user_id);
+          });
+        } catch (err) {
+          console.error(err.message);
+        }
+        initialTicketValues.title = props.ticketData.title;
+        initialTicketValues.description = props.ticketData.description;
+        initialTicketValues.priority = props.ticketData.priority;
+        initialTicketValues.type = props.ticketData.type;
+        initialTicketValues.status = props.ticketData.status;
+        initialTicketValues.timeEstimate = props.ticketData.timeEstimate;
+      }
+    }
+    fillAssignees();
+  }, []);
+
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
     initialTicketValues,
@@ -35,12 +60,21 @@ const CreateTicket = (props) => {
 
   async function submit() {
     const { assignees } = values;
+    try {
+      await API.updateTicket(projectId, props.ticketData.id, values);
+      console.log("Ticket Updated");
 
-    const { id } = await API.createTicket(projectId, values);
+      await API.removeAllDevAssignments(props.ticketData.id);
+      console.log("devs cleared");
 
-    for (let i = 0; i < assignees.length; i++) {
-      const devId = { devId: assignees[i] };
-      await API.createDevAssignment(id, devId);
+      for (let i = 0; i < assignees.length; i++) {
+        const devId = { devId: assignees[i] };
+        await API.createDevAssignment(props.ticketData.id, devId);
+      }
+      console.log("devs updated");
+    } catch (err) {
+      console.log(err);
+      console.error(err.message);
     }
 
     values.title = "";
@@ -196,4 +230,4 @@ const CreateTicket = (props) => {
   );
 };
 
-export default CreateTicket;
+export default UpdateTicket;

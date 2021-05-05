@@ -11,7 +11,7 @@ router
 router
   .route("/:projectId/:ticketId")
   .get(ticketController.getTicket)
-  .put(ticketController.updateTicket)
-  .delete(ticketController.deleteTicket);
+  .put(authorization, ticketController.updateTicket)
+  .delete(authorization, ticketController.deleteTicket);
 
 module.exports = router;

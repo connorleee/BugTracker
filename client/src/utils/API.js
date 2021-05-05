@@ -52,17 +52,42 @@ const API = {
       body: JSON.stringify(payload),
     }).then((res) => res.json());
   },
+  updateTicket: function (projectId, ticketId, payload) {
+    return fetch(`http://localhost:3001/api/tickets/${projectId}/${ticketId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(payload),
+    }).then((res) => res.json());
+  },
   createDevAssignment: function (ticketId, devId) {
     return fetch(`http://localhost:3001/api/devassignments/${ticketId}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
       body: JSON.stringify(devId),
     }).then((res) => res.json());
+  },
+  removeAllDevAssignments: function (ticketId) {
+    return fetch(`http://localhost:3001/api/devassignments/${ticketId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
   },
   login: function (userInfo) {
     return fetch("http://localhost:3001/api/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
       body: JSON.stringify(userInfo),
     });
   },

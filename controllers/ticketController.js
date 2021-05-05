@@ -79,18 +79,8 @@ module.exports = {
 
     try {
       await client.query(
-        "UPDATE tickets SET (title, description, author_id, assigned_dev_id, priority, type, status, time_estimate) = ($1, $2, $3, $4, $5, $6, $7, $8) WHERE id = $9",
-        [
-          title,
-          description,
-          authorId,
-          assignedAuthorId,
-          priority,
-          type,
-          status,
-          timeEstimate,
-          ticketId,
-        ]
+        "UPDATE tickets SET (title, description, priority, type, status, time_estimate) = ($1, $2, $3, $4, $5, $6) WHERE id = $7",
+        [title, description, priority, type, status, timeEstimate, ticketId]
       );
 
       res.status(201).json({ msg: `Ticket ${ticketId} updated successfully` });

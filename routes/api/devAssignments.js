@@ -8,6 +8,7 @@ router.route("/").delete(devAssignmentsController.removeDev);
 router
   .route("/:ticketId")
   .post(devAssignmentsController.assignDev)
-  .get(devAssignmentsController.getAssignedDevs);
+  .get(devAssignmentsController.getAssignedDevs)
+  .delete(devAssignmentsController.removeAllDevs);
 
 module.exports = router;

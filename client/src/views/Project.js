@@ -26,6 +26,7 @@ import Header from "../components/Headers/Header";
 // import Modal from "../components/Modal/Modal";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
 import CreateTicket from "../components/Forms/CreateTicket";
+import UpdateTicket from "../components/Forms/UpdateTicket";
 
 import API from "../utils/API";
 
@@ -278,7 +279,7 @@ const Project = () => {
                         <ModalHeader toggle={toggleEditTicket}>
                           Edit Ticket
                         </ModalHeader>
-                        <CreateTicket
+                        <UpdateTicket
                           team={projectTeam}
                           ticketData={selectedTicket}
                         />

@@ -62,4 +62,21 @@ module.exports = {
       client.release();
     }
   },
+  removeAllDevs: async (req, res) => {
+    const { ticketId } = req.params;
+    const client = await pool.connect();
+
+    try {
+      await client.query("DELETE FROM dev_assignments WHERE ticket_id = $1", [
+        ticketId,
+      ]);
+
+      res.status(204).json({ msg: "All devs removed from ticket" });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500);
+    } finally {
+      client.release();
+    }
+  },
 };
