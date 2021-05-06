@@ -50,6 +50,8 @@ const CreateTicket = (props) => {
     values.type = "issue";
     values.status = "new";
     values.timeEstimate = 0;
+
+    props.toggle();
   }
 
   return (

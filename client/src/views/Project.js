@@ -65,6 +65,7 @@ const Project = () => {
     fetchData();
   }, [projectId, getProjectUsersUrl, isEditTicketOpen, isNewTicketOpen]);
 
+  //
   useEffect(() => {
     async function fetchTicket() {
       try {
@@ -85,6 +86,13 @@ const Project = () => {
 
     fetchTicket();
   }, [selectedTicketId, isEditTicketOpen, isNewTicketOpen]);
+
+  const deleteTicket = async (ticketId) => {
+    await API.deleteTicket(projectId, ticketId);
+
+    const projectTicketsRes = await API.getProjectTickets(projectId);
+    setProjectTickets(projectTicketsRes);
+  };
 
   if (projectData && projectTeam && projectTickets) {
     return (
@@ -208,7 +216,10 @@ const Project = () => {
                           <ModalHeader toggle={toggleCreateTicket}>
                             Create Ticket
                           </ModalHeader>
-                          <CreateTicket team={projectTeam} />
+                          <CreateTicket
+                            team={projectTeam}
+                            toggle={toggleCreateTicket}
+                          />
                         </Container>
                       </Modal>
                     </div>
@@ -260,8 +271,9 @@ const Project = () => {
                                 </DropdownItem>
 
                                 <DropdownItem
-                                  href="#pablo"
-                                  onClick={(e) => e.preventDefault()}
+                                  onClick={() => {
+                                    deleteTicket(ticket.id);
+                                  }}
                                 >
                                   Remove Ticket
                                 </DropdownItem>

@@ -62,6 +62,15 @@ const API = {
       body: JSON.stringify(payload),
     }).then((res) => res.json());
   },
+  deleteTicket: function (projectId, ticketId) {
+    return fetch(`http://localhost:3001/api/tickets/${projectId}/${ticketId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
+  },
   createDevAssignment: function (ticketId, devId) {
     return fetch(`http://localhost:3001/api/devassignments/${ticketId}`, {
       method: "POST",
