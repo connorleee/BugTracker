@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -25,6 +25,7 @@ import Header from "../components/Headers/Header";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
 import CreateTicket from "../components/Forms/CreateTicket";
 import UpdateTicket from "../components/Forms/UpdateTicket";
+import AddTeamMember from "../components/Forms/AddTeamMember";
 
 import API from "../utils/API";
 
@@ -44,6 +45,7 @@ const Project = () => {
 
   let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
 
+  const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
   const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
@@ -120,17 +122,17 @@ const Project = () => {
                     <div className="col text-right">
                       <Button
                         color="primary"
-                        onClick={() => setIsNewMemberOpen(true)}
+                        onClick={toggleNewMember}
                         size="sm"
                       >
                         New Member
                       </Button>
 
-                      <Modal
-                        open={isNewMemberOpen}
-                        onClose={() => setIsNewMemberOpen(false)}
-                      >
-                        *New Member Form*
+                      <Modal isOpen={isNewMemberOpen} onClose={toggleNewMember}>
+                        <ModalHeader toggle={toggleNewMember}>
+                          Add Member
+                        </ModalHeader>
+                        <AddTeamMember team={projectTeam} />
                       </Modal>
                     </div>
                   </Row>
