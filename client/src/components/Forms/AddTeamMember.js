@@ -24,7 +24,7 @@ const AddTeamMember = (props) => {
     }
 
     fetchData();
-  }, [dbUsers]);
+  }, []);
 
   return (
     <Container>
@@ -32,8 +32,8 @@ const AddTeamMember = (props) => {
         <FormGroup>
           <Label>Available Users</Label>
           <Input type="select" multiple>
-            {dbUsers.map((user) => {
-              return <option>{user.first_name}</option>;
+            {dbUsers.map((user, key) => {
+              return <option key={key}>{user.first_name}</option>;
             })}
           </Input>
         </FormGroup>
