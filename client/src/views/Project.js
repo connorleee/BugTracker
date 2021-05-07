@@ -132,7 +132,10 @@ const Project = () => {
                         <ModalHeader toggle={toggleNewMember}>
                           Add Member
                         </ModalHeader>
-                        <AddTeamMember team={projectTeam} />
+                        <AddTeamMember
+                          team={projectTeam}
+                          projectId={projectId}
+                        />
                       </Modal>
                     </div>
                   </Row>

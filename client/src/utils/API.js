@@ -100,6 +100,11 @@ const API = {
       body: JSON.stringify(userInfo),
     });
   },
+  getAvailableUsers: function (projectId) {
+    return fetch(
+      "http://localhost:3001/api/availableUsers/" + projectId
+    ).then((res) => res.json());
+  },
 };
 
 export default API;
