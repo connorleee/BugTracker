@@ -105,6 +105,16 @@ const API = {
       "http://localhost:3001/api/availableUsers/" + projectId
     ).then((res) => res.json());
   },
+  addTeamMember: function (projectId, userId) {
+    return fetch("http://localhost:3001/api/userprojects/" + projectId, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(userId),
+    });
+  },
 };
 
 export default API;

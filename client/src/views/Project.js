@@ -133,8 +133,8 @@ const Project = () => {
                           Add Member
                         </ModalHeader>
                         <AddTeamMember
-                          team={projectTeam}
                           projectId={projectId}
+                          toggle={toggleNewMember}
                         />
                       </Modal>
                     </div>
