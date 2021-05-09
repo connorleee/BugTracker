@@ -2,8 +2,10 @@ import axios from "axios";
 
 const API = {
   // Gets all projects
-  getProjects: function (url) {
-    return fetch(url).then((res) => res.json());
+  getProjects: function () {
+    return fetch("http://localhost:3001/api/projects").then((res) =>
+      res.json()
+    );
   },
   // Gets the project with the given id
   getProject: function (id) {

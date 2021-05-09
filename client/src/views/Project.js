@@ -28,7 +28,6 @@ import UpdateTicket from "../components/Forms/UpdateTicket";
 import AddTeamMember from "../components/Forms/AddTeamMember";
 
 import API from "../utils/API";
-import { parseJsonSourceFileConfigFileContent } from "typescript";
 
 const Project = () => {
   const projectId = useParams().id;
@@ -44,12 +43,11 @@ const Project = () => {
   const [assignedDevs, setAssignedDevs] = useState(null);
   const [comments, setComments] = useState(null);
 
-  // let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
-
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
   const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
+  // update project team
   useEffect(() => {
     async function fetchTeam() {
       try {
@@ -63,14 +61,12 @@ const Project = () => {
     fetchTeam();
   }, [projectId, isNewMemberOpen]);
 
+  // update project data
   useEffect(() => {
     async function fetchData() {
       try {
         const projectDataRes = await API.getProject(projectId);
         setProjectData(projectDataRes.data);
-
-        // const projectTeamRes = await API.getProjectUsers(projectId);
-        // setProjectTeam(projectTeamRes);
 
         const projectTicketsRes = await API.getProjectTickets(projectId);
         setProjectTickets(projectTicketsRes);
@@ -81,7 +77,7 @@ const Project = () => {
     fetchData();
   }, [projectId, isEditTicketOpen, isNewTicketOpen]);
 
-  //
+  // update ticket data
   useEffect(() => {
     async function fetchTicket() {
       try {
@@ -101,7 +97,7 @@ const Project = () => {
     }
 
     fetchTicket();
-  }, [selectedTicketId, isEditTicketOpen, isNewTicketOpen]);
+  }, [selectedTicketId, isEditTicketOpen, isNewTicketOpen, projectId]);
 
   const deleteTicket = async (ticketId) => {
     await API.deleteTicket(projectId, ticketId);

@@ -5,13 +5,13 @@ import { Row } from "reactstrap";
 const UsersCell = (props) => {
   let [projectUsers, setProjectUsers] = useState(null);
 
-  let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${props.projectId}`;
+  // let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${props.projectId}`;
 
   useEffect(() => {
-    API.getProjectUsers(getProjectUsersUrl).then((json) => {
+    API.getProjectUsers(props.projectId).then((json) => {
       setProjectUsers(json);
     });
-  }, [getProjectUsersUrl]);
+  }, [props.projectId]);
 
   if (projectUsers && projectUsers.length) {
     return (

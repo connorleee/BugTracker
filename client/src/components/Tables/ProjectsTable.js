@@ -31,13 +31,13 @@ import UsersCell from "./UsersCell";
 const ProjectsTable = () => {
   let [projects, setProjects] = useState(null);
 
-  let getProjectsUrl = "http://localhost:3001/api/projects";
+  // let getProjectsUrl = "http://localhost:3001/api/projects";
 
   useEffect(() => {
-    API.getProjects(getProjectsUrl).then((json) => {
+    API.getProjects().then((json) => {
       setProjects(json);
     });
-  }, [getProjectsUrl]);
+  }, []);
 
   if (projects) {
     return (
