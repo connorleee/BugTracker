@@ -26,13 +26,16 @@ module.exports = {
   },
 
   removeUser: async (req, res) => {
-    const { id } = req.body;
+    const { projectId, userId } = req.params;
     const client = await pool.connect();
 
     try {
-      await client.query("DELETE FROM user_projects WHERE id = $1", [id]);
+      await client.query(
+        "DELETE FROM user_projects WHERE project_id = $1 AND user_id = $2",
+        [projectId, userId]
+      );
 
-      res.json(`User removed from project`);
+      res.status(202).json(`User removed from project`);
     } catch (err) {
       console.log("getProject query error: ", err);
       res

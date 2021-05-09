@@ -9,8 +9,10 @@ const API = {
   getProject: function (id) {
     return axios.get("http://localhost:3001/api/projects/" + id);
   },
-  getProjectUsers: function (url) {
-    return fetch(url).then((res) => res.json());
+  getProjectUsers: function (projectId) {
+    return fetch(
+      `http://localhost:3001/api/userProjects/${projectId}`
+    ).then((res) => res.json());
   },
   getProjectTickets: function (projectId) {
     return fetch("http://localhost:3001/api/tickets/" + projectId).then((res) =>
@@ -114,6 +116,18 @@ const API = {
       },
       body: JSON.stringify(userId),
     });
+  },
+  removeTeamMember: function (projectId, userId) {
+    return fetch(
+      `http://localhost:3001/api/userprojects/${projectId}/${userId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+        },
+      }
+    );
   },
 };
 

@@ -28,6 +28,7 @@ import UpdateTicket from "../components/Forms/UpdateTicket";
 import AddTeamMember from "../components/Forms/AddTeamMember";
 
 import API from "../utils/API";
+import { parseJsonSourceFileConfigFileContent } from "typescript";
 
 const Project = () => {
   const projectId = useParams().id;
@@ -43,11 +44,24 @@ const Project = () => {
   const [assignedDevs, setAssignedDevs] = useState(null);
   const [comments, setComments] = useState(null);
 
-  let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
+  // let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${projectId}`;
 
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
   const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
+
+  useEffect(() => {
+    async function fetchTeam() {
+      try {
+        const projectTeamRes = await API.getProjectUsers(projectId);
+        setProjectTeam(projectTeamRes);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchTeam();
+  }, [projectId, isNewMemberOpen]);
 
   useEffect(() => {
     async function fetchData() {
@@ -55,8 +69,8 @@ const Project = () => {
         const projectDataRes = await API.getProject(projectId);
         setProjectData(projectDataRes.data);
 
-        const projectTeamRes = await API.getProjectUsers(getProjectUsersUrl);
-        setProjectTeam(projectTeamRes);
+        // const projectTeamRes = await API.getProjectUsers(projectId);
+        // setProjectTeam(projectTeamRes);
 
         const projectTicketsRes = await API.getProjectTickets(projectId);
         setProjectTickets(projectTicketsRes);
@@ -65,7 +79,7 @@ const Project = () => {
       }
     }
     fetchData();
-  }, [projectId, getProjectUsersUrl, isEditTicketOpen, isNewTicketOpen]);
+  }, [projectId, isEditTicketOpen, isNewTicketOpen]);
 
   //
   useEffect(() => {
@@ -94,6 +108,13 @@ const Project = () => {
 
     const projectTicketsRes = await API.getProjectTickets(projectId);
     setProjectTickets(projectTicketsRes);
+  };
+
+  const removeTeamMember = async (projectId, userId) => {
+    await API.removeTeamMember(projectId, userId);
+
+    const projectTeamRes = await API.getProjectUsers(projectId);
+    setProjectTeam(projectTeamRes);
   };
 
   if (projectData && projectTeam && projectTickets) {
@@ -155,17 +176,11 @@ const Project = () => {
                       return (
                         <tr key={user.user_id}>
                           <th>
-                            {/* <Link onClick={(e) => e.preventDefault()}> */}
                             <Media>
                               {user.first_name} {user.last_name}
                             </Media>
-                            {/* </Link> */}
                           </th>
-                          <td>
-                            {/* <Link onClick={(e) => e.preventDefault()}> */}
-                            {user.email}
-                            {/* </Link> */}
-                          </td>
+                          <td>{user.email}</td>
                           <td>{user.phone}</td>
                           <td className="text-right">
                             <UncontrolledDropdown>
@@ -184,8 +199,9 @@ const Project = () => {
                                 right
                               >
                                 <DropdownItem
-                                  href="#pablo"
-                                  onClick={(e) => e.preventDefault()}
+                                  onClick={() =>
+                                    removeTeamMember(projectId, user.user_id)
+                                  }
                                 >
                                   Remove Team Member
                                 </DropdownItem>

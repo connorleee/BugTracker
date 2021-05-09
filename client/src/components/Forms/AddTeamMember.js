@@ -25,7 +25,7 @@ const AddTeamMember = (props) => {
     }
 
     fetchData();
-  }, []);
+  }, [setSelectedUsers]);
 
   const handleChange = (event) => {
     let values = Array.from(
@@ -38,9 +38,10 @@ const AddTeamMember = (props) => {
 
   const submit = (e) => {
     e.preventDefault();
+    console.log(selectedUsers);
 
     selectedUsers.forEach(async (userId) => {
-      await API.addTeamMember(projectId, userId);
+      await API.addTeamMember(projectId, { userId });
     });
 
     props.toggle();
