@@ -5,8 +5,6 @@ import { Row } from "reactstrap";
 const UsersCell = (props) => {
   let [projectUsers, setProjectUsers] = useState(null);
 
-  // let getProjectUsersUrl = `http://localhost:3001/api/userProjects/${props.projectId}`;
-
   useEffect(() => {
     API.getProjectUsers(props.projectId).then((json) => {
       setProjectUsers(json);
@@ -19,11 +17,11 @@ const UsersCell = (props) => {
         {projectUsers.map((user) => {
           return (
             <Row key={user.user_id}>
-              <a href="#" onClick={(e) => e.preventDefault()}>
-                <span>
-                  {user.first_name} {user.last_name}
-                </span>
-              </a>
+              {/* <a href="#" onClick={(e) => e.preventDefault()}> */}
+              <span>
+                {user.first_name} {user.last_name}
+              </span>
+              {/* </a> */}
             </Row>
           );
         })}

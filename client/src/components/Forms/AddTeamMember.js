@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Button,
-} from "reactstrap";
+import { Container, Form, FormGroup, Label, Input, Button } from "reactstrap";
 
 const AddTeamMember = (props) => {
   const { projectId } = props;
@@ -25,7 +16,7 @@ const AddTeamMember = (props) => {
     }
 
     fetchData();
-  }, [setSelectedUsers]);
+  }, [setSelectedUsers, projectId]);
 
   const handleChange = (event) => {
     let values = Array.from(

@@ -31,8 +31,6 @@ import UsersCell from "./UsersCell";
 const ProjectsTable = () => {
   let [projects, setProjects] = useState(null);
 
-  // let getProjectsUrl = "http://localhost:3001/api/projects";
-
   useEffect(() => {
     API.getProjects().then((json) => {
       setProjects(json);

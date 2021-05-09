@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
 import { useParams } from "react-router-dom";
@@ -17,15 +17,17 @@ import API from "../../utils/API";
 const UpdateTicket = (props) => {
   const projectId = useParams().id;
 
-  const initialTicketValues = {
-    title: "",
-    description: "",
-    assignees: [],
-    priority: "low",
-    type: "issue",
-    status: "new",
-    timeEstimate: 0,
-  };
+  const initialTicketValues = useMemo(() => {
+    return {
+      title: "",
+      description: "",
+      assignees: [],
+      priority: "low",
+      type: "issue",
+      status: "new",
+      timeEstimate: 0,
+    };
+  }, []);
 
   useEffect(() => {
     async function fillAssignees() {
