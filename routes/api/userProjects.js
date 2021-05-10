@@ -9,7 +9,8 @@ router.route("/");
 router
   .route("/:projectId")
   .post(authorization, userProjectController.assignUser)
-  .get(userProjectController.getProjectUsers);
+  .get(authorization, userProjectController.getProjectUsers)
+  .delete(authorization, userProjectController.removeAllUsers);
 
 // Matches route with "/api/userprojects/:projectId/:userId"
 router.route("/:projectId/:userId").delete(userProjectController.removeUser);

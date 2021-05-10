@@ -24,7 +24,25 @@ module.exports = {
       await client.release();
     }
   },
+  removeAllUsers: async (req, res) => {
+    const { projectId } = req.params;
+    const client = await pool.connect();
 
+    try {
+      await client.query("DELETE FROM user_projects WHERE project_id = $1", [
+        projectId,
+      ]);
+
+      res.status(202).json(`Project users deleted`);
+    } catch (err) {
+      console.log("getProject query error: ", err);
+      res
+        .status(500)
+        .json({ msg: "Unable to remove user_project from database" });
+    } finally {
+      await client.release();
+    }
+  },
   removeUser: async (req, res) => {
     const { projectId, userId } = req.params;
     const client = await pool.connect();

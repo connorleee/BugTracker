@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CreateProject from "../Forms/CreateProject";
 
 // reactstrap components
 import {
@@ -18,6 +19,8 @@ import {
   Table,
   Button,
   Row,
+  Modal,
+  ModalHeader,
   //   Container,
   //   Row,
   //   UncontrolledTooltip,
@@ -29,13 +32,23 @@ import API from "../../utils/API";
 import UsersCell from "./UsersCell";
 
 const ProjectsTable = () => {
-  let [projects, setProjects] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
+
+  const toggleNewProject = () => setIsNewProjectOpen(!isNewProjectOpen);
 
   useEffect(() => {
     API.getProjects().then((json) => {
       setProjects(json);
     });
   }, []);
+
+  const deleteProject = async (projectId) => {
+    console.log(projectId);
+    // await API.deleteProject(projectId);
+
+    console.log("Project deleted");
+  };
 
   if (projects) {
     return (
@@ -45,13 +58,19 @@ const ProjectsTable = () => {
             <Row className="align-items-center">
               <h3 className="mb-0">Projects</h3>
               <div className="col text-right">
-                <Button
-                  color="primary"
-                  onClick={(e) => e.preventDefault()}
-                  size="sm"
-                >
+                <Button color="primary" onClick={toggleNewProject} size="sm">
                   New Project
                 </Button>
+
+                <Modal isOpen={isNewProjectOpen} onClose={toggleNewProject}>
+                  <ModalHeader toggle={toggleNewProject}>
+                    Add New Project
+                    <CreateProject
+                      toggle={toggleNewProject}
+                      setProjects={setProjects}
+                    />
+                  </ModalHeader>
+                </Modal>
               </div>
             </Row>
           </CardHeader>
@@ -111,8 +130,9 @@ const ProjectsTable = () => {
                             Edit Project
                           </DropdownItem>
                           <DropdownItem
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
+                            onClick={() => {
+                              deleteProject(project.id);
+                            }}
                           >
                             Delete Project
                           </DropdownItem>

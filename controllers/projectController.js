@@ -40,12 +40,14 @@ module.exports = {
     //May need some logic to ensure project doesn't already exist
 
     try {
-      const result = await client.query(
-        "INSERT INTO projects (name, description) VALUES ($1, $2)",
+      const {
+        rows,
+      } = await client.query(
+        "INSERT INTO projects (name, description) VALUES ($1, $2) RETURNING id",
         [name, description]
       );
 
-      res.status(201).json({ msg: "Project created succesfully" });
+      res.status(201).json(rows[0]);
     } catch (err) {
       console.log("createProject query error: ", err);
       res.status(400).json({ msg: "Please review project creation query" });

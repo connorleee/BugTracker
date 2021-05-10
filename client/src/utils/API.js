@@ -3,18 +3,22 @@ import axios from "axios";
 const API = {
   // Gets all projects
   getProjects: function () {
-    return fetch("http://localhost:3001/api/projects").then((res) =>
-      res.json()
-    );
+    return fetch("http://localhost:3001/api/projects", {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    }).then((res) => res.json());
   },
   // Gets the project with the given id
   getProject: function (id) {
     return axios.get("http://localhost:3001/api/projects/" + id);
   },
   getProjectUsers: function (projectId) {
-    return fetch(
-      `http://localhost:3001/api/userProjects/${projectId}`
-    ).then((res) => res.json());
+    return fetch(`http://localhost:3001/api/userProjects/${projectId}`, {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    }).then((res) => res.json());
   },
   getProjectTickets: function (projectId) {
     return fetch("http://localhost:3001/api/tickets/" + projectId).then((res) =>
@@ -22,7 +26,14 @@ const API = {
     );
   },
   createProject: function (projectData) {
-    return axios.post("http://localhost:3001/api/projects", projectData);
+    return fetch("http://localhost:3001/api/projects", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(projectData),
+    }).then((res) => res.json());
   },
   // Saves a user to the database
   saveUser: function (userData) {
@@ -130,6 +141,33 @@ const API = {
         },
       }
     );
+  },
+  getUsers: function () {
+    return fetch("http://localhost:3001/api/users").then((res) => res.json());
+  },
+  deleteProject: function (projectId) {
+    function deleteProject(id) {
+      return fetch(`http://localhost:3001/api/projects/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+        },
+      });
+    }
+
+    function deleteProjectUsers(id) {
+      return fetch(`http://localhost:3001/api/userprojects/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          token: localStorage.getItem("token"),
+        },
+      });
+    }
+
+    deleteProject(projectId);
+    deleteProjectUsers(projectId);
   },
 };
 
