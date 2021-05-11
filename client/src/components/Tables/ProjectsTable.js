@@ -45,7 +45,7 @@ const ProjectsTable = () => {
 
   const deleteProject = async (projectId) => {
     console.log(projectId);
-    // await API.deleteProject(projectId);
+    await API.deleteProject(projectId);
 
     console.log("Project deleted");
   };

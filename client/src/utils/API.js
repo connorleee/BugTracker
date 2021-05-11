@@ -11,7 +11,11 @@ const API = {
   },
   // Gets the project with the given id
   getProject: function (id) {
-    return axios.get("http://localhost:3001/api/projects/" + id);
+    return axios.get("http://localhost:3001/api/projects/" + id, {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    });
   },
   getProjectUsers: function (projectId) {
     return fetch(`http://localhost:3001/api/userProjects/${projectId}`, {
@@ -146,28 +150,13 @@ const API = {
     return fetch("http://localhost:3001/api/users").then((res) => res.json());
   },
   deleteProject: function (projectId) {
-    function deleteProject(id) {
-      return fetch(`http://localhost:3001/api/projects/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
-        },
-      });
-    }
-
-    function deleteProjectUsers(id) {
-      return fetch(`http://localhost:3001/api/userprojects/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
-        },
-      });
-    }
-
-    deleteProject(projectId);
-    deleteProjectUsers(projectId);
+    return fetch(`http://localhost:3001/api/projects/${projectId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
   },
 };
 

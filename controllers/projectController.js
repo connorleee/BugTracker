@@ -56,19 +56,55 @@ module.exports = {
     }
   },
   deleteProject: async (req, res) => {
-    const id = req.params.id;
+    const projectId = req.params.id;
+
+    console.log(projectId);
     const client = await pool.connect();
 
+    //Need to delete all rows in tables with foreign keys as well
     try {
-      const deleteProject = await client.query(
-        "DELETE FROM projects WHERE id = $1",
-        [id]
-      );
+      //initialize transaction
+      await client.query("BEGIN");
 
-      res.status(200).json({ msg: `Project ${id} succesfully deleted` });
+      //delete dev_assignments, ticket history, comments from tickets
+      Promise.all([
+        await client.query(
+          "DELETE FROM dev_assignments WHERE ticket_id IN (SELECT id FROM tickets WHERE project_id = $1)",
+          [projectId]
+        ),
+        await client.query(
+          "DELETE FROM ticket_history WHERE ticket_id IN (SELECT id FROM tickets WHERE project_id = $1)",
+          [projectId]
+        ),
+        await client.query(
+          "DELETE FROM comments WHERE ticket_id IN (SELECT id FROM tickets WHERE project_id = $1)",
+          [projectId]
+        ),
+      ]);
+
+      //delete tickets, user_projects from projects
+      Promise.all([
+        await client.query("DELETE FROM tickets WHERE project_id = $1", [
+          projectId,
+        ]),
+        await client.query("DELETE FROM user_projects WHERE project_id = $1", [
+          projectId,
+        ]),
+      ]);
+
+      //delete project
+      await client.query("DELETE FROM projects WHERE id = $1", [projectId]);
+
+      //if no errors, commit the transaction
+      await client.query("COMMIT");
+
+      res.status(200).json({
+        msg: `Project ${projectId} and associated tickets/team data succesfully deleted`,
+      });
     } catch (err) {
+      await client.query("ROLLBACK");
       console.log("deleteProject query error: ", err);
-      res.status(500).json({ msg: `Project deletion of ${id} failed` });
+      res.status(500).json({ msg: `Project deletion of ${projectId} failed` });
     } finally {
       await client.release();
     }
