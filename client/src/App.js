@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+
+  let token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token == null) {
+      setIsAuthenticated(false);
+    }
+  }, [token]);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -16,7 +24,7 @@ const App = () => {
         <Route
           path="/admin"
           render={(props) =>
-            isAuthenticated ? (
+            isAuthenticated && token != null ? (
               <AdminLayout {...props} setAuth={setAuth} />
             ) : (
               <Redirect to="/auth" />

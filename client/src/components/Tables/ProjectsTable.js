@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CreateProject from "../Forms/CreateProject";
+import UpdateProject from "../Forms/UpdateProject";
 
 // reactstrap components
 import {
@@ -21,7 +22,7 @@ import {
   Row,
   Modal,
   ModalHeader,
-  //   Container,
+  Container,
   //   Row,
   //   UncontrolledTooltip,
 } from "reactstrap";
@@ -34,13 +35,43 @@ import UsersCell from "./UsersCell";
 const ProjectsTable = () => {
   const [projects, setProjects] = useState(null);
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
+  const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
+  const [selectedProjectData, setSelectedProjectData] = useState(null);
+  const [selectedProjectTeam, setSelectedProjectTeam] = useState(null);
 
   const toggleNewProject = () => setIsNewProjectOpen(!isNewProjectOpen);
+  const toggleEditProject = () => setIsEditProjectOpen(!isEditProjectOpen);
+  const setProjectId = (event) => setSelectedProjectId(event.target.id);
 
   useEffect(() => {
-    API.getProjects().then((json) => {
-      setProjects(json);
-    });
+    async function fetchProject() {
+      if (selectedProjectId) {
+        try {
+          const projectData = await API.getProject(selectedProjectId);
+
+          setSelectedProjectData(projectData.data);
+
+          const projectTeam = await API.getProjectUsers(selectedProjectId);
+
+          setSelectedProjectTeam(projectTeam.map((user) => user.user_id));
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+
+    fetchProject();
+  }, [selectedProjectId]);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      await API.getProjects().then((json) => {
+        setProjects(json);
+      });
+    }
+
+    fetchProjects();
   }, []);
 
   const deleteProject = async (projectId) => {
@@ -100,32 +131,25 @@ const ProjectsTable = () => {
                     <td>
                       <span>{project.description}</span>
                     </td>
-                    {/* <td>
-                      <Badge color="" className="badge-dot mr-4">
-                        <i className="bg-warning" />
-                        pending
-                      </Badge>
-                    </td> */}
                     <td>
                       <UsersCell projectId={project.id} />
                     </td>
-                    {/* <td></td> */}
                     <td className="text-right">
                       <UncontrolledDropdown>
                         <DropdownToggle
                           className="btn-icon-only text-light"
-                          href="#pablo"
                           role="button"
                           size="sm"
                           color=""
-                          onClick={(e) => e.preventDefault()}
+                          id={project.id}
+                          onClick={(e) => setProjectId(e)}
                         >
                           <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
                           <DropdownItem
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
+                            id={project.id}
+                            onClick={toggleEditProject}
                           >
                             Edit Project
                           </DropdownItem>
@@ -142,6 +166,22 @@ const ProjectsTable = () => {
                   </tr>
                 );
               })}
+              <Modal
+                isOpen={isEditProjectOpen && selectedProjectData !== null}
+                onClose={toggleEditProject}
+              >
+                <Container className="m-4 align-self-center" fluid>
+                  <ModalHeader toggle={toggleEditProject}>
+                    Edit Project
+                  </ModalHeader>
+                  <UpdateProject
+                    toggle={toggleEditProject}
+                    setProjects={setProjects}
+                    projectData={selectedProjectData}
+                    projectTeam={selectedProjectTeam}
+                  />
+                </Container>
+              </Modal>
             </tbody>
           </Table>
           <CardFooter className="py-4">
