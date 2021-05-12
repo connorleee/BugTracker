@@ -17,21 +17,6 @@ const UpdateProject = (props) => {
     description: props.projectData.description,
     team: props.projectTeam,
   });
-  const [allUsers, setAllUsers] = useState([]);
-
-  //fetch all users
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const users = await API.getUsers();
-        setAllUsers(users);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    fetchUsers();
-  }, []);
 
   const handleChange = (event) => {
     let value;
@@ -71,6 +56,7 @@ const UpdateProject = (props) => {
 
     setValues({ name: "", description: "", team: [] });
 
+    props.resetProjectId();
     props.toggle();
   }
 
@@ -122,7 +108,7 @@ const UpdateProject = (props) => {
                 onChange={handleChange}
                 multiple
               >
-                {allUsers.map((user, key) => {
+                {props.allUsers.map((user, key) => {
                   return (
                     <option key={key} id={user.id} value={user.id}>
                       {user.first_name} {user.last_name}

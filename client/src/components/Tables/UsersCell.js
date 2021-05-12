@@ -9,7 +9,7 @@ const UsersCell = (props) => {
     API.getProjectUsers(props.projectId).then((json) => {
       setProjectUsers(json);
     });
-  }, [props.projectId]);
+  }, [props.projectId, props.selectedProjectId]);
 
   if (projectUsers && projectUsers.length) {
     return (

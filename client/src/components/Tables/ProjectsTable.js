@@ -39,21 +39,35 @@ const ProjectsTable = () => {
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [selectedProjectData, setSelectedProjectData] = useState(null);
   const [selectedProjectTeam, setSelectedProjectTeam] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
 
   const toggleNewProject = () => setIsNewProjectOpen(!isNewProjectOpen);
   const toggleEditProject = () => setIsEditProjectOpen(!isEditProjectOpen);
   const setProjectId = (event) => setSelectedProjectId(event.target.id);
+  const resetProjectId = () => setSelectedProjectId(null);
+
+  //fetch all users
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const users = await API.getUsers();
+        setAllUsers(users);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     async function fetchProject() {
       if (selectedProjectId) {
         try {
           const projectData = await API.getProject(selectedProjectId);
-
           setSelectedProjectData(projectData.data);
 
           const projectTeam = await API.getProjectUsers(selectedProjectId);
-
           setSelectedProjectTeam(projectTeam.map((user) => user.user_id));
         } catch (err) {
           console.log(err);
@@ -72,11 +86,14 @@ const ProjectsTable = () => {
     }
 
     fetchProjects();
-  }, [isNewProjectOpen, isEditProjectOpen, deleteProject]);
+  }, [isNewProjectOpen, selectedProjectId]);
 
   const deleteProject = async (projectId) => {
     try {
       await API.deleteProject(projectId);
+      await API.getProjects().then((json) => {
+        setProjects(json);
+      });
     } catch (err) {
       console.log(err);
     }
@@ -135,7 +152,10 @@ const ProjectsTable = () => {
                       <span>{project.description}</span>
                     </td>
                     <td>
-                      <UsersCell projectId={project.id} />
+                      <UsersCell
+                        projectId={project.id}
+                        selectedProjectId={selectedProjectId}
+                      />
                     </td>
                     <td className="text-right">
                       <UncontrolledDropdown>
@@ -180,8 +200,10 @@ const ProjectsTable = () => {
                   <UpdateProject
                     toggle={toggleEditProject}
                     setProjects={setProjects}
+                    resetProjectId={resetProjectId}
                     projectData={selectedProjectData}
                     projectTeam={selectedProjectTeam}
+                    allUsers={allUsers}
                   />
                 </Container>
               </Modal>
