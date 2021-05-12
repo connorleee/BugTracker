@@ -39,7 +39,16 @@ const API = {
       body: JSON.stringify(projectData),
     }).then((res) => res.json());
   },
-  // Saves a user to the database
+  updateProject: function (projectId, projectData) {
+    return fetch(`http://localhost:3001/api/projects/${projectId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(projectData),
+    });
+  },
   saveUser: function (userData) {
     return axios.post("http://localhost:3001/api/users", userData);
   },
@@ -145,6 +154,15 @@ const API = {
         },
       }
     );
+  },
+  removeAllTeamMembers: function (projectId) {
+    return fetch(`http://localhost:3001/api/userprojects/${projectId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
   },
   getUsers: function () {
     return fetch("http://localhost:3001/api/users").then((res) => res.json());

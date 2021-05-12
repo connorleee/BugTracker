@@ -72,11 +72,14 @@ const ProjectsTable = () => {
     }
 
     fetchProjects();
-  }, []);
+  }, [isNewProjectOpen, isEditProjectOpen, deleteProject]);
 
   const deleteProject = async (projectId) => {
-    console.log(projectId);
-    await API.deleteProject(projectId);
+    try {
+      await API.deleteProject(projectId);
+    } catch (err) {
+      console.log(err);
+    }
 
     console.log("Project deleted");
   };

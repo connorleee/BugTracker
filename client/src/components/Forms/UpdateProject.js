@@ -17,35 +17,7 @@ const UpdateProject = (props) => {
     description: props.projectData.description,
     team: props.projectTeam,
   });
-  //   const [projectUsers, setProjectUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-
-  useEffect(() => {
-    console.log(props.projectData);
-    console.log(props.projectTeam);
-  }, []);
-
-  //   //fetch project users
-  //   useEffect(() => {
-  //     async function fetchProjectUsers() {
-  //       try {
-  //         await API.getProjectUsers(props.projectData.id).then((json) => {
-  //           setProjectUsers(json);
-  //         });
-  //         setValues({
-  //           name: props.projectData.name,
-  //           description: props.projectData.description,
-  //           team: projectUsers.map((user) => user.user_id),
-  //         });
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-
-  //       console.log(values.team);
-  //     }
-
-  //     fetchProjectUsers();
-  //   }, [props.projectData.id]);
 
   //fetch all users
   useEffect(() => {
@@ -87,10 +59,12 @@ const UpdateProject = (props) => {
     event.preventDefault();
 
     try {
-      //   let projectId = await API.createProject(values);
-      //   values.team.forEach(async (userId) => {
-      //     await API.addTeamMember(projectId.id, { userId });
-      //   });
+      await API.updateProject(props.projectData.id, values);
+      await API.removeAllTeamMembers(props.projectData.id);
+
+      values.team.forEach(async (teammateId) => {
+        await API.addTeamMember(props.projectData.id, { userId: teammateId });
+      });
     } catch (err) {
       console.log(err);
     }

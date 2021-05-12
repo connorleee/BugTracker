@@ -13,6 +13,8 @@ router
   .delete(authorization, userProjectController.removeAllUsers);
 
 // Matches route with "/api/userprojects/:projectId/:userId"
-router.route("/:projectId/:userId").delete(userProjectController.removeUser);
+router
+  .route("/:projectId/:userId")
+  .delete(authorization, userProjectController.removeUser);
 
 module.exports = router;
