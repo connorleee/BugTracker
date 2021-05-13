@@ -2,6 +2,7 @@ import React from "react";
 import useForm from "../components/Forms/useForm";
 import validate from "../utils/formValidation/loginValidation";
 import API from "../utils/API";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -129,13 +130,9 @@ const Login = (props) => {
             </a>
           </Col>
           <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
+            <Link to="/auth/register">
               <small>Create new account</small>
-            </a>
+            </Link>
           </Col>
         </Row>
       </Col>
