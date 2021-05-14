@@ -167,6 +167,15 @@ const API = {
   getUsers: function () {
     return fetch("http://localhost:3001/api/users").then((res) => res.json());
   },
+  lookupUserByEmail: function (email) {
+    return fetch(`http://localhost:3001/api/auth/user/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(email),
+    }).then((res) => res.json());
+  },
   deleteProject: function (projectId) {
     return fetch(`http://localhost:3001/api/projects/${projectId}`, {
       method: "DELETE",

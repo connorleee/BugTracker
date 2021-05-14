@@ -7,6 +7,7 @@ const commentRoutes = require("./comment");
 const devAssignmentsRoutes = require("./devAssignments");
 const loginRoutes = require("./login");
 const availableUsersRoutes = require("./availableUsers");
+const authRoutes = require("./auth");
 
 router.use("/projects", projectRoutes);
 router.use("/users", userRoutes);
@@ -16,5 +17,6 @@ router.use("/comments", commentRoutes);
 router.use("/devassignments", devAssignmentsRoutes);
 router.use("/login", loginRoutes);
 router.use("/availableUsers", availableUsersRoutes);
+router.use("/auth", authRoutes);
 
 module.exports = router;

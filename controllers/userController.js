@@ -78,6 +78,24 @@ module.exports = {
       await client.release();
     }
   },
+  lookupUserByEmail: async (req, res) => {
+    const { email } = req.body;
+    console.log(email);
+    const client = await pool.connect();
+
+    try {
+      const {
+        rows,
+      } = await client.query("SELECT id FROM users WHERE email = $1", [email]);
+
+      res.json(rows);
+    } catch (err) {
+      console.log(`Failed to get user ${id}: `, "\n", err);
+      res.status(400).json({ msg: "Please review user request query" });
+    } finally {
+      await client.release();
+    }
+  },
   updateUser: async (req, res) => {
     const { id } = req.params;
     const { firstName, lastName, phone, email, password, userAuth } = req.body;

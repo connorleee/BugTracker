@@ -47,8 +47,7 @@ const Register = () => {
   //   });
   // };
 
-  function submit(e) {
-    e.preventDefault();
+  function submit() {
     console.log(values);
   }
 
@@ -81,6 +80,11 @@ const Register = () => {
                         onChange={handleChange}
                       />
                     </InputGroup>
+                    {errors.firstName && (
+                      <div style={{ fontSize: 12, color: "red" }}>
+                        {errors.firstName}
+                      </div>
+                    )}
                   </FormGroup>
                 </Col>
                 <Col md={6}>
@@ -100,6 +104,11 @@ const Register = () => {
                         onChange={handleChange}
                       />
                     </InputGroup>
+                    {errors.lastName && (
+                      <div style={{ fontSize: 12, color: "red" }}>
+                        {errors.lastName}
+                      </div>
+                    )}
                   </FormGroup>
                 </Col>
               </Row>
@@ -119,6 +128,11 @@ const Register = () => {
                     onChange={handleChange}
                   />
                 </InputGroup>
+                {errors.phone && (
+                  <div style={{ fontSize: 12, color: "red" }}>
+                    {errors.phone}
+                  </div>
+                )}
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative mb-3">
@@ -138,7 +152,7 @@ const Register = () => {
                 </InputGroup>
                 {errors.email && (
                   <div style={{ fontSize: 12, color: "red" }}>
-                    {errors.title}
+                    {errors.email}
                   </div>
                 )}
               </FormGroup>
@@ -158,6 +172,11 @@ const Register = () => {
                     onChange={handleChange}
                   />
                 </InputGroup>
+                {errors.password && (
+                  <div style={{ fontSize: 12, color: "red" }}>
+                    {errors.password}
+                  </div>
+                )}
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative">
@@ -175,6 +194,11 @@ const Register = () => {
                     onChange={handleChange}
                   />
                 </InputGroup>
+                {errors.confirmPassword && (
+                  <div style={{ fontSize: 12, color: "red" }}>
+                    {errors.confirmPassword}
+                  </div>
+                )}
               </FormGroup>
               <div className="text-center">
                 <Button className="mt-4" color="primary" type="submit">

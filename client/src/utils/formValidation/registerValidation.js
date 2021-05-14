@@ -12,18 +12,18 @@ export default async function registerValidation(values) {
     errors.lastName = "Last name is required";
   }
 
-  //Username validation
-  if (values.hasOwnProperty("username")) {
-    if (!values.username) {
-      errors.username = "Username is required";
+  //phone validation
+  if (values.hasOwnProperty("phone")) {
+    if (!values.phone) {
+      errors.phone = "Phone number is required";
     }
-    //TODO: Username can't contain symbols
+    //TODO: phone can't contain symbols
 
-    // await API.getUser(values.username).then((res) => {
+    // await API.getUser(values.phone).then((res) => {
     //   try {
     //     if (res.data.length > 0) {
-    //       console.log("username already exists");
-    //       errors.username = "Username already exists";
+    //       console.log("phone already exists");
+    //       errors.phone = "phone already exists";
     //     }
     //   } catch {
     //     console.log("Error finding user in database");
@@ -39,16 +39,16 @@ export default async function registerValidation(values) {
       errors.email = "Email address is invalid";
     }
 
-    // await API.getUser(values.email).then((res) => {
-    //   try {
-    //     if (res.data.length > 0) {
-    //       console.log("email already exists");
-    //       errors.email = "Email already exists";
-    //     }
-    //   } catch {
-    //     console.log("Error finding email in database");
-    //   }
-    // });
+    try {
+      const res = await API.lookupUserByEmail({ email: values.email });
+
+      if (res.length > 0) {
+        console.log("email already exists");
+        errors.email = "Email already exists";
+      }
+    } catch {
+      console.log("Error finding email in database");
+    }
   }
 
   // Password validation
@@ -59,8 +59,8 @@ export default async function registerValidation(values) {
       errors.password = "Password needs to be 8 or more characters";
     }
 
-    if (values.password !== values.verifyPassword) {
-      errors.verifyPassword = "Passwords entered do not match";
+    if (values.password !== values.confirmPassword) {
+      errors.confirmPassword = "Passwords entered do not match";
     }
   }
 
