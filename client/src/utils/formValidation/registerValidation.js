@@ -27,13 +27,13 @@ export default async function registerValidation(values) {
     }
     //TODO: phone can't contain symbols
 
-    console.log(values.phone);
-    let asYouType = new AsYouType("US");
+    // console.log(values.phone);
+    // let asYouType = new AsYouType("US");
 
-    let USPhone = "1" + values.phone;
-    asYouType.input("+1");
-    console.log(asYouType.input(values.phone));
-    console.log(asYouType.getNumber().number);
+    // let USPhone = "1" + values.phone;
+    // asYouType.input("+1");
+    // console.log(asYouType.input(values.phone));
+    // console.log(asYouType.getNumber().number);
     // console.log(asYouType.getTemplate());
 
     // let formattedPhone = parsePhoneNumberFromString(USPhone);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useForm from "../components/Forms/useForm";
 import registerValidation from "../utils/formValidation/registerValidation";
-import PhoneInput from "react-phone-number-input/input";
+// import PhoneInput from "react-phone-number-input/input";
 
 // reactstrap components
 import {
@@ -23,13 +23,11 @@ const Register = () => {
   const initialValues = {
     firstName: "",
     lastName: "",
-    // phone: "",
+    phone: "",
     email: "",
     password: "",
     confirmPassword: "",
   };
-
-  const [phone, setPhone] = useState();
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
@@ -38,7 +36,7 @@ const Register = () => {
   );
 
   function submit() {
-    console.log({ phone, ...values });
+    console.log(values);
   }
 
   return (
@@ -109,7 +107,7 @@ const Register = () => {
                       <i className="ni ni-mobile-button" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <PhoneInput
+                  {/* <PhoneInput
                     id="phone"
                     placeholder="Phone Number"
                     name="phone"
@@ -119,6 +117,14 @@ const Register = () => {
                     onChange={setPhone}
                     style={{ border: "none", fontSize: "0.875rem" }}
                     className="text-muted"
+                  /> */}
+                  <Input
+                    id="phone"
+                    placeholder="Phone Number"
+                    name="phone"
+                    type="phone"
+                    value={values.phone}
+                    onChange={handleChange}
                   />
                 </InputGroup>
                 {errors.phone && (

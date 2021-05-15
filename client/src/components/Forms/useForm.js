@@ -9,36 +9,45 @@ const useForm = (callback, initialValues, validate) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false); //isolates the submit callback function to only run if there is an error change.
 
+  let asYouType = new AsYouType("US");
+
   const handleChange = (event) => {
-    let value;
-    // console.log(event.target.getAttribute("type"));
+    if (event.target.getAttribute("type") === "phone") {
+      console.log(event.target.value);
 
-    if (event.target.type === "checkbox") {
-      value = event.target.checked;
-    } else if (
-      event.target.type === "select" ||
-      event.target.type === "select-multiple"
-    ) {
-      value = Array.from(
-        event.target.selectedOptions,
-        (option) => option.value
-      );
+      let phone = asYouType.input(event.target.value);
+      console.log(phone);
+
+      setValues({ ...values, phone });
+    } else {
+      let value;
+
+      if (event.target.type === "checkbox") {
+        value = event.target.checked;
+      } else if (
+        event.target.type === "select" ||
+        event.target.type === "select-multiple"
+      ) {
+        value = Array.from(
+          event.target.selectedOptions,
+          (option) => option.value
+        );
+      }
+      // else if (event.target.getAttribute("type") === "phone") {
+      //   console.log(asYouType.input(event.target.value));
+      //   value = asYouType.input(event.target.value);
+      // }
+      else {
+        value = event.target.value;
+      }
+
+      const name = event.target.name;
+
+      setValues({
+        ...values,
+        [name]: value,
+      });
     }
-    // else if (event.target.getAttribute("type") === "phone") {
-    //   let asYouType = new AsYouType("US");
-
-    //   // value = asYouType
-    // }
-    else {
-      value = event.target.value;
-    }
-
-    const name = event.target.name;
-
-    setValues({
-      ...values,
-      [name]: value,
-    });
   };
 
   const handleSubmit = (event) => {
