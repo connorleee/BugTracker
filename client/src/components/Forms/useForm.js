@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { AsYouType } from "libphonenumber-js";
 
 const useForm = (callback, initialValues, validate) => {
   const [values, setValues] = useState(initialValues);
@@ -10,6 +11,7 @@ const useForm = (callback, initialValues, validate) => {
 
   const handleChange = (event) => {
     let value;
+    // console.log(event.target.getAttribute("type"));
 
     if (event.target.type === "checkbox") {
       value = event.target.checked;
@@ -21,7 +23,13 @@ const useForm = (callback, initialValues, validate) => {
         event.target.selectedOptions,
         (option) => option.value
       );
-    } else {
+    }
+    // else if (event.target.getAttribute("type") === "phone") {
+    //   let asYouType = new AsYouType("US");
+
+    //   // value = asYouType
+    // }
+    else {
       value = event.target.value;
     }
 
@@ -35,6 +43,12 @@ const useForm = (callback, initialValues, validate) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // if (values.phone && !values.phone.includes("+1")) {
+    //   console.log(values.phone.includes("+1"));
+    //   values.phone = "+1" + values.phone;
+    // }
+
     validate(values).then((res) => {
       setIsSubmitting(true);
       setErrors(res); //handle validation

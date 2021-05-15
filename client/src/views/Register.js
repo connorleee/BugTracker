@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import useForm from "../components/Forms/useForm";
 import registerValidation from "../utils/formValidation/registerValidation";
+import PhoneInput from "react-phone-number-input/input";
 
 // reactstrap components
 import {
@@ -22,11 +23,13 @@ const Register = () => {
   const initialValues = {
     firstName: "",
     lastName: "",
-    phone: "",
+    // phone: "",
     email: "",
     password: "",
     confirmPassword: "",
   };
+
+  const [phone, setPhone] = useState();
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
@@ -34,21 +37,8 @@ const Register = () => {
     registerValidation
   );
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
-  // const handleChange = (e) => {
-  //   let { name, value } = e.target;
-
-  //   setValues({
-  //     ...values,
-  //     [name]: value,
-  //   });
-  // };
-
   function submit() {
-    console.log(values);
+    console.log({ phone, ...values });
   }
 
   return (
@@ -119,13 +109,16 @@ const Register = () => {
                       <i className="ni ni-mobile-button" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input
+                  <PhoneInput
                     id="phone"
                     placeholder="Phone Number"
                     name="phone"
                     type="phone"
-                    value={values.phone}
-                    onChange={handleChange}
+                    country="US"
+                    value={phone}
+                    onChange={setPhone}
+                    style={{ border: "none", fontSize: "0.875rem" }}
+                    className="text-muted"
                   />
                 </InputGroup>
                 {errors.phone && (

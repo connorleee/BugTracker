@@ -1,4 +1,12 @@
 import API from "../API";
+import {
+  parsePhoneNumber,
+  isPossiblePhoneNumber,
+  isValidPhoneNumber,
+  parsePhoneNumberFromString,
+  AsYouType,
+} from "libphonenumber-js";
+// import parsePhoneNumber from "libphonenumber-js";
 
 export default async function registerValidation(values) {
   let errors = {};
@@ -19,16 +27,19 @@ export default async function registerValidation(values) {
     }
     //TODO: phone can't contain symbols
 
-    // await API.getUser(values.phone).then((res) => {
-    //   try {
-    //     if (res.data.length > 0) {
-    //       console.log("phone already exists");
-    //       errors.phone = "phone already exists";
-    //     }
-    //   } catch {
-    //     console.log("Error finding user in database");
-    //   }
-    // });
+    console.log(values.phone);
+    let asYouType = new AsYouType("US");
+
+    let USPhone = "1" + values.phone;
+    asYouType.input("+1");
+    console.log(asYouType.input(values.phone));
+    console.log(asYouType.getNumber().number);
+    // console.log(asYouType.getTemplate());
+
+    // let formattedPhone = parsePhoneNumberFromString(USPhone);
+    // console.log(formattedPhone.format("NATIONAL"));
+
+    // console.log(isValidPhoneNumber(formattedPhone.format("NATIONAL"), "US"));
   }
 
   //Email validation
@@ -43,11 +54,10 @@ export default async function registerValidation(values) {
       const res = await API.lookupUserByEmail({ email: values.email });
 
       if (res.length > 0) {
-        console.log("email already exists");
         errors.email = "Email already exists";
       }
-    } catch {
-      console.log("Error finding email in database");
+    } catch (err) {
+      console.log(err, "Error finding email in database");
     }
   }
 
