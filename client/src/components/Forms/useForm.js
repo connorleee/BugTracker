@@ -29,12 +29,7 @@ const useForm = (callback, initialValues, validate) => {
           event.target.selectedOptions,
           (option) => option.value
         );
-      }
-      // else if (event.target.getAttribute("type") === "phone") {
-      //   console.log(asYouType.input(event.target.value));
-      //   value = asYouType.input(event.target.value);
-      // }
-      else {
+      } else {
         value = event.target.value;
       }
 
@@ -49,11 +44,6 @@ const useForm = (callback, initialValues, validate) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    // if (values.phone && !values.phone.includes("+1")) {
-    //   console.log(values.phone.includes("+1"));
-    //   values.phone = "+1" + values.phone;
-    // }
 
     validate(values).then((res) => {
       setIsSubmitting(true);

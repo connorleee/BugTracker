@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import useForm from "../components/Forms/useForm";
 import registerValidation from "../utils/formValidation/registerValidation";
 import parsePhoneNumber from "libphonenumber-js";
@@ -18,8 +19,9 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import API from "utils/API";
 
-const Register = () => {
+const Register = (props) => {
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -38,7 +40,12 @@ const Register = () => {
   function submit() {
     let dbPhone = parsePhoneNumber(values.phone, "US").number;
     values.phone = dbPhone;
-    console.log(values);
+
+    console.log(props);
+
+    //user authority defaults to developer
+    API.addUser({ ...values, userAuth: "developer" });
+    props.history.push("/login");
   }
 
   return (

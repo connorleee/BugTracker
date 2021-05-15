@@ -66,9 +66,9 @@ const API = {
     );
   },
   getDevAssignments: function (ticketId) {
-    return fetch(
-      `http://localhost:3001/api/devassignments/${ticketId}`
-    ).then((res) => res.json());
+    return fetch(`http://localhost:3001/api/devassignments/${ticketId}`).then(
+      (res) => res.json()
+    );
   },
   createTicket: function (projectId, payload) {
     return fetch(`http://localhost:3001/api/tickets/${projectId}`, {
@@ -129,9 +129,9 @@ const API = {
     });
   },
   getAvailableUsers: function (projectId) {
-    return fetch(
-      "http://localhost:3001/api/availableUsers/" + projectId
-    ).then((res) => res.json());
+    return fetch("http://localhost:3001/api/availableUsers/" + projectId).then(
+      (res) => res.json()
+    );
   },
   addTeamMember: function (projectId, userId) {
     return fetch("http://localhost:3001/api/userprojects/" + projectId, {
@@ -183,6 +183,15 @@ const API = {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
       },
+    });
+  },
+  addUser: function (userData) {
+    return fetch(`http://localhost:3001/api/users`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
     });
   },
 };
