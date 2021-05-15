@@ -13,10 +13,7 @@ const useForm = (callback, initialValues, validate) => {
 
   const handleChange = (event) => {
     if (event.target.getAttribute("type") === "phone") {
-      console.log(event.target.value);
-
       let phone = asYouType.input(event.target.value);
-      console.log(phone);
 
       setValues({ ...values, phone });
     } else {

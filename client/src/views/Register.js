@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useForm from "../components/Forms/useForm";
 import registerValidation from "../utils/formValidation/registerValidation";
-// import PhoneInput from "react-phone-number-input/input";
+import parsePhoneNumber from "libphonenumber-js";
 
 // reactstrap components
 import {
@@ -36,6 +36,8 @@ const Register = () => {
   );
 
   function submit() {
+    let dbPhone = parsePhoneNumber(values.phone, "US").number;
+    values.phone = dbPhone;
     console.log(values);
   }
 

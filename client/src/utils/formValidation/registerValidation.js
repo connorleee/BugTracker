@@ -24,22 +24,9 @@ export default async function registerValidation(values) {
   if (values.hasOwnProperty("phone")) {
     if (!values.phone) {
       errors.phone = "Phone number is required";
+    } else if (!isValidPhoneNumber(values.phone, "US")) {
+      errors.phone = "Please enter valid phone number";
     }
-    //TODO: phone can't contain symbols
-
-    // console.log(values.phone);
-    // let asYouType = new AsYouType("US");
-
-    // let USPhone = "1" + values.phone;
-    // asYouType.input("+1");
-    // console.log(asYouType.input(values.phone));
-    // console.log(asYouType.getNumber().number);
-    // console.log(asYouType.getTemplate());
-
-    // let formattedPhone = parsePhoneNumberFromString(USPhone);
-    // console.log(formattedPhone.format("NATIONAL"));
-
-    // console.log(isValidPhoneNumber(formattedPhone.format("NATIONAL"), "US"));
   }
 
   //Email validation
@@ -48,16 +35,16 @@ export default async function registerValidation(values) {
       errors.email = "Email address is required";
     } else if (!/\S+@\S+\.\S+/.test(values.email)) {
       errors.email = "Email address is invalid";
-    }
+    } else {
+      try {
+        const res = await API.lookupUserByEmail({ email: values.email });
 
-    try {
-      const res = await API.lookupUserByEmail({ email: values.email });
-
-      if (res.length > 0) {
-        errors.email = "Email already exists";
+        if (res.length > 0) {
+          errors.email = "Email already exists";
+        }
+      } catch (err) {
+        console.log(err, "Error looking up email in database");
       }
-    } catch (err) {
-      console.log(err, "Error finding email in database");
     }
   }
 
