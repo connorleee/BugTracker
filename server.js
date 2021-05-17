@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const routes = require("./routes");
+const path = require("path");
+
 const PORT = process.env.PORT || 3001;
 require("dotenv").config();
 const cors = require("cors");
@@ -23,6 +25,10 @@ app.use((req, res, next) => {
 });
 
 app.use(routes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+}
 
 app.listen(PORT, () => {
   console.log(`API Server now listening on port ${PORT}`);

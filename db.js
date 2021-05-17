@@ -1,6 +1,6 @@
 const Pool = require("pg").Pool;
 
-const pool = new Pool({
+const devConfig = {
   user: process.env.PGUSER,
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
@@ -9,7 +9,15 @@ const pool = new Pool({
   max: 20,
   connectionTimeoutMillis: 0,
   idleTimeoutMillis: 0,
-});
+};
+
+const proConfig = {
+  connectionString: process.env.DATABASE_URL, //heroku addons
+};
+
+const pool = new Pool(
+  process.env.NODE_ENV === "production" ? proConfig : devConfig
+);
 
 // the pool will emit an error on behalf of any idle clients
 // it contains if a backend error or network partition happens

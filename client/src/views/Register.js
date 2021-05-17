@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import React from "react";
 import useForm from "../components/Forms/useForm";
 import registerValidation from "../utils/formValidation/registerValidation";
 import parsePhoneNumber from "libphonenumber-js";
@@ -40,8 +39,6 @@ const Register = (props) => {
   function submit() {
     let dbPhone = parsePhoneNumber(values.phone, "US").number;
     values.phone = dbPhone;
-
-    console.log(props);
 
     //user authority defaults to developer
     API.addUser({ ...values, userAuth: "developer" });

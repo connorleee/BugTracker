@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "test",
-    "start": "concurrently \"npm run server\" \"cd client && npm start\"",
+    "install-client": "npm install",
+    "devStart": "concurrently \"npm run server\" \"cd client && npm start\"",
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "server": "nodemon server.js"
   },
   "author": "Connor Lee",

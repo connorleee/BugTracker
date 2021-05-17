@@ -4,20 +4,12 @@ module.exports = {
   createTicket: async (req, res) => {
     const { projectId } = req.params;
     const authorId = req.user;
-    const {
-      title,
-      description,
-      priority,
-      type,
-      status,
-      timeEstimate,
-    } = req.body;
+    const { title, description, priority, type, status, timeEstimate } =
+      req.body;
     const client = await pool.connect();
 
     try {
-      const {
-        rows,
-      } = await client.query(
+      const { rows } = await client.query(
         "INSERT INTO tickets (title, project_id, description, author_id, priority, type, status, time_estimate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
         [
           title,
@@ -44,9 +36,7 @@ module.exports = {
     const client = await pool.connect();
 
     try {
-      const {
-        rows,
-      } = await client.query(
+      const { rows } = await client.query(
         "SELECT tickets.id, tickets.title, tickets.description, users.id AS user_id , users.first_name, users.last_name FROM tickets JOIN users ON tickets.author_id = users.id WHERE project_id = $1",
         [projectId]
       );
@@ -96,6 +86,9 @@ module.exports = {
     const client = await pool.connect();
 
     try {
+      await client.query("DELETE FROM dev_assignments WHERE ticket_id = $1", [
+        ticketId,
+      ]);
       await client.query("DELETE FROM tickets WHERE id = $1", [ticketId]);
 
       res.status(200).json({ msg: `Ticket ${ticketId} deleted` });
@@ -111,9 +104,7 @@ module.exports = {
     const client = await pool.connect();
 
     try {
-      const {
-        rows,
-      } = await client.query(
+      const { rows } = await client.query(
         "SELECT tickets.id, tickets.title, tickets.description, tickets.priority, tickets.status, tickets.type, tickets.time_estimate, users.first_name, users.last_name FROM tickets JOIN users ON tickets.author_id = users.id WHERE tickets.id = $1",
         [ticketId]
       );

@@ -3,7 +3,7 @@ import axios from "axios";
 const API = {
   // Gets all projects
   getProjects: function () {
-    return fetch("http://localhost:3001/api/projects", {
+    return fetch("/api/projects", {
       headers: {
         token: localStorage.getItem("token"),
       },
@@ -11,26 +11,24 @@ const API = {
   },
   // Gets the project with the given id
   getProject: function (id) {
-    return axios.get("http://localhost:3001/api/projects/" + id, {
+    return axios.get("/api/projects/" + id, {
       headers: {
         token: localStorage.getItem("token"),
       },
     });
   },
   getProjectUsers: function (projectId) {
-    return fetch(`http://localhost:3001/api/userProjects/${projectId}`, {
+    return fetch(`/api/userProjects/${projectId}`, {
       headers: {
         token: localStorage.getItem("token"),
       },
     }).then((res) => res.json());
   },
   getProjectTickets: function (projectId) {
-    return fetch("http://localhost:3001/api/tickets/" + projectId).then((res) =>
-      res.json()
-    );
+    return fetch("/api/tickets/" + projectId).then((res) => res.json());
   },
   createProject: function (projectData) {
-    return fetch("http://localhost:3001/api/projects", {
+    return fetch("/api/projects", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +38,7 @@ const API = {
     }).then((res) => res.json());
   },
   updateProject: function (projectId, projectData) {
-    return fetch(`http://localhost:3001/api/projects/${projectId}`, {
+    return fetch(`/api/projects/${projectId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -50,28 +48,24 @@ const API = {
     });
   },
   saveUser: function (userData) {
-    return axios.post("http://localhost:3001/api/users", userData);
+    return axios.post("/api/users", userData);
   },
   addContact: function (id, data) {
-    return axios.put("http://localhost:3001/api/users/" + id, data);
+    return axios.put("/api/users/" + id, data);
   },
   getTicket: function (projectId, ticketId) {
-    return fetch(
-      `http://localhost:3001/api/tickets/${projectId}/${ticketId}`
-    ).then((res) => res.json());
-  },
-  getTicketComments: function (ticketId) {
-    return fetch(`http://localhost:3001/api/comments/${ticketId}`).then((res) =>
+    return fetch(`/api/tickets/${projectId}/${ticketId}`).then((res) =>
       res.json()
     );
   },
+  getTicketComments: function (ticketId) {
+    return fetch(`/api/comments/${ticketId}`).then((res) => res.json());
+  },
   getDevAssignments: function (ticketId) {
-    return fetch(`http://localhost:3001/api/devassignments/${ticketId}`).then(
-      (res) => res.json()
-    );
+    return fetch(`/api/devassignments/${ticketId}`).then((res) => res.json());
   },
   createTicket: function (projectId, payload) {
-    return fetch(`http://localhost:3001/api/tickets/${projectId}`, {
+    return fetch(`/api/tickets/${projectId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +75,7 @@ const API = {
     }).then((res) => res.json());
   },
   updateTicket: function (projectId, ticketId, payload) {
-    return fetch(`http://localhost:3001/api/tickets/${projectId}/${ticketId}`, {
+    return fetch(`/api/tickets/${projectId}/${ticketId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +85,7 @@ const API = {
     }).then((res) => res.json());
   },
   deleteTicket: function (projectId, ticketId) {
-    return fetch(`http://localhost:3001/api/tickets/${projectId}/${ticketId}`, {
+    return fetch(`/api/tickets/${projectId}/${ticketId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +94,7 @@ const API = {
     });
   },
   createDevAssignment: function (ticketId, devId) {
-    return fetch(`http://localhost:3001/api/devassignments/${ticketId}`, {
+    return fetch(`/api/devassignments/${ticketId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -110,7 +104,7 @@ const API = {
     }).then((res) => res.json());
   },
   removeAllDevAssignments: function (ticketId) {
-    return fetch(`http://localhost:3001/api/devassignments/${ticketId}`, {
+    return fetch(`/api/devassignments/${ticketId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -119,7 +113,7 @@ const API = {
     });
   },
   login: function (userInfo) {
-    return fetch("http://localhost:3001/api/login", {
+    return fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,12 +123,10 @@ const API = {
     });
   },
   getAvailableUsers: function (projectId) {
-    return fetch("http://localhost:3001/api/availableUsers/" + projectId).then(
-      (res) => res.json()
-    );
+    return fetch("/api/availableUsers/" + projectId).then((res) => res.json());
   },
   addTeamMember: function (projectId, userId) {
-    return fetch("http://localhost:3001/api/userprojects/" + projectId, {
+    return fetch("/api/userprojects/" + projectId, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -144,19 +136,16 @@ const API = {
     });
   },
   removeTeamMember: function (projectId, userId) {
-    return fetch(
-      `http://localhost:3001/api/userprojects/${projectId}/${userId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          token: localStorage.getItem("token"),
-        },
-      }
-    );
+    return fetch(`/api/userprojects/${projectId}/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
   },
   removeAllTeamMembers: function (projectId) {
-    return fetch(`http://localhost:3001/api/userprojects/${projectId}`, {
+    return fetch(`/api/userprojects/${projectId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -165,10 +154,10 @@ const API = {
     });
   },
   getUsers: function () {
-    return fetch("http://localhost:3001/api/users").then((res) => res.json());
+    return fetch("/api/users").then((res) => res.json());
   },
   lookupUserByEmail: function (email) {
-    return fetch(`http://localhost:3001/api/auth/user/`, {
+    return fetch(`/api/auth/user/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -177,7 +166,7 @@ const API = {
     }).then((res) => res.json());
   },
   deleteProject: function (projectId) {
-    return fetch(`http://localhost:3001/api/projects/${projectId}`, {
+    return fetch(`/api/projects/${projectId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -186,7 +175,7 @@ const API = {
     });
   },
   addUser: function (userData) {
-    return fetch(`http://localhost:3001/api/users`, {
+    return fetch(`/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

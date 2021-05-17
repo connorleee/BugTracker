@@ -1,11 +1,5 @@
 import API from "../API";
-import {
-  parsePhoneNumber,
-  isPossiblePhoneNumber,
-  isValidPhoneNumber,
-  parsePhoneNumberFromString,
-  AsYouType,
-} from "libphonenumber-js";
+import { isValidPhoneNumber } from "libphonenumber-js";
 // import parsePhoneNumber from "libphonenumber-js";
 
 export default async function registerValidation(values) {
