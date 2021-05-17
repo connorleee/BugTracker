@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "12.22.1",
+    "npm": "6.14.12"
+  },
   "scripts": {
     "test": "test",
     "install-client": "npm install",
