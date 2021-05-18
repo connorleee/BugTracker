@@ -5,7 +5,10 @@ const authorization = require("../../middleware/authorization");
 // Matches route with "/api/projects/"
 router
   .route("/")
-  .get(authorization, projectController.getAll)
+  .get(
+    // authorization,
+    projectController.getAll
+  )
   .post(authorization, projectController.createProject);
 
 router
