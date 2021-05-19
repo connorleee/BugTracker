@@ -22,9 +22,9 @@ module.exports = {
   addUser: async (req, res) => {
     const { firstName, lastName, phone, email, password, userAuth } = req.body;
 
-    try {
-      const client = await pool.connect();
+    const client = await pool.connect();
 
+    try {
       //Look if user already exists
       const user = await client.query("SELECT id FROM users WHERE email = $1", [
         email,
@@ -81,9 +81,9 @@ module.exports = {
     const { email } = req.body;
     console.log(`Looking for existing email: ${email}`);
 
-    try {
-      const client = await pool.connect();
+    const client = await pool.connect();
 
+    try {
       console.log("connected to postgres Pool");
 
       const { rows } = await client.query(
