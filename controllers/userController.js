@@ -79,18 +79,23 @@ module.exports = {
   },
   lookupUserByEmail: async (req, res) => {
     const { email } = req.body;
-    console.log(email);
-    const client = await pool.connect();
+    console.log(`Looking for existing email: ${email}`);
 
     try {
+      const client = await pool.connect();
+
+      console.log("connected to postgres Pool");
+
       const { rows } = await client.query(
         "SELECT id FROM users WHERE email = $1",
         [email]
       );
 
+      console.log(`query result: ${rows}`);
+
       res.json(rows);
     } catch (err) {
-      console.log(`Failed to get user ${id}: `, "\n", err);
+      console.log(`Failed to get user: `, "\n", err);
       res.status(400).json({ msg: "Please review user request query" });
     } finally {
       await client.release();
