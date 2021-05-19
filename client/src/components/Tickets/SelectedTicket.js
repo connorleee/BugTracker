@@ -65,9 +65,10 @@ export default function SelectedTicket({
                     </Col>
                   </Row>
                   <Row>
-                    <Col xl="4">{selectedTicket.status}</Col>
-                    <Col xl="4">{selectedTicket.priority}</Col>
-                    <Col xl="4">{selectedTicket.type}</Col>
+                    <Col xl="3">{selectedTicket.time_estimate}</Col>
+                    <Col xl="3">{selectedTicket.status}</Col>
+                    <Col xl="3">{selectedTicket.priority}</Col>
+                    <Col xl="3">{selectedTicket.type}</Col>
                   </Row>
                 </Card>
               </Col>
