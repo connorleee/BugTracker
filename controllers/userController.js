@@ -21,9 +21,10 @@ module.exports = {
   },
   addUser: async (req, res) => {
     const { firstName, lastName, phone, email, password, userAuth } = req.body;
-    const client = await pool.connect();
 
     try {
+      const client = await pool.connect();
+
       //Look if user already exists
       const user = await client.query("SELECT id FROM users WHERE email = $1", [
         email,
@@ -63,9 +64,7 @@ module.exports = {
     const client = await pool.connect();
 
     try {
-      const {
-        rows,
-      } = await client.query(
+      const { rows } = await client.query(
         "SELECT id, first_name, last_name, phone, email, user_authority, password_hash FROM users WHERE id = $1",
         [id]
       );
@@ -84,9 +83,10 @@ module.exports = {
     const client = await pool.connect();
 
     try {
-      const {
-        rows,
-      } = await client.query("SELECT id FROM users WHERE email = $1", [email]);
+      const { rows } = await client.query(
+        "SELECT id FROM users WHERE email = $1",
+        [email]
+      );
 
       res.json(rows);
     } catch (err) {
