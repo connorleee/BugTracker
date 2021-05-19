@@ -48,7 +48,10 @@ const API = {
     });
   },
   saveUser: function (userData) {
-    return axios.post("bug-tracker-cl.herokuapp.com/api/users", userData);
+    return axios.post(
+      "https://bug-tracker-cl.herokuapp.com/api/users",
+      userData
+    );
   },
   addContact: function (id, data) {
     return axios.put("/api/users/" + id, data);
@@ -157,7 +160,7 @@ const API = {
     return fetch("/api/users").then((res) => res.json());
   },
   lookupUserByEmail: function (email) {
-    return fetch(`bug-tracker-cl.herokuapp.com/api/auth/user/`, {
+    return fetch(`https://bug-tracker-cl.herokuapp.com/api/auth/user/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
