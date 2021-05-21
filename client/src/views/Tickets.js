@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../utils/API";
+import moment from "moment";
 
 // reactstrap components
 import {
@@ -25,9 +26,21 @@ import {
 import Header from "components/Headers/Header.js";
 
 const Tickets = () => {
+  // const d = new Date();
+
   const [userTickets, setUserTickets] = useState([{}]);
+  const [currentTime, setCurrentTime] = useState(Date.now());
+
+  console.log(moment("2021-03-25T23:27:35.741Z").format("DD"));
+
+  const timeOutstanding = (timestamp) => {
+    const currentDay = moment(currentTime);
+
+    return moment(timestamp).from(currentDay);
+  };
 
   useEffect(() => {
+    console.log(currentTime);
     //TODO: fetch user tickets. create backend and front end route
     async function fetchUserTickets() {
       try {
@@ -61,14 +74,15 @@ const Tickets = () => {
                     <th scope="col">Project</th>
                     <th scope="col">Ticket</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Days Outstanding</th>
                     <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
-                  {userTickets.map((ticket) => {
+                  {userTickets.map((ticket, key) => {
                     return (
-                      <tr>
-                        <th scope="row" id={ticket.id}>
+                      <tr key={key} id={ticket.id}>
+                        <th scope="row">
                           <Media>
                             <span className="mb-0 text-sm">
                               {ticket.project_name}
@@ -76,12 +90,8 @@ const Tickets = () => {
                           </Media>
                         </th>
                         <td>{ticket.title}</td>
-                        <td>
-                          <Badge color="" className="badge-dot mr-4">
-                            <i className="bg-success" />
-                            completed
-                          </Badge>
-                        </td>
+                        <td>{ticket.status}</td>
+                        <td>{timeOutstanding(ticket.created_at)}</td>
                         <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle
