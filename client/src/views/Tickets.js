@@ -26,21 +26,13 @@ import {
 import Header from "components/Headers/Header.js";
 
 const Tickets = () => {
-  // const d = new Date();
-
   const [userTickets, setUserTickets] = useState([{}]);
-  const [currentTime, setCurrentTime] = useState(Date.now());
-
-  console.log(moment("2021-03-25T23:27:35.741Z").format("DD"));
 
   const timeOutstanding = (timestamp) => {
-    const currentDay = moment(currentTime);
-
-    return moment(timestamp).from(currentDay);
+    return moment(timestamp).from(moment());
   };
 
   useEffect(() => {
-    console.log(currentTime);
     //TODO: fetch user tickets. create backend and front end route
     async function fetchUserTickets() {
       try {
@@ -75,7 +67,8 @@ const Tickets = () => {
                     <th scope="col">Ticket</th>
                     <th scope="col">Status</th>
                     <th scope="col">Days Outstanding</th>
-                    <th scope="col" />
+                    <th scope="col">Priority</th>
+                    {/* <th scope="col" /> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -92,7 +85,8 @@ const Tickets = () => {
                         <td>{ticket.title}</td>
                         <td>{ticket.status}</td>
                         <td>{timeOutstanding(ticket.created_at)}</td>
-                        <td className="text-right">
+                        <td>{ticket.priority}</td>
+                        {/* <td className="text-right">
                           <UncontrolledDropdown>
                             <DropdownToggle
                               className="btn-icon-only text-light"
@@ -125,7 +119,7 @@ const Tickets = () => {
                               </DropdownItem>
                             </DropdownMenu>
                           </UncontrolledDropdown>
-                        </td>
+                        </td> */}
                       </tr>
                     );
                   })}
