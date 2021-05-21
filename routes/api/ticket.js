@@ -3,6 +3,8 @@ const ticketController = require("../../controllers/ticketController");
 const authorization = require("../../middleware/authorization");
 
 // Matches route with "/api/tickets/"
+router.route("/").get(authorization, ticketController.getUserTickets);
+
 router
   .route("/:projectId")
   .post(authorization, ticketController.createTicket)

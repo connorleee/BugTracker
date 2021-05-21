@@ -183,6 +183,15 @@ const API = {
       body: JSON.stringify(userData),
     });
   },
+  getUserTickets: function () {
+    return fetch("/api/tickets", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
+  },
 };
 
 export default API;
