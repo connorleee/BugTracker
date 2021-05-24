@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import parsePhoneNumber from "libphonenumber-js";
 
 // reactstrap components
 import {
@@ -19,8 +20,12 @@ import {
   Container,
   Modal,
   ModalHeader,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
 } from "reactstrap";
 
+import PaginationComponent from "../components/Tables/PaginationComponent";
 import Header from "../components/Headers/Header";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
 import CreateTicket from "../components/Forms/CreateTicket";
@@ -42,6 +47,9 @@ const Project = () => {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [assignedDevs, setAssignedDevs] = useState(null);
   const [comments, setComments] = useState(null);
+  const [totalTickets, setTotalTickets] = useState(0);
+  const [currentTicketPage, setCurrentTicketPage] = useState();
+  const ticketsPerPage = 10;
 
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
@@ -113,11 +121,23 @@ const Project = () => {
     setProjectTeam(projectTeamRes);
   };
 
+  const ticketsData = useMemo(() => {
+    let computedTickets = projectTickets;
+
+    if (computedTickets) setTotalTickets(computedTickets.length);
+
+    //current page slice
+    return computedTickets.slice(
+      (currentTicketPage - 1) * ticketsPerPage,
+      (currentTicketPage - 1) * ticketsPerPage + ticketsPerPage
+    );
+  }, [projectTickets, currentTicketPage]);
+
   if (projectData && projectTeam && projectTickets) {
     return (
       <>
         <Header />
-        <Container className="mt--7" fluid>
+        <Container className="mt--7 vh-70" fluid>
           <Row className="mt-5" id={projectData.id}>
             <Col>
               <h1 className="text-white d-none d-lg-inline-block">
@@ -130,8 +150,8 @@ const Project = () => {
               </h2>
             </Col>
           </Row>
-          <Row>
-            <Col xl="4">
+          <Row className="">
+            <Col xl="4" className="">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -177,7 +197,12 @@ const Project = () => {
                             </Media>
                           </th>
                           <td>{user.email}</td>
-                          <td>{user.phone}</td>
+                          <td>
+                            {parsePhoneNumber(
+                              user.phone,
+                              "US"
+                            ).formatNational()}
+                          </td>
                           <td className="text-right">
                             <UncontrolledDropdown>
                               <DropdownToggle
@@ -216,6 +241,13 @@ const Project = () => {
                 <CardHeader>
                   <Row className="align-items-center">
                     <h3 className="mb-0">Tickets</h3>
+                    <PaginationComponent
+                      total={totalTickets}
+                      itemsPerPage={ticketsPerPage}
+                      currentPage={currentTicketPage}
+                      onPageChange={(page) => setCurrentTicketPage(page)}
+                    />
+
                     <div className="col text-right">
                       <Button
                         color="primary"
@@ -252,7 +284,7 @@ const Project = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {projectTickets.map((ticket) => {
+                    {ticketsData.map((ticket) => {
                       return (
                         <tr key={ticket.id} id={ticket.id}>
                           <th
