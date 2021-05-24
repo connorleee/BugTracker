@@ -20,9 +20,6 @@ import {
   Container,
   Modal,
   ModalHeader,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
 } from "reactstrap";
 
 import PaginationComponent from "../components/Tables/PaginationComponent";
@@ -47,9 +44,14 @@ const Project = () => {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [assignedDevs, setAssignedDevs] = useState(null);
   const [comments, setComments] = useState(null);
+
+  //pagination
   const [totalTickets, setTotalTickets] = useState(0);
   const [currentTicketPage, setCurrentTicketPage] = useState();
-  const ticketsPerPage = 10;
+  const ticketsPerPage = 6;
+  const [totalTeamMembers, setTotalTeamMembers] = useState(0);
+  const [currentTeamMembersPage, setCurrentTeamMembersPage] = useState();
+  const teamMembersPerPage = 6;
 
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
@@ -121,17 +123,35 @@ const Project = () => {
     setProjectTeam(projectTeamRes);
   };
 
+  //pagination for tickets table
   const ticketsData = useMemo(() => {
     let computedTickets = projectTickets;
 
-    if (computedTickets) setTotalTickets(computedTickets.length);
+    if (computedTickets) {
+      setTotalTickets(computedTickets.length);
 
-    //current page slice
-    return computedTickets.slice(
-      (currentTicketPage - 1) * ticketsPerPage,
-      (currentTicketPage - 1) * ticketsPerPage + ticketsPerPage
-    );
+      //current page slice
+      return computedTickets.slice(
+        (currentTicketPage - 1) * ticketsPerPage,
+        (currentTicketPage - 1) * ticketsPerPage + ticketsPerPage
+      );
+    }
   }, [projectTickets, currentTicketPage]);
+
+  //pagination for team table
+  const teamMembersData = useMemo(() => {
+    let computedTeamMembers = projectTeam;
+
+    if (computedTeamMembers) {
+      setTotalTeamMembers(computedTeamMembers.length);
+
+      //current page slice
+      return computedTeamMembers.slice(
+        (currentTeamMembersPage - 1) * teamMembersPerPage,
+        (currentTeamMembersPage - 1) * teamMembersPerPage + teamMembersPerPage
+      );
+    }
+  }, [projectTeam, currentTeamMembersPage]);
 
   if (projectData && projectTeam && projectTickets) {
     return (
@@ -155,26 +175,41 @@ const Project = () => {
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
-                    <h3 className="mb-0">Team</h3>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        onClick={toggleNewMember}
-                        size="sm"
-                      >
-                        New Member
-                      </Button>
+                    <Col>
+                      <h3 className="mb-0">Team</h3>
+                    </Col>
+                    <Col>
+                      <PaginationComponent
+                        total={totalTeamMembers}
+                        itemsPerPage={teamMembersPerPage}
+                        currentPage={currentTeamMembersPage}
+                        onPageChange={(page) => setCurrentTeamMembersPage(page)}
+                      />
+                    </Col>
+                    <Col>
+                      <div className="col text-right">
+                        <Button
+                          color="primary"
+                          onClick={toggleNewMember}
+                          size="sm"
+                        >
+                          New Member
+                        </Button>
 
-                      <Modal isOpen={isNewMemberOpen} onClose={toggleNewMember}>
-                        <ModalHeader toggle={toggleNewMember}>
-                          Add Member
-                        </ModalHeader>
-                        <AddTeamMember
-                          projectId={projectId}
-                          toggle={toggleNewMember}
-                        />
-                      </Modal>
-                    </div>
+                        <Modal
+                          isOpen={isNewMemberOpen}
+                          onClose={toggleNewMember}
+                        >
+                          <ModalHeader toggle={toggleNewMember}>
+                            Add Member
+                          </ModalHeader>
+                          <AddTeamMember
+                            projectId={projectId}
+                            toggle={toggleNewMember}
+                          />
+                        </Modal>
+                      </div>
+                    </Col>
                   </Row>
                 </CardHeader>
 
@@ -240,38 +275,43 @@ const Project = () => {
               <Card className="shadow">
                 <CardHeader>
                   <Row className="align-items-center">
-                    <h3 className="mb-0">Tickets</h3>
-                    <PaginationComponent
-                      total={totalTickets}
-                      itemsPerPage={ticketsPerPage}
-                      currentPage={currentTicketPage}
-                      onPageChange={(page) => setCurrentTicketPage(page)}
-                    />
+                    <Col>
+                      <h3 className="mb-0">Tickets</h3>
+                    </Col>
+                    <Col>
+                      <PaginationComponent
+                        total={totalTickets}
+                        itemsPerPage={ticketsPerPage}
+                        currentPage={currentTicketPage}
+                        onPageChange={(page) => setCurrentTicketPage(page)}
+                      />
+                    </Col>
+                    <Col>
+                      <div className="col text-right">
+                        <Button
+                          color="primary"
+                          onClick={toggleCreateTicket}
+                          size="sm"
+                        >
+                          New Ticket
+                        </Button>
 
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        onClick={toggleCreateTicket}
-                        size="sm"
-                      >
-                        New Ticket
-                      </Button>
-
-                      <Modal
-                        isOpen={isNewTicketOpen}
-                        toggle={toggleCreateTicket}
-                      >
-                        <Container className="m-4 align-self-center" fluid>
-                          <ModalHeader toggle={toggleCreateTicket}>
-                            Create Ticket
-                          </ModalHeader>
-                          <CreateTicket
-                            team={projectTeam}
-                            toggle={toggleCreateTicket}
-                          />
-                        </Container>
-                      </Modal>
-                    </div>
+                        <Modal
+                          isOpen={isNewTicketOpen}
+                          toggle={toggleCreateTicket}
+                        >
+                          <Container className="m-4 align-self-center" fluid>
+                            <ModalHeader toggle={toggleCreateTicket}>
+                              Create Ticket
+                            </ModalHeader>
+                            <CreateTicket
+                              team={projectTeam}
+                              toggle={toggleCreateTicket}
+                            />
+                          </Container>
+                        </Modal>
+                      </div>
+                    </Col>
                   </Row>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
