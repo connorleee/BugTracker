@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import parsePhoneNumber from "libphonenumber-js";
+import "./Project.css";
 
 // reactstrap components
 import {
@@ -20,6 +21,7 @@ import {
   Container,
   Modal,
   ModalHeader,
+  CardFooter,
 } from "reactstrap";
 
 import PaginationComponent from "../components/Tables/PaginationComponent";
@@ -35,8 +37,8 @@ const Project = () => {
   const projectId = useParams().id;
 
   const [projectData, setProjectData] = useState(null);
-  const [projectTeam, setProjectTeam] = useState(null);
-  const [projectTickets, setProjectTickets] = useState(null);
+  const [projectTeam, setProjectTeam] = useState([]);
+  const [projectTickets, setProjectTickets] = useState([]);
   const [isNewMemberOpen, setIsNewMemberOpen] = useState(false);
   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
   const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
@@ -47,10 +49,10 @@ const Project = () => {
 
   //pagination
   const [totalTickets, setTotalTickets] = useState(0);
-  const [currentTicketPage, setCurrentTicketPage] = useState();
+  const [currentTicketPage, setCurrentTicketPage] = useState(1);
   const ticketsPerPage = 6;
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
-  const [currentTeamMembersPage, setCurrentTeamMembersPage] = useState();
+  const [currentTeamMembersPage, setCurrentTeamMembersPage] = useState(1);
   const teamMembersPerPage = 6;
 
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
@@ -127,30 +129,26 @@ const Project = () => {
   const ticketsData = useMemo(() => {
     let computedTickets = projectTickets;
 
-    if (computedTickets) {
-      setTotalTickets(computedTickets.length);
+    setTotalTickets(computedTickets.length);
 
-      //current page slice
-      return computedTickets.slice(
-        (currentTicketPage - 1) * ticketsPerPage,
-        (currentTicketPage - 1) * ticketsPerPage + ticketsPerPage
-      );
-    }
+    //current page slice
+    return computedTickets.slice(
+      (currentTicketPage - 1) * ticketsPerPage,
+      (currentTicketPage - 1) * ticketsPerPage + ticketsPerPage
+    );
   }, [projectTickets, currentTicketPage]);
 
   //pagination for team table
   const teamMembersData = useMemo(() => {
     let computedTeamMembers = projectTeam;
 
-    if (computedTeamMembers) {
-      setTotalTeamMembers(computedTeamMembers.length);
+    setTotalTeamMembers(computedTeamMembers.length);
 
-      //current page slice
-      return computedTeamMembers.slice(
-        (currentTeamMembersPage - 1) * teamMembersPerPage,
-        (currentTeamMembersPage - 1) * teamMembersPerPage + teamMembersPerPage
-      );
-    }
+    //current page slice
+    return computedTeamMembers.slice(
+      (currentTeamMembersPage - 1) * teamMembersPerPage,
+      (currentTeamMembersPage - 1) * teamMembersPerPage + teamMembersPerPage
+    );
   }, [projectTeam, currentTeamMembersPage]);
 
   if (projectData && projectTeam && projectTickets) {
@@ -178,14 +176,7 @@ const Project = () => {
                     <Col>
                       <h3 className="mb-0">Team</h3>
                     </Col>
-                    <Col>
-                      <PaginationComponent
-                        total={totalTeamMembers}
-                        itemsPerPage={teamMembersPerPage}
-                        currentPage={currentTeamMembersPage}
-                        onPageChange={(page) => setCurrentTeamMembersPage(page)}
-                      />
-                    </Col>
+
                     <Col>
                       <div className="col text-right">
                         <Button
@@ -223,9 +214,9 @@ const Project = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {projectTeam.map((user) => {
+                    {teamMembersData.map((user) => {
                       return (
-                        <tr key={user.user_id}>
+                        <tr key={user.user_id} className="teamRow">
                           <th>
                             <Media>
                               {user.first_name} {user.last_name}
@@ -269,6 +260,14 @@ const Project = () => {
                     })}
                   </tbody>
                 </Table>
+                <CardFooter>
+                  <PaginationComponent
+                    total={totalTeamMembers}
+                    itemsPerPage={teamMembersPerPage}
+                    currentPage={currentTeamMembersPage}
+                    onPageChange={(page) => setCurrentTeamMembersPage(page)}
+                  />
+                </CardFooter>
               </Card>
             </Col>
             <Col xl="8">
@@ -277,14 +276,6 @@ const Project = () => {
                   <Row className="align-items-center">
                     <Col>
                       <h3 className="mb-0">Tickets</h3>
-                    </Col>
-                    <Col>
-                      <PaginationComponent
-                        total={totalTickets}
-                        itemsPerPage={ticketsPerPage}
-                        currentPage={currentTicketPage}
-                        onPageChange={(page) => setCurrentTicketPage(page)}
-                      />
                     </Col>
                     <Col>
                       <div className="col text-right">
@@ -326,7 +317,11 @@ const Project = () => {
                   <tbody>
                     {ticketsData.map((ticket) => {
                       return (
-                        <tr key={ticket.id} id={ticket.id}>
+                        <tr
+                          key={ticket.id}
+                          id={ticket.id}
+                          className="ticketRow"
+                        >
                           <th
                             onClick={() => {
                               setSelectedTicketId(ticket.id);
@@ -387,6 +382,14 @@ const Project = () => {
                     </Modal>
                   </tbody>
                 </Table>
+                <CardFooter>
+                  <PaginationComponent
+                    total={totalTickets}
+                    itemsPerPage={ticketsPerPage}
+                    currentPage={currentTicketPage}
+                    onPageChange={(page) => setCurrentTicketPage(page)}
+                  />
+                </CardFooter>
               </Card>
             </Col>
           </Row>

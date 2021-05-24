@@ -38,7 +38,6 @@ const Tickets = () => {
       try {
         const userTicketsRes = await (await API.getUserTickets()).json();
 
-        console.log(userTicketsRes);
         setUserTickets(userTicketsRes);
       } catch (err) {
         console.log("Error fetching user tickets", err);
