@@ -113,17 +113,6 @@ const Register = (props) => {
                       <i className="ni ni-mobile-button" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  {/* <PhoneInput
-                    id="phone"
-                    placeholder="Phone Number"
-                    name="phone"
-                    type="phone"
-                    country="US"
-                    value={phone}
-                    onChange={setPhone}
-                    style={{ border: "none", fontSize: "0.875rem" }}
-                    className="text-muted"
-                  /> */}
                   <Input
                     id="phone"
                     placeholder="Phone Number"

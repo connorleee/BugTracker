@@ -2,25 +2,19 @@ import React, { useEffect, useState, useMemo } from "react";
 import API from "../utils/API";
 import moment from "moment";
 import PaginationComponent from "../components/Tables/PaginationComponent";
+import "./Tables.css";
 
 // reactstrap components
 import {
-  // Badge,
   Card,
   CardHeader,
   CardFooter,
-  // DropdownMenu,
-  // DropdownItem,
-  // UncontrolledDropdown,
-  // DropdownToggle,
   Media,
-  // Progress,
   Table,
   Container,
   Row,
-  // UncontrolledTooltip,
 } from "reactstrap";
-// core components
+
 import Header from "components/Headers/Header.js";
 
 const Tickets = () => {
@@ -92,7 +86,7 @@ const Tickets = () => {
                 <tbody>
                   {ticketsData.map((ticket, key) => {
                     return (
-                      <tr key={key} id={ticket.id}>
+                      <tr key={key} id={ticket.id} className="ticketRow">
                         <th scope="row">
                           <Media>
                             <span className="mb-0 text-sm">
@@ -104,40 +98,6 @@ const Tickets = () => {
                         <td>{ticket.status}</td>
                         <td>{timeOutstanding(ticket.created_at)}</td>
                         <td>{ticket.priority}</td>
-                        {/* <td className="text-right">
-                          <UncontrolledDropdown>
-                            <DropdownToggle
-                              className="btn-icon-only text-light"
-                              href="#pablo"
-                              role="button"
-                              size="sm"
-                              color=""
-                              onClick={(e) => e.preventDefault()}
-                            >
-                              <i className="fas fa-ellipsis-v" />
-                            </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-arrow" right>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
-                                Action
-                              </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
-                                Another action
-                              </DropdownItem>
-                              <DropdownItem
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                              >
-                                Something else here
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
-                        </td> */}
                       </tr>
                     );
                   })}

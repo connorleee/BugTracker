@@ -38,12 +38,18 @@ const CreateProject = (props) => {
   };
 
   useEffect(() => {
+    let isRendered = true;
+
     async function fetchUsers() {
       const users = await API.getUsers();
-      setAvailableTeamMembers(users);
+      if (isRendered === true) setAvailableTeamMembers(users);
     }
 
     fetchUsers();
+
+    return () => {
+      isRendered = false;
+    };
   }, []);
 
   async function submit(event) {

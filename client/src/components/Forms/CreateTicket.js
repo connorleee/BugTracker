@@ -36,6 +36,8 @@ const CreateTicket = (props) => {
   async function submit() {
     const { assignees } = values;
 
+    console.log("submitting");
+
     const { id } = await API.createTicket(projectId, values);
 
     for (let i = 0; i < assignees.length; i++) {

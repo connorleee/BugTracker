@@ -30,6 +30,8 @@ const UpdateTicket = (props) => {
   }, []);
 
   useEffect(() => {
+    let isRendered = true;
+
     async function fillAssignees() {
       if (props.ticketData) {
         try {
@@ -37,9 +39,11 @@ const UpdateTicket = (props) => {
             props.ticketData.id
           );
 
-          devAssignments.forEach((dev) => {
-            initialTicketValues.assignees.push(dev.user_id);
-          });
+          if (isRendered === true) {
+            devAssignments.forEach((dev) => {
+              initialTicketValues.assignees.push(dev.user_id);
+            });
+          }
         } catch (err) {
           console.error(err.message);
         }
@@ -51,7 +55,12 @@ const UpdateTicket = (props) => {
         initialTicketValues.timeEstimate = props.ticketData.time_estimate;
       }
     }
+
     fillAssignees();
+
+    return () => {
+      isRendered = false;
+    };
   }, [initialTicketValues, props.ticketData]);
 
   const { handleChange, handleSubmit, values, errors } = useForm(

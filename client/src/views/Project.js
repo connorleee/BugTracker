@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import parsePhoneNumber from "libphonenumber-js";
-import "./Project.css";
+import "./Tables.css";
 
 // reactstrap components
 import {
-  //   Badge,
   Card,
   CardHeader,
   DropdownMenu,
@@ -13,7 +12,6 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   Media,
-  //   Progress,
   Table,
   Button,
   Row,
@@ -27,9 +25,10 @@ import {
 import PaginationComponent from "../components/Tables/PaginationComponent";
 import Header from "../components/Headers/Header";
 import SelectedTicket from "../components/Tickets/SelectedTicket";
-import CreateTicket from "../components/Forms/CreateTicket";
-import UpdateTicket from "../components/Forms/UpdateTicket";
+// import CreateTicket from "../components/Forms/CreateTicket";
+// import UpdateTicket from "../components/Forms/UpdateTicket";
 import AddTeamMember from "../components/Forms/AddTeamMember";
+import ProjectTicketsTable from "../components/Tables/ProjectTicketsTable";
 
 import API from "../utils/API";
 
@@ -40,24 +39,24 @@ const Project = () => {
   const [projectTeam, setProjectTeam] = useState([]);
   const [projectTickets, setProjectTickets] = useState([]);
   const [isNewMemberOpen, setIsNewMemberOpen] = useState(false);
-  const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
-  const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
+  // const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
+  // const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [assignedDevs, setAssignedDevs] = useState(null);
   const [comments, setComments] = useState(null);
 
   //pagination
-  const [totalTickets, setTotalTickets] = useState(0);
-  const [currentTicketPage, setCurrentTicketPage] = useState(1);
-  const ticketsPerPage = 6;
+  // const [totalTickets, setTotalTickets] = useState(0);
+  // const [currentTicketPage, setCurrentTicketPage] = useState(1);
+  // const ticketsPerPage = 6;
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
   const [currentTeamMembersPage, setCurrentTeamMembersPage] = useState(1);
   const teamMembersPerPage = 6;
 
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
-  const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
-  const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
+  // const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
+  // const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
   // update project team
   useEffect(() => {
@@ -99,7 +98,7 @@ const Project = () => {
     return () => {
       isRendered = false;
     };
-  }, [projectId, isEditTicketOpen, isNewTicketOpen]);
+  }, [projectId]);
 
   // update ticket data
   useEffect(() => {
@@ -127,14 +126,14 @@ const Project = () => {
     return () => {
       isRendered = false;
     };
-  }, [selectedTicketId, isEditTicketOpen, isNewTicketOpen, projectId]);
+  }, [selectedTicketId, projectId]);
 
-  const deleteTicket = async (ticketId) => {
-    await API.deleteTicket(projectId, ticketId);
+  // const deleteTicket = async (ticketId) => {
+  //   await API.deleteTicket(projectId, ticketId);
 
-    const projectTicketsRes = await API.getProjectTickets(projectId);
-    setProjectTickets(projectTicketsRes);
-  };
+  //   const projectTicketsRes = await API.getProjectTickets(projectId);
+  //   setProjectTickets(projectTicketsRes);
+  // };
 
   const removeTeamMember = async (projectId, userId) => {
     await API.removeTeamMember(projectId, userId);
@@ -143,18 +142,18 @@ const Project = () => {
     setProjectTeam(projectTeamRes);
   };
 
-  //pagination for tickets table
-  const ticketsData = useMemo(() => {
-    let computedTickets = projectTickets;
+  // //pagination for tickets table
+  // const ticketsData = useMemo(() => {
+  //   let computedTickets = projectTickets;
 
-    setTotalTickets(computedTickets.length);
+  //   setTotalTickets(computedTickets.length);
 
-    //current page slice
-    return computedTickets.slice(
-      (currentTicketPage - 1) * ticketsPerPage,
-      (currentTicketPage - 1) * ticketsPerPage + ticketsPerPage
-    );
-  }, [projectTickets, currentTicketPage]);
+  //   //current page slice
+  //   return computedTickets.slice(
+  //     (currentTicketPage - 1) * ticketsPerPage,
+  //     (currentTicketPage - 1) * ticketsPerPage + ticketsPerPage
+  //   );
+  // }, [projectTickets, currentTicketPage]);
 
   //pagination for team table
   const teamMembersData = useMemo(() => {
@@ -289,7 +288,15 @@ const Project = () => {
               </Card>
             </Col>
             <Col xl="8">
-              <Card className="shadow">
+              <ProjectTicketsTable
+                projectId={projectId}
+                projectTickets={projectTickets}
+                setProjectTickets={setProjectTickets}
+                projectTeam={projectTeam}
+                selectedTicket={selectedTicket}
+                setSelectedTicketId={setSelectedTicketId}
+              />
+              {/* <Card className="shadow">
                 <CardHeader>
                   <Row className="align-items-center">
                     <Col>
@@ -347,7 +354,14 @@ const Project = () => {
                           >
                             <Media>{ticket.title}</Media>
                           </th>
-                          <td>{ticket.description}</td>
+                          <td
+                            style={{
+                              whiteSpace: "unset",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            {ticket.description}
+                          </td>
                           <td key={ticket.user_id}>
                             {ticket.first_name} {ticket.last_name}
                           </td>
@@ -408,7 +422,7 @@ const Project = () => {
                     onPageChange={(page) => setCurrentTicketPage(page)}
                   />
                 </CardFooter>
-              </Card>
+              </Card> */}
             </Col>
           </Row>
           <Row className="mt-5">

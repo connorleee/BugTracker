@@ -1,9 +1,6 @@
 import Index from "views/Index.js";
-// import Profile from "views/examples/Profile.js";
 import Register from "views/Register.js";
 import Login from "views/Login.js";
-// import Tables from "views/examples/Tables.js";
-// import Icons from "views/examples/Icons.js";
 import Administration from "views/Administration";
 import Tickets from "views/Tickets";
 import Project from "views/Project";
@@ -33,30 +30,6 @@ var routes = [
     layout: "/admin",
     display: true,
   },
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "ni ni-planet text-blue",
-  //   component: Icons,
-  //   layout: "/admin",
-  //   display: true,
-  // },
-  // {
-  //   path: "/user-profile",
-  //   name: "User Profile",
-  //   icon: "ni ni-single-02 text-yellow",
-  //   component: Profile,
-  //   layout: "/admin",
-  //   display: true,
-  // },
-  // {
-  //   path: "/tables",
-  //   name: "Tables",
-  //   icon: "ni ni-bullet-list-67 text-red",
-  //   component: Tables,
-  //   layout: "/admin",
-  //   display: true,
-  // },
   {
     path: "/login",
     name: "Login",

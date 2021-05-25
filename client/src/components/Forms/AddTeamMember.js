@@ -8,14 +8,19 @@ const AddTeamMember = (props) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   useEffect(() => {
+    let isRendered = true;
+
     async function fetchData() {
       const users = await API.getAvailableUsers(projectId);
-      console.log(users);
 
-      setDbUsers(users);
+      if (isRendered === true) setDbUsers(users);
     }
 
     fetchData();
+
+    return () => {
+      isRendered = false;
+    };
   }, [setSelectedUsers, projectId]);
 
   const handleChange = (event) => {
