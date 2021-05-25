@@ -14,9 +14,6 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   //   Progress,
   Table,
   Button,
@@ -38,8 +35,8 @@ const ProjectsTable = () => {
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
   const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-  const [selectedProjectData, setSelectedProjectData] = useState(null);
-  const [selectedProjectTeam, setSelectedProjectTeam] = useState(null);
+  const [selectedProjectData, setSelectedProjectData] = useState([]);
+  const [selectedProjectTeam, setSelectedProjectTeam] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
 
   //pagination
@@ -123,7 +120,7 @@ const ProjectsTable = () => {
       <>
         <Card className="shadow">
           <CardHeader className="border-0">
-            <Row className="align-items-center">
+            <Row className="ml-2 align-items-center">
               <h3 className="mb-0">Projects</h3>
               <div className="col text-right">
                 <Button color="primary" onClick={toggleNewProject} size="sm">

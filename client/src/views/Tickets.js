@@ -5,23 +5,20 @@ import PaginationComponent from "../components/Tables/PaginationComponent";
 
 // reactstrap components
 import {
-  Badge,
+  // Badge,
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
+  // DropdownMenu,
+  // DropdownItem,
+  // UncontrolledDropdown,
+  // DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
+  // Progress,
   Table,
   Container,
   Row,
-  UncontrolledTooltip,
+  // UncontrolledTooltip,
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
@@ -37,18 +34,25 @@ const Tickets = () => {
   };
 
   useEffect(() => {
+    //flag for async useEffect cleanup
+    let isRendered = true;
+
     //TODO: fetch user tickets. create backend and front end route
     async function fetchUserTickets() {
       try {
         const userTicketsRes = await (await API.getUserTickets()).json();
 
-        setUserTickets(userTicketsRes);
+        if (isRendered === true) setUserTickets(userTicketsRes);
       } catch (err) {
         console.log("Error fetching user tickets", err);
       }
     }
 
     fetchUserTickets();
+
+    return () => {
+      isRendered = false;
+    };
   }, []);
 
   const ticketsData = useMemo(() => {

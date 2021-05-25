@@ -55,7 +55,7 @@ const useForm = (callback, initialValues, validate) => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
     }
-  }, [errors]);
+  }, [errors, callback, isSubmitting]); //callback and isSubmitting might not need be in dependency array
 
   return {
     handleChange,

@@ -61,47 +61,61 @@ const Project = () => {
 
   // update project team
   useEffect(() => {
+    let isRendered = true;
+
     async function fetchTeam() {
       try {
         const projectTeamRes = await API.getProjectUsers(projectId);
-        setProjectTeam(projectTeamRes);
+
+        if (isRendered === true) setProjectTeam(projectTeamRes);
       } catch (err) {
         console.log(err);
       }
     }
 
     fetchTeam();
+
+    return () => {
+      isRendered = false;
+    };
   }, [projectId, isNewMemberOpen]);
 
   // update project data
   useEffect(() => {
+    let isRendered = true;
+
     async function fetchData() {
       try {
         const projectDataRes = await API.getProject(projectId);
-        setProjectData(projectDataRes.data);
+        if (isRendered === true) setProjectData(projectDataRes.data);
 
         const projectTicketsRes = await API.getProjectTickets(projectId);
-        setProjectTickets(projectTicketsRes);
+        if (isRendered === true) setProjectTickets(projectTicketsRes);
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
       }
     }
     fetchData();
+    return () => {
+      isRendered = false;
+    };
   }, [projectId, isEditTicketOpen, isNewTicketOpen]);
 
   // update ticket data
   useEffect(() => {
+    let isRendered = true;
+
     async function fetchTicket() {
       try {
         if (selectedTicketId) {
           const ticket = await API.getTicket(projectId, selectedTicketId);
-          setSelectedTicket(ticket);
+          if (isRendered === true) setSelectedTicket(ticket);
           const comments = await API.getTicketComments(selectedTicketId);
-          setComments(comments);
+          if (isRendered === true) setComments(comments);
 
           //assigned Devs
           const assignedDevs = await API.getDevAssignments(selectedTicketId);
-          setAssignedDevs(assignedDevs);
+          if (isRendered === true) setAssignedDevs(assignedDevs);
         }
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
@@ -109,6 +123,10 @@ const Project = () => {
     }
 
     fetchTicket();
+
+    return () => {
+      isRendered = false;
+    };
   }, [selectedTicketId, isEditTicketOpen, isNewTicketOpen, projectId]);
 
   const deleteTicket = async (ticketId) => {
@@ -155,8 +173,8 @@ const Project = () => {
     return (
       <>
         <Header />
-        <Container className="mt--7 vh-70" fluid>
-          <Row className="mt-5" id={projectData.id}>
+        <Container className="mt--9 vh-70" fluid>
+          <Row className="mt-0" id={projectData.id}>
             <Col>
               <h1 className="text-white d-none d-lg-inline-block">
                 {projectData.name}
