@@ -7,6 +7,7 @@ import {
   CardTitle,
   CardText,
   Button,
+  List,
 } from "reactstrap";
 import moment from "moment";
 import Modal from "../../components/Modal/Modal";
@@ -31,20 +32,44 @@ export default function SelectedTicket({
             <Row className=" p-2">
               <Col xl="6" className="">
                 <Card className="shadow p-4">
-                  <h2 className="text-primary">{selectedTicket.title}</h2>
-                  <h5 color="primary">
-                    Author: {selectedTicket.first_name}{" "}
-                    {selectedTicket.last_name}
+                  <h2 className="text-primary mb-1">{selectedTicket.title}</h2>
+                  <h5 color="primary" className="mb-3">
+                    {selectedTicket.first_name} {selectedTicket.last_name}
                   </h5>
                   <p>{selectedTicket.description}</p>
 
-                  <hr />
+                  <Row className="justify-content-center mt-3">
+                    <Col
+                      xl="3"
+                      className="mr-1 mb-2 badge badge-primary badge-pill"
+                    >
+                      {selectedTicket.status}
+                    </Col>
+                    <Col
+                      xl="3"
+                      className="mr-1 mb-2 badge badge-primary badge-pill"
+                    >
+                      {selectedTicket.priority}
+                    </Col>
+                    <Col
+                      xl="3"
+                      className="mr-1 mb-2 badge badge-primary badge-pill"
+                    >
+                      {selectedTicket.type}
+                    </Col>
+                    <Col xl="3">{selectedTicket.time_estimate}</Col>
+                  </Row>
+                  <hr className="pt-0" />
                   <h5>Assigned Devs </h5>
-                  <ul>
+                  <List type="unstyled">
                     {assignedDevs ? (
                       assignedDevs.map((dev, index) => {
                         return (
-                          <li key={dev.user_id}>
+                          <li
+                            key={dev.user_id}
+                            id={dev.user_id}
+                            style={{ listStyleType: "none", padding: 0 }}
+                          >
                             {`${dev.first_name} ${dev.last_name}`}
                           </li>
                         );
@@ -52,24 +77,7 @@ export default function SelectedTicket({
                     ) : (
                       <li>No devs assigned</li>
                     )}
-                  </ul>
-
-                  <hr />
-                  <Row className="mb-2">
-                    <Col xl="6"></Col>
-                  </Row>
-                  <Row>
-                    <Col xl="3" className="mr-1 badge badge-primary badge-pill">
-                      {selectedTicket.status}
-                    </Col>
-                    <Col xl="3" className="mr-1 badge badge-primary badge-pill">
-                      {selectedTicket.priority}
-                    </Col>
-                    <Col xl="3" className="mr-1 badge badge-primary badge-pill">
-                      {selectedTicket.type}
-                    </Col>
-                    <Col xl="3">{selectedTicket.time_estimate}</Col>
-                  </Row>
+                  </List>
                 </Card>
               </Col>
               <Col xl="6">
