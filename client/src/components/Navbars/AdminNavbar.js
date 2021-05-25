@@ -6,35 +6,36 @@ import {
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
-  Form,
-  FormGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  InputGroup,
+  // Form,
+  // FormGroup,
+  // InputGroupAddon,
+  // InputGroupText,
+  // Input,
+  // InputGroup,
+  Button,
   Navbar,
   Nav,
   Container,
   Media,
 } from "reactstrap";
-import { isConstructorDeclaration } from "typescript";
+// import { isConstructorDeclaration } from "typescript";
 
 const AdminNavbar = (props) => {
-  const logout = () => {
-    localStorage.removeItem("token");
-    props.setAuth(false);
-  };
+  // const logout = () => {
+  //   localStorage.removeItem("token");
+  //   props.setAuth(false);
+  // };
 
-  useEffect(() => {
-    let logoutTimer = setTimeout(() => {
-      logout();
-      alert("You have been logged out due to inactivity.");
-    }, 60 * 60 * 1000);
+  // useEffect(() => {
+  //   let logoutTimer = setTimeout(() => {
+  //     logout();
+  //     alert("You have been logged out due to inactivity.");
+  //   }, 60 * 60 * 1000);
 
-    return () => {
-      clearTimeout(logoutTimer);
-    };
-  });
+  //   return () => {
+  //     clearTimeout(logoutTimer);
+  //   };
+  // });
 
   return (
     <>
@@ -46,7 +47,7 @@ const AdminNavbar = (props) => {
           >
             {props.brandText}
           </Link>
-          <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+          {/* <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
             <FormGroup className="mb-0">
               <InputGroup className="input-group-alternative">
                 <InputGroupAddon addonType="prepend">
@@ -57,9 +58,9 @@ const AdminNavbar = (props) => {
                 <Input placeholder="Search" type="text" />
               </InputGroup>
             </FormGroup>
-          </Form>
+          </Form> */}
           <Nav className="align-items-center d-none d-md-flex" navbar>
-            <UncontrolledDropdown nav>
+            {/* <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
@@ -104,7 +105,7 @@ const AdminNavbar = (props) => {
                   <span>Logout</span>
                 </DropdownItem>
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
           </Nav>
         </Container>
       </Navbar>

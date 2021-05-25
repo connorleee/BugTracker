@@ -53,6 +53,21 @@ module.exports = {
       await client.release();
     }
   },
+  getUserTickets: async (req, res) => {
+    const userId = req.user;
+    const client = await pool.connect();
+
+    try {
+      const { rows } = await client.query(
+        "SELECT tickets.id, tickets.title, tickets.description, tickets.priority, tickets.status, tickets.type, tickets.time_estimate, tickets.created_at, projects.id AS project_id, projects.name AS project_name FROM tickets JOIN projects ON tickets.project_id = projects.id WHERE tickets.author_id = $1",
+        [userId]
+      );
+
+      res.json(rows);
+    } catch (err) {
+      console.log("Error fetching user tickets", err);
+    }
+  },
   updateTicket: async (req, res) => {
     const { ticketId } = req.params;
     const {

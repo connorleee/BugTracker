@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import CreateProject from "../Forms/CreateProject";
 import UpdateProject from "../Forms/UpdateProject";
+import PaginationComponent from "./PaginationComponent";
 
 // reactstrap components
 import {
@@ -33,13 +34,18 @@ import API from "../../utils/API";
 import UsersCell from "./UsersCell";
 
 const ProjectsTable = () => {
-  const [projects, setProjects] = useState(null);
+  const [projects, setProjects] = useState([]);
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
   const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
   const [selectedProjectData, setSelectedProjectData] = useState(null);
   const [selectedProjectTeam, setSelectedProjectTeam] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
+
+  //pagination
+  const [totalProjects, setTotalProjects] = useState(0);
+  const [currentProjectPage, setCurrentProjectPage] = useState(1);
+  const projectsPerPage = 6;
 
   const toggleNewProject = () => setIsNewProjectOpen(!isNewProjectOpen);
   const toggleEditProject = () => setIsEditProjectOpen(!isEditProjectOpen);
@@ -101,6 +107,17 @@ const ProjectsTable = () => {
     console.log("Project deleted");
   };
 
+  const projectData = useMemo(() => {
+    const computedProjects = projects;
+
+    setTotalProjects(computedProjects.length);
+
+    return computedProjects.slice(
+      (currentProjectPage - 1) * projectsPerPage,
+      (currentProjectPage - 1) * projectsPerPage + projectsPerPage
+    );
+  }, [projects, currentProjectPage]);
+
   if (projects) {
     return (
       <>
@@ -138,7 +155,7 @@ const ProjectsTable = () => {
               </tr>
             </thead>
             <tbody>
-              {projects.map((project) => {
+              {projectData.map((project) => {
                 return (
                   <tr key={project.id}>
                     <th scope="row">
@@ -210,56 +227,12 @@ const ProjectsTable = () => {
             </tbody>
           </Table>
           <CardFooter className="py-4">
-            <nav aria-label="...">
-              <Pagination
-                className="pagination justify-content-end mb-0"
-                listClassName="justify-content-end mb-0"
-              >
-                <PaginationItem className="disabled">
-                  <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                    tabIndex="-1"
-                  >
-                    <i className="fas fa-angle-left" />
-                    <span className="sr-only">Previous</span>
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem className="active">
-                  <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    1
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    2 <span className="sr-only">(current)</span>
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    3
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink
-                    href="#pablo"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <i className="fas fa-angle-right" />
-                    <span className="sr-only">Next</span>
-                  </PaginationLink>
-                </PaginationItem>
-              </Pagination>
-            </nav>
+            <PaginationComponent
+              total={totalProjects}
+              itemsPerPage={projectsPerPage}
+              currentPage={currentProjectPage}
+              onPageChange={(page) => setCurrentProjectPage(page)}
+            />
           </CardFooter>
         </Card>
       </>

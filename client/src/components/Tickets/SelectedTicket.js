@@ -7,6 +7,7 @@ import {
   CardTitle,
   CardText,
   Button,
+  List,
 } from "reactstrap";
 import moment from "moment";
 import Modal from "../../components/Modal/Modal";
@@ -22,54 +23,61 @@ export default function SelectedTicket({
     <>
       <Card className="shadow">
         <CardHeader>
-          <Row className="align-items-center">
-            <h3 className="mb-0">Selected Ticket Info</h3>
-          </Row>
+          <h3 className="mb-0">Selected Ticket Info</h3>
         </CardHeader>
         {!selectedTicket ? (
-          "No ticket selected"
+          <div className="m-2">No ticket selected</div>
         ) : (
           <>
             <Row className=" p-2">
-              <Col xl="6">
-                <Card className="shadow p-2">
-                  <Row className="mb-2">
-                    <Col xl="6">
-                      <h2>Ticket: {selectedTicket.title}</h2>
+              <Col xl="6" className="">
+                <Card className="shadow p-4">
+                  <h2 className="text-primary mb-1">{selectedTicket.title}</h2>
+                  <h5 color="primary" className="mb-3">
+                    {selectedTicket.first_name} {selectedTicket.last_name}
+                  </h5>
+                  <p>{selectedTicket.description}</p>
+
+                  <Row className="justify-content-center mt-3">
+                    <Col
+                      xl="3"
+                      className="mr-1 mb-2 badge badge-primary badge-pill"
+                    >
+                      {selectedTicket.status}
                     </Col>
-                    <Col xl="6">
-                      <span>{selectedTicket.description}</span>
+                    <Col
+                      xl="3"
+                      className="mr-1 mb-2 badge badge-primary badge-pill"
+                    >
+                      {selectedTicket.priority}
                     </Col>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col xl="6">
-                      <span color="primary">
-                        Author: {selectedTicket.first_name}{" "}
-                        {selectedTicket.last_name}
-                      </span>
+                    <Col
+                      xl="3"
+                      className="mr-1 mb-2 badge badge-primary badge-pill"
+                    >
+                      {selectedTicket.type}
                     </Col>
-                    <Col xl="6">
-                      <span>Assigned Devs: </span>
-                      {assignedDevs ? (
-                        assignedDevs.map((dev, index) => {
-                          return (
-                            <span key={dev.user_id}>
-                              {(index ? ", " : "") +
-                                `${dev.first_name} ${dev.last_name}`}
-                            </span>
-                          );
-                        })
-                      ) : (
-                        <span>No devs assigned</span>
-                      )}
-                    </Col>
-                  </Row>
-                  <Row>
                     <Col xl="3">{selectedTicket.time_estimate}</Col>
-                    <Col xl="3">{selectedTicket.status}</Col>
-                    <Col xl="3">{selectedTicket.priority}</Col>
-                    <Col xl="3">{selectedTicket.type}</Col>
                   </Row>
+                  <hr className="pt-0" />
+                  <h5>Assigned Devs </h5>
+                  <List type="unstyled">
+                    {assignedDevs ? (
+                      assignedDevs.map((dev, index) => {
+                        return (
+                          <li
+                            key={dev.user_id}
+                            id={dev.user_id}
+                            style={{ listStyleType: "none", padding: 0 }}
+                          >
+                            {`${dev.first_name} ${dev.last_name}`}
+                          </li>
+                        );
+                      })
+                    ) : (
+                      <li>No devs assigned</li>
+                    )}
+                  </List>
                 </Card>
               </Col>
               <Col xl="6">
