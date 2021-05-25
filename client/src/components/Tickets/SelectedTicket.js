@@ -22,53 +22,53 @@ export default function SelectedTicket({
     <>
       <Card className="shadow">
         <CardHeader>
-          <Row className="align-items-center">
-            <h3 className="mb-0">Selected Ticket Info</h3>
-          </Row>
+          <h3 className="mb-0">Selected Ticket Info</h3>
         </CardHeader>
         {!selectedTicket ? (
-          "No ticket selected"
+          <div className="m-2">No ticket selected</div>
         ) : (
           <>
             <Row className=" p-2">
-              <Col xl="6">
-                <Card className="shadow p-2">
+              <Col xl="6" className="">
+                <Card className="shadow p-4">
+                  <h2 className="text-primary">{selectedTicket.title}</h2>
+                  <h5 color="primary">
+                    Author: {selectedTicket.first_name}{" "}
+                    {selectedTicket.last_name}
+                  </h5>
+                  <p>{selectedTicket.description}</p>
+
+                  <hr />
+                  <h5>Assigned Devs </h5>
+                  <ul>
+                    {assignedDevs ? (
+                      assignedDevs.map((dev, index) => {
+                        return (
+                          <li key={dev.user_id}>
+                            {`${dev.first_name} ${dev.last_name}`}
+                          </li>
+                        );
+                      })
+                    ) : (
+                      <li>No devs assigned</li>
+                    )}
+                  </ul>
+
+                  <hr />
                   <Row className="mb-2">
-                    <Col xl="6">
-                      <h2>Ticket: {selectedTicket.title}</h2>
-                    </Col>
-                    <Col xl="6">
-                      <span>{selectedTicket.description}</span>
-                    </Col>
-                  </Row>
-                  <Row className="mb-2">
-                    <Col xl="6">
-                      <span color="primary">
-                        Author: {selectedTicket.first_name}{" "}
-                        {selectedTicket.last_name}
-                      </span>
-                    </Col>
-                    <Col xl="6">
-                      <span>Assigned Devs: </span>
-                      {assignedDevs ? (
-                        assignedDevs.map((dev, index) => {
-                          return (
-                            <span key={dev.user_id}>
-                              {(index ? ", " : "") +
-                                `${dev.first_name} ${dev.last_name}`}
-                            </span>
-                          );
-                        })
-                      ) : (
-                        <span>No devs assigned</span>
-                      )}
-                    </Col>
+                    <Col xl="6"></Col>
                   </Row>
                   <Row>
+                    <Col xl="3" className="mr-1 badge badge-primary badge-pill">
+                      {selectedTicket.status}
+                    </Col>
+                    <Col xl="3" className="mr-1 badge badge-primary badge-pill">
+                      {selectedTicket.priority}
+                    </Col>
+                    <Col xl="3" className="mr-1 badge badge-primary badge-pill">
+                      {selectedTicket.type}
+                    </Col>
                     <Col xl="3">{selectedTicket.time_estimate}</Col>
-                    <Col xl="3">{selectedTicket.status}</Col>
-                    <Col xl="3">{selectedTicket.priority}</Col>
-                    <Col xl="3">{selectedTicket.type}</Col>
                   </Row>
                 </Card>
               </Col>

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import API from "../utils/API";
 import moment from "moment";
+import PaginationComponent from "../components/Tables/PaginationComponent";
 
 // reactstrap components
 import {
@@ -27,6 +28,9 @@ import Header from "components/Headers/Header.js";
 
 const Tickets = () => {
   const [userTickets, setUserTickets] = useState([{}]);
+  const [totalTickets, setTotalTickets] = useState(0);
+  const [currentTicketsPage, setCurrentTicketsPage] = useState(1);
+  const ticketsPerPage = 10;
 
   const timeOutstanding = (timestamp) => {
     return moment(timestamp).from(moment());
@@ -46,6 +50,17 @@ const Tickets = () => {
 
     fetchUserTickets();
   }, []);
+
+  const ticketsData = useMemo(() => {
+    const computedTickets = userTickets;
+
+    setTotalTickets(computedTickets.length);
+
+    return computedTickets.slice(
+      (currentTicketsPage - 1) * ticketsPerPage,
+      (currentTicketsPage - 1) * ticketsPerPage + ticketsPerPage
+    );
+  }, [userTickets, currentTicketsPage]);
 
   return (
     <>
@@ -71,7 +86,7 @@ const Tickets = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {userTickets.map((ticket, key) => {
+                  {ticketsData.map((ticket, key) => {
                     return (
                       <tr key={key} id={ticket.id}>
                         <th scope="row">
@@ -125,56 +140,12 @@ const Tickets = () => {
                 </tbody>
               </Table>
               <CardFooter className="py-4">
-                <nav aria-label="...">
-                  <Pagination
-                    className="pagination justify-content-end mb-0"
-                    listClassName="justify-content-end mb-0"
-                  >
-                    <PaginationItem className="disabled">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                        tabIndex="-1"
-                      >
-                        <i className="fas fa-angle-left" />
-                        <span className="sr-only">Previous</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem className="active">
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        2 <span className="sr-only">(current)</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        3
-                      </PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        <i className="fas fa-angle-right" />
-                        <span className="sr-only">Next</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
-                </nav>
+                <PaginationComponent
+                  total={totalTickets}
+                  itemsPerPage={ticketsPerPage}
+                  currentPage={currentTicketsPage}
+                  onPageChange={(page) => setCurrentTicketsPage(page)}
+                />
               </CardFooter>
             </Card>
           </div>
