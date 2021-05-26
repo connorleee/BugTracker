@@ -73,16 +73,12 @@ const UpdateTicket = (props) => {
     const { assignees } = values;
     try {
       await API.updateTicket(projectId, props.ticketData.id, values);
-      console.log("Ticket Updated");
-
       await API.removeAllDevAssignments(props.ticketData.id);
-      console.log("devs cleared");
 
       for (let i = 0; i < assignees.length; i++) {
         const devId = { devId: assignees[i] };
         await API.createDevAssignment(props.ticketData.id, devId);
       }
-      console.log("devs updated");
 
       values.title = "";
       values.description = "";
@@ -95,7 +91,6 @@ const UpdateTicket = (props) => {
       props.toggle();
     } catch (err) {
       console.log(err);
-      console.error(err.message);
     }
   }
 

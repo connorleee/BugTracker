@@ -39,24 +39,17 @@ const Project = () => {
   const [projectTeam, setProjectTeam] = useState([]);
   const [projectTickets, setProjectTickets] = useState([]);
   const [isNewMemberOpen, setIsNewMemberOpen] = useState(false);
-  // const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
-  // const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [assignedDevs, setAssignedDevs] = useState(null);
   const [comments, setComments] = useState(null);
 
   //pagination
-  // const [totalTickets, setTotalTickets] = useState(0);
-  // const [currentTicketPage, setCurrentTicketPage] = useState(1);
-  // const ticketsPerPage = 6;
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
   const [currentTeamMembersPage, setCurrentTeamMembersPage] = useState(1);
   const teamMembersPerPage = 6;
 
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
-  // const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
-  // const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
   // update project team
   useEffect(() => {
@@ -82,13 +75,17 @@ const Project = () => {
   // update project data
   useEffect(() => {
     let isRendered = true;
+    const abortController = new AbortController();
 
     async function fetchData() {
       try {
         const projectDataRes = await API.getProject(projectId);
         if (isRendered === true) setProjectData(projectDataRes.data);
 
-        const projectTicketsRes = await API.getProjectTickets(projectId);
+        const projectTicketsRes = await API.getProjectTickets(
+          projectId,
+          abortController
+        );
         if (isRendered === true) setProjectTickets(projectTicketsRes);
       } catch (err) {
         alert(`Error requesting project data: ${err}`);
@@ -97,6 +94,7 @@ const Project = () => {
     fetchData();
     return () => {
       isRendered = false;
+      abortController.abort();
     };
   }, [projectId]);
 

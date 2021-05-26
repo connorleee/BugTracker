@@ -24,8 +24,15 @@ const API = {
       },
     }).then((res) => res.json());
   },
-  getProjectTickets: function (projectId) {
-    return fetch("/api/tickets/" + projectId).then((res) => res.json());
+  getProjectTickets: function (projectId, abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
+    console.log(signal);
+
+    return fetch("/api/tickets/" + projectId, { signal }).then((res) =>
+      res.json()
+    );
   },
   createProject: function (projectData) {
     return fetch("/api/projects", {
