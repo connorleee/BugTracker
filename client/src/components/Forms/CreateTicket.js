@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
 import { useParams } from "react-router-dom";
@@ -15,6 +15,8 @@ import {
 import API from "../../utils/API";
 
 const CreateTicket = (props) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const projectId = useParams().id;
 
   const initialTicketValues = {
@@ -34,9 +36,11 @@ const CreateTicket = (props) => {
   );
 
   async function submit() {
-    const { assignees } = values;
+    if (isSubmitting === true) return;
 
-    console.log("submitting");
+    setIsSubmitting(true);
+
+    const { assignees } = values;
 
     const { id } = await API.createTicket(projectId, values);
 
@@ -44,6 +48,10 @@ const CreateTicket = (props) => {
       const devId = { devId: assignees[i] };
       await API.createDevAssignment(id, devId);
     }
+
+    const projectTicketsRes = await API.getProjectTickets(projectId);
+
+    props.setProjectTickets(projectTicketsRes);
 
     values.title = "";
     values.description = "";
@@ -54,6 +62,8 @@ const CreateTicket = (props) => {
     values.timeEstimate = 0;
 
     props.toggle();
+
+    setIsSubmitting(false);
   }
 
   return (

@@ -10,15 +10,23 @@ const API = {
     }).then((res) => res.json());
   },
   // Gets the project with the given id
-  getProject: function (id) {
+  getProject: function (id, abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
     return axios.get("/api/projects/" + id, {
+      signal,
       headers: {
         token: localStorage.getItem("token"),
       },
     });
   },
-  getProjectUsers: function (projectId) {
+  getProjectUsers: function (projectId, abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
     return fetch(`/api/userProjects/${projectId}`, {
+      signal,
       headers: {
         token: localStorage.getItem("token"),
       },
@@ -27,8 +35,6 @@ const API = {
   getProjectTickets: function (projectId, abortController) {
     let signal = null;
     if (abortController) signal = abortController.signal;
-
-    console.log(signal);
 
     return fetch("/api/tickets/" + projectId, { signal }).then((res) =>
       res.json()
@@ -60,16 +66,29 @@ const API = {
   addContact: function (id, data) {
     return axios.put("/api/users/" + id, data);
   },
-  getTicket: function (projectId, ticketId) {
-    return fetch(`/api/tickets/${projectId}/${ticketId}`).then((res) =>
+  getTicket: function (projectId, ticketId, abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
+    return fetch(`/api/tickets/${projectId}/${ticketId}`, { signal }).then(
+      (res) => res.json()
+    );
+  },
+  getTicketComments: function (ticketId, abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
+    return fetch(`/api/comments/${ticketId}`, { signal }).then((res) =>
       res.json()
     );
   },
-  getTicketComments: function (ticketId) {
-    return fetch(`/api/comments/${ticketId}`).then((res) => res.json());
-  },
-  getDevAssignments: function (ticketId) {
-    return fetch(`/api/devassignments/${ticketId}`).then((res) => res.json());
+  getDevAssignments: function (ticketId, abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
+    return fetch(`/api/devassignments/${ticketId}`, { signal }).then((res) =>
+      res.json()
+    );
   },
   createTicket: function (projectId, payload) {
     return fetch(`/api/tickets/${projectId}`, {

@@ -35,14 +35,16 @@ import API from "../utils/API";
 const Project = () => {
   const projectId = useParams().id;
 
-  const [projectData, setProjectData] = useState(null);
+  const [projectData, setProjectData] = useState({});
   const [projectTeam, setProjectTeam] = useState([]);
   const [projectTickets, setProjectTickets] = useState([]);
   const [isNewMemberOpen, setIsNewMemberOpen] = useState(false);
-  const [selectedTicketId, setSelectedTicketId] = useState(null);
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const [assignedDevs, setAssignedDevs] = useState(null);
-  const [comments, setComments] = useState(null);
+  const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
+  const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
+  const [selectedTicketId, setSelectedTicketId] = useState("");
+  const [selectedTicket, setSelectedTicket] = useState({});
+  const [assignedDevs, setAssignedDevs] = useState([]);
+  const [comments, setComments] = useState([]);
 
   //pagination
   const [totalTeamMembers, setTotalTeamMembers] = useState(0);
@@ -50,79 +52,98 @@ const Project = () => {
   const teamMembersPerPage = 6;
 
   const toggleNewMember = () => setIsNewMemberOpen(!isNewMemberOpen);
+  const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
+  const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
   // update project team
   useEffect(() => {
-    let isRendered = true;
+    const abortController = new AbortController();
 
     async function fetchTeam() {
       try {
-        const projectTeamRes = await API.getProjectUsers(projectId);
+        const projectTeamRes = await API.getProjectUsers(
+          projectId,
+          abortController
+        );
 
-        if (isRendered === true) setProjectTeam(projectTeamRes);
+        setProjectTeam(projectTeamRes);
       } catch (err) {
-        console.log(err);
+        if (!abortController.signal.aborted) {
+          console.log("Error fetching project team data", err);
+        }
       }
     }
 
     fetchTeam();
 
     return () => {
-      isRendered = false;
+      abortController.abort();
     };
   }, [projectId, isNewMemberOpen]);
 
   // update project data
   useEffect(() => {
-    let isRendered = true;
     const abortController = new AbortController();
 
     async function fetchData() {
       try {
-        const projectDataRes = await API.getProject(projectId);
-        if (isRendered === true) setProjectData(projectDataRes.data);
+        const projectDataRes = await API.getProject(projectId, abortController);
+        setProjectData(projectDataRes.data);
 
         const projectTicketsRes = await API.getProjectTickets(
           projectId,
           abortController
         );
-        if (isRendered === true) setProjectTickets(projectTicketsRes);
+        setProjectTickets(projectTicketsRes);
       } catch (err) {
-        alert(`Error requesting project data: ${err}`);
+        if (!abortController.signal.aborted) {
+          console.log(`Error requesting project data: ${err}`);
+        }
       }
     }
     fetchData();
     return () => {
-      isRendered = false;
       abortController.abort();
     };
   }, [projectId]);
 
   // update ticket data
   useEffect(() => {
-    let isRendered = true;
+    const abortController = new AbortController();
 
     async function fetchTicket() {
       try {
         if (selectedTicketId) {
-          const ticket = await API.getTicket(projectId, selectedTicketId);
-          if (isRendered === true) setSelectedTicket(ticket);
-          const comments = await API.getTicketComments(selectedTicketId);
-          if (isRendered === true) setComments(comments);
+          const ticket = await API.getTicket(
+            projectId,
+            selectedTicketId,
+            abortController
+          );
+          setSelectedTicket(ticket);
+          const comments = await API.getTicketComments(
+            selectedTicketId,
+            abortController
+          );
+          setComments(comments);
 
           //assigned Devs
-          const assignedDevs = await API.getDevAssignments(selectedTicketId);
-          if (isRendered === true) setAssignedDevs(assignedDevs);
+          const assignedDevs = await API.getDevAssignments(
+            selectedTicketId,
+            abortController
+          );
+          setAssignedDevs(assignedDevs);
         }
       } catch (err) {
-        alert(`Error requesting project data: ${err}`);
+        if (!abortController.signal.aborted) {
+          console.log(`Error requesting project data: ${err}`);
+        }
       }
     }
 
     fetchTicket();
 
     return () => {
-      isRendered = false;
+      abortController.abort();
     };
   }, [selectedTicketId, projectId]);
 
@@ -183,8 +204,8 @@ const Project = () => {
               </h2>
             </Col>
           </Row>
-          <Row className="">
-            <Col xl="4" className="">
+          <Row>
+            <Col xl="4" className="mt-3">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -285,7 +306,7 @@ const Project = () => {
                 </CardFooter>
               </Card>
             </Col>
-            <Col xl="8">
+            <Col xl="8" className="mt-3">
               <ProjectTicketsTable
                 projectId={projectId}
                 projectTickets={projectTickets}
@@ -293,6 +314,11 @@ const Project = () => {
                 projectTeam={projectTeam}
                 selectedTicket={selectedTicket}
                 setSelectedTicketId={setSelectedTicketId}
+                toggleEditTicket={toggleEditTicket}
+                toggleCreateTicket={toggleCreateTicket}
+                isEditTicketOpen={isEditTicketOpen}
+                isNewTicketOpen={isNewTicketOpen}
+                assignedDevs={assignedDevs}
               />
               {/* <Card className="shadow">
                 <CardHeader>

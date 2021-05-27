@@ -32,17 +32,22 @@ const ProjectTicketsTable = ({
   projectTeam,
   selectedTicket,
   setSelectedTicketId,
+  toggleCreateTicket,
+  toggleEditTicket,
+  isNewTicketOpen,
+  isEditTicketOpen,
+  assignedDevs,
 }) => {
-  const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
-  const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
+  //   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
+  //   const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
 
   //pagination
   const [totalTickets, setTotalTickets] = useState(0);
   const [currentTicketPage, setCurrentTicketPage] = useState(1);
   const ticketsPerPage = 6;
 
-  const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
-  const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
+  //   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
+  //   const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
   //pagination for tickets table
   const ticketsData = useMemo(() => {
@@ -85,6 +90,7 @@ const ProjectTicketsTable = ({
                   <CreateTicket
                     team={projectTeam}
                     toggle={toggleCreateTicket}
+                    setProjectTickets={setProjectTickets}
                   />
                 </Container>
               </Modal>
@@ -162,6 +168,8 @@ const ProjectTicketsTable = ({
                 team={projectTeam}
                 ticketData={selectedTicket}
                 toggle={toggleEditTicket}
+                setProjectTickets={setProjectTickets}
+                assignedDevs={assignedDevs}
               />
             </Container>
           </Modal>

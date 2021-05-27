@@ -30,7 +30,7 @@ export default function SelectedTicket({
         ) : (
           <>
             <Row className=" p-2">
-              <Col xl="6" className="">
+              <Col xl="6" className="mt-3">
                 <Card className="shadow p-4">
                   <h2 className="text-primary mb-1">{selectedTicket.title}</h2>
                   <h5 color="primary" className="mb-3">
@@ -80,7 +80,7 @@ export default function SelectedTicket({
                   </List>
                 </Card>
               </Col>
-              <Col xl="6">
+              <Col xl="6" className="mt-3">
                 <Card className="shadow">
                   <CardHeader>
                     <Row className="align-items-center">
@@ -105,7 +105,7 @@ export default function SelectedTicket({
                   {comments ? (
                     comments.map((comment) => {
                       return (
-                        <Card body className="shadow m-2" key={comment.id}>
+                        <Card body className="shadow m-3" key={comment.id}>
                           <CardTitle tag="h5">
                             <span id={comment.author_id} className="">
                               {comment.first_name} {comment.last_name} -{" "}
