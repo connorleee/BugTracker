@@ -110,12 +110,15 @@ const ProjectTicketsTable = ({
         <tbody>
           {ticketsData.map((ticket) => {
             return (
-              <tr key={ticket.id} id={ticket.id} className="ticketRow">
-                <th
-                  onClick={() => {
-                    setSelectedTicketId(ticket.id);
-                  }}
-                >
+              <tr
+                key={ticket.id}
+                id={ticket.id}
+                className="ticketRow"
+                onClick={() => {
+                  setSelectedTicketId(ticket.id);
+                }}
+              >
+                <th>
                   <Media>{ticket.title}</Media>
                 </th>
                 <td
