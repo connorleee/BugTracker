@@ -70,7 +70,11 @@ function ProjectTeamTable({
 
               <Modal isOpen={isNewMemberOpen} onClose={toggleNewMember}>
                 <ModalHeader toggle={toggleNewMember}>Add Member</ModalHeader>
-                <AddTeamMember projectId={projectId} toggle={toggleNewMember} />
+                <AddTeamMember
+                  projectId={projectId}
+                  toggle={toggleNewMember}
+                  setProjectTeam={setProjectTeam}
+                />
               </Modal>
             </div>
           </Col>

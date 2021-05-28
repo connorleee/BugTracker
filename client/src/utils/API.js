@@ -148,8 +148,13 @@ const API = {
       body: JSON.stringify(userInfo),
     });
   },
-  getAvailableUsers: function (projectId) {
-    return fetch("/api/availableUsers/" + projectId).then((res) => res.json());
+  getAvailableUsers: function (projectId, abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
+    return fetch("/api/availableUsers/" + projectId, { signal }).then((res) =>
+      res.json()
+    );
   },
   addTeamMember: function (projectId, userId) {
     return fetch("/api/userprojects/" + projectId, {
