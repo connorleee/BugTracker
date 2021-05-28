@@ -38,16 +38,10 @@ const ProjectTicketsTable = ({
   isEditTicketOpen,
   assignedDevs,
 }) => {
-  //   const [isNewTicketOpen, setIsNewTicketOpen] = useState(false);
-  //   const [isEditTicketOpen, setIsEditTicketOpen] = useState(false);
-
   //pagination
   const [totalTickets, setTotalTickets] = useState(0);
   const [currentTicketPage, setCurrentTicketPage] = useState(1);
   const ticketsPerPage = 6;
-
-  //   const toggleCreateTicket = () => setIsNewTicketOpen(!isNewTicketOpen);
-  //   const toggleEditTicket = () => setIsEditTicketOpen(!isEditTicketOpen);
 
   //pagination for tickets table
   const ticketsData = useMemo(() => {

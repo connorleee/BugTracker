@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
 import { useParams } from "react-router-dom";
@@ -29,45 +29,6 @@ const UpdateTicket = (props) => {
       timeEstimate: props.ticketData.time_estimate || 0,
     };
   }, []);
-
-  // useEffect(() => {
-  //   // let isRendered = true;
-  //   const abortController = new AbortController();
-
-  //   async function fillAssignees() {
-  //     if (props.ticketData) {
-  //       try {
-  //         const devAssignments = await API.getDevAssignments(
-  //           props.ticketData.id,
-  //           abortController
-  //         );
-
-  //         setProjectTeam(devAssignments.map((dev) => dev.user_id));
-
-  //         // if (isRendered === true) {
-  //         devAssignments.forEach((dev) => {
-  //           initialTicketValues.assignees.push(dev.user_id);
-  //         });
-  //         // }
-  //       } catch (err) {
-  //         console.error(err.message);
-  //       }
-  //       initialTicketValues.title = props.ticketData.title;
-  //       initialTicketValues.description = props.ticketData.description;
-  //       initialTicketValues.priority = props.ticketData.priority;
-  //       initialTicketValues.type = props.ticketData.type;
-  //       initialTicketValues.status = props.ticketData.status;
-  //       initialTicketValues.timeEstimate = props.ticketData.time_estimate;
-  //     }
-  //   }
-
-  //   fillAssignees();
-
-  //   return () => {
-  //     // isRendered = false;
-  //     abortController.abort();
-  //   };
-  // }, [initialTicketValues, props.ticketData]);
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
