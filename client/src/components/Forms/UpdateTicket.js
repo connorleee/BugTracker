@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import useForm from "./useForm";
 import validate from "../../utils/formValidation/ticketValidation";
 import { useParams } from "react-router-dom";
@@ -15,44 +15,20 @@ import {
 import API from "../../utils/API";
 
 const UpdateTicket = (props) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const projectId = useParams().id;
 
   const initialTicketValues = useMemo(() => {
     return {
-      title: "",
-      description: "",
-      assignees: [],
-      priority: "low",
-      type: "issue",
-      status: "new",
-      timeEstimate: 0,
+      title: props.ticketData.title || "",
+      description: props.ticketData.description || "",
+      assignees: props.assignedDevs.map((dev) => dev.user_id) || [],
+      priority: props.ticketData.priority || "low",
+      type: props.ticketData.type || "issue",
+      status: props.ticketData.status || "new",
+      timeEstimate: props.ticketData.time_estimate || 0,
     };
   }, []);
-
-  useEffect(() => {
-    async function fillAssignees() {
-      if (props.ticketData) {
-        try {
-          const devAssignments = await API.getDevAssignments(
-            props.ticketData.id
-          );
-
-          devAssignments.forEach((dev) => {
-            initialTicketValues.assignees.push(dev.user_id);
-          });
-        } catch (err) {
-          console.error(err.message);
-        }
-        initialTicketValues.title = props.ticketData.title;
-        initialTicketValues.description = props.ticketData.description;
-        initialTicketValues.priority = props.ticketData.priority;
-        initialTicketValues.type = props.ticketData.type;
-        initialTicketValues.status = props.ticketData.status;
-        initialTicketValues.timeEstimate = props.ticketData.time_estimate;
-      }
-    }
-    fillAssignees();
-  }, [initialTicketValues, props.ticketData]);
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,
@@ -61,19 +37,23 @@ const UpdateTicket = (props) => {
   );
 
   async function submit() {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     const { assignees } = values;
     try {
       await API.updateTicket(projectId, props.ticketData.id, values);
-      console.log("Ticket Updated");
-
       await API.removeAllDevAssignments(props.ticketData.id);
-      console.log("devs cleared");
 
       for (let i = 0; i < assignees.length; i++) {
         const devId = { devId: assignees[i] };
         await API.createDevAssignment(props.ticketData.id, devId);
       }
-      console.log("devs updated");
+
+      const projectTicketsRes = await API.getProjectTickets(projectId);
+
+      props.setProjectTickets(projectTicketsRes);
 
       values.title = "";
       values.description = "";
@@ -84,9 +64,9 @@ const UpdateTicket = (props) => {
       values.timeEstimate = 0;
 
       props.toggle();
+      setIsSubmitting(false);
     } catch (err) {
       console.log(err);
-      console.error(err.message);
     }
   }
 

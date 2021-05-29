@@ -8,14 +8,19 @@ const AddTeamMember = (props) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     async function fetchData() {
-      const users = await API.getAvailableUsers(projectId);
-      console.log(users);
+      const users = await API.getAvailableUsers(projectId, abortController);
 
       setDbUsers(users);
     }
 
     fetchData();
+
+    return () => {
+      abortController.abort();
+    };
   }, [setSelectedUsers, projectId]);
 
   const handleChange = (event) => {
@@ -27,13 +32,16 @@ const AddTeamMember = (props) => {
     setSelectedUsers(values);
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    console.log(selectedUsers);
 
     selectedUsers.forEach(async (userId) => {
       await API.addTeamMember(projectId, { userId });
     });
+
+    const projectTeamRes = await API.getProjectUsers(projectId);
+
+    props.setProjectTeam(projectTeamRes);
 
     props.toggle();
   };

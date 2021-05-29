@@ -14,9 +14,6 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   //   Progress,
   Table,
   Button,
@@ -38,8 +35,8 @@ const ProjectsTable = () => {
   const [isNewProjectOpen, setIsNewProjectOpen] = useState(false);
   const [isEditProjectOpen, setIsEditProjectOpen] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-  const [selectedProjectData, setSelectedProjectData] = useState(null);
-  const [selectedProjectTeam, setSelectedProjectTeam] = useState(null);
+  const [selectedProjectData, setSelectedProjectData] = useState([]);
+  const [selectedProjectTeam, setSelectedProjectTeam] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
 
   //pagination
@@ -54,27 +51,41 @@ const ProjectsTable = () => {
 
   //fetch all users
   useEffect(() => {
+    let isRendered = true;
+
     async function fetchUsers() {
       try {
         const users = await API.getUsers();
-        setAllUsers(users);
+        if (isRendered === true) setAllUsers(users);
       } catch (err) {
         console.log(err);
       }
     }
 
     fetchUsers();
+
+    return () => {
+      isRendered = false;
+    };
   }, []);
 
   useEffect(() => {
+    let isRendered = true;
     async function fetchProject() {
       if (selectedProjectId) {
         try {
-          const projectData = await API.getProject(selectedProjectId);
-          setSelectedProjectData(projectData.data);
+          const [projectData, projectTeam] = await Promise.all([
+            API.getProject(selectedProjectId),
+            API.getProjectUsers(selectedProjectId),
+          ]);
 
-          const projectTeam = await API.getProjectUsers(selectedProjectId);
-          setSelectedProjectTeam(projectTeam.map((user) => user.user_id));
+          if (isRendered === true) {
+            // const projectData = await API.getProject(selectedProjectId);
+            setSelectedProjectTeam(projectTeam.map((user) => user.user_id));
+            setSelectedProjectData(projectData.data);
+
+            // const projectTeam = await API.getProjectUsers(selectedProjectId);
+          }
         } catch (err) {
           console.log(err);
         }
@@ -82,16 +93,25 @@ const ProjectsTable = () => {
     }
 
     fetchProject();
+
+    return () => {
+      isRendered = false;
+    };
   }, [selectedProjectId]);
 
   useEffect(() => {
+    let isRendered = true;
     async function fetchProjects() {
-      await API.getProjects().then((json) => {
-        setProjects(json);
-      });
+      const projectsData = await API.getProjects();
+
+      if (isRendered === true) setProjects(projectsData);
     }
 
     fetchProjects();
+
+    return () => {
+      isRendered = false;
+    };
   }, [isNewProjectOpen, selectedProjectId]);
 
   const deleteProject = async (projectId) => {
@@ -123,7 +143,7 @@ const ProjectsTable = () => {
       <>
         <Card className="shadow">
           <CardHeader className="border-0">
-            <Row className="align-items-center">
+            <Row className="ml-2 align-items-center">
               <h3 className="mb-0">Projects</h3>
               <div className="col text-right">
                 <Button color="primary" onClick={toggleNewProject} size="sm">
@@ -165,7 +185,12 @@ const ProjectsTable = () => {
                         </Media>
                       </Link>
                     </th>
-                    <td>
+                    <td
+                      style={{
+                        whiteSpace: "unset",
+                        wordWrap: "break-word",
+                      }}
+                    >
                       <span>{project.description}</span>
                     </td>
                     <td>

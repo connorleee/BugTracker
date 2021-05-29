@@ -3,12 +3,18 @@ import API from "../../utils/API";
 import { Row } from "reactstrap";
 
 const UsersCell = (props) => {
-  let [projectUsers, setProjectUsers] = useState(null);
+  let [projectUsers, setProjectUsers] = useState([]);
 
   useEffect(() => {
+    let isRendered = true;
+
     API.getProjectUsers(props.projectId).then((json) => {
-      setProjectUsers(json);
+      if (isRendered === true) setProjectUsers(json);
     });
+
+    return () => {
+      isRendered = false;
+    };
   }, [props.projectId, props.selectedProjectId]);
 
   if (projectUsers && projectUsers.length) {

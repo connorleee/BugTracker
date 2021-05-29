@@ -3,7 +3,8 @@ const pool = require("../db");
 module.exports = {
   createComment: async (req, res) => {
     const { ticketId } = req.params;
-    const { authorId, comment } = req.body;
+    const { comment } = req.body;
+    const authorId = req.user;
     const client = await pool.connect();
 
     try {
@@ -25,9 +26,7 @@ module.exports = {
     const client = await pool.connect();
 
     try {
-      const {
-        rows,
-      } = await client.query(
+      const { rows } = await client.query(
         "SELECT comments.id, comments.ticket_id, comments.comment, comments.created_at, users.id AS author_id, users.first_name, users.last_name FROM comments JOIN users ON comments.author_id = users.id WHERE ticket_id = $1",
         [ticketId]
       );
@@ -62,7 +61,7 @@ module.exports = {
     }
   },
   deleteComment: async (req, res) => {
-    const { ticketId, commentId } = req.params;
+    const { commentId } = req.params;
     const client = await pool.connect();
 
     try {
