@@ -172,6 +172,7 @@ const Project = () => {
                 selectedTicket={selectedTicket}
                 assignedDevs={assignedDevs}
                 comments={comments}
+                setComments={setComments}
               />
             </Col>
           </Row>

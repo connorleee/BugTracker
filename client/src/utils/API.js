@@ -78,9 +78,13 @@ const API = {
     let signal = null;
     if (abortController) signal = abortController.signal;
 
-    return fetch(`/api/comments/${ticketId}`, { signal }).then((res) =>
-      res.json()
-    );
+    return fetch(`/api/comments/${ticketId}`, {
+      signal,
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    }).then((res) => res.json());
   },
   getDevAssignments: function (ticketId, abortController) {
     let signal = null;
@@ -217,6 +221,25 @@ const API = {
   getUserTickets: function () {
     return fetch("/api/tickets", {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
+  },
+  createComment: function (ticketId, comment) {
+    return fetch(`/api/comments/${ticketId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(comment),
+    });
+  },
+  deleteComment: function (ticketId, commentId) {
+    return fetch(`/api/comments/${ticketId}/${commentId}`, {
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),

@@ -8,16 +8,57 @@ import {
   CardText,
   Button,
   List,
+  Form,
+  Input,
 } from "reactstrap";
 import moment from "moment";
-import Modal from "../../components/Modal/Modal";
+import API from "utils/API";
 
 export default function SelectedTicket({
   selectedTicket,
   assignedDevs,
   comments,
+  setComments,
 }) {
-  const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleCommentChange = (e) => {
+    let { value, name } = e.target;
+
+    setComment((name = value));
+  };
+
+  const deleteComment = async (commentId) => {
+    try {
+      await API.deleteComment(selectedTicket.id, commentId);
+
+      const comments = await API.getTicketComments(selectedTicket.id);
+      setComments(comments);
+    } catch (err) {
+      console.log("Error deleting comment", err);
+    }
+  };
+
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      await API.createComment(selectedTicket.id, { comment });
+
+      const comments = await API.getTicketComments(selectedTicket.id);
+      setComments(comments);
+    } catch (err) {
+      console.log("Error posting comment", err);
+    }
+
+    setIsSubmitting(false);
+    setComment("");
+  };
 
   return (
     <>
@@ -25,7 +66,7 @@ export default function SelectedTicket({
         <CardHeader>
           <h3 className="mb-0">Selected Ticket Info</h3>
         </CardHeader>
-        {!selectedTicket ? (
+        {Object.keys(selectedTicket).length === 0 ? (
           <div className="m-2">No ticket selected</div>
         ) : (
           <>
@@ -82,39 +123,37 @@ export default function SelectedTicket({
               </Col>
               <Col xl="6" className="mt-3">
                 <Card className="shadow">
-                  <CardHeader>
-                    <Row className="align-items-center">
-                      <h2>Comments</h2>
-                      <div className="col text-right">
-                        <Button
-                          color="primary"
-                          onClick={() => setIsCommentOpen(true)}
-                          size="sm"
-                        >
-                          New Comment
-                        </Button>
-                        <Modal
-                          open={isCommentOpen}
-                          onClose={() => setIsCommentOpen(false)}
-                        >
-                          *New comment form*
-                        </Modal>
-                      </div>
-                    </Row>
+                  <CardHeader className="mb-0">
+                    <h4>Comments</h4>
                   </CardHeader>
                   {comments ? (
                     comments.map((comment) => {
                       return (
                         <Card body className="shadow m-3" key={comment.id}>
                           <CardTitle tag="h5">
-                            <span id={comment.author_id} className="">
-                              {comment.first_name} {comment.last_name} -{" "}
-                            </span>
-                            <span className="h6">
-                              {moment(comment.created_at).format(
-                                "MMMM Do YYYY, h:mm:ss a"
-                              )}
-                            </span>{" "}
+                            <Row className="justify-content-between">
+                              <div>
+                                <span id={comment.author_id} className="">
+                                  {comment.first_name} {comment.last_name} -{" "}
+                                </span>
+                                <span className="h6">
+                                  {moment(comment.created_at).format(
+                                    "MMMM Do YYYY, h:mm:ss a"
+                                  )}
+                                </span>{" "}
+                              </div>
+
+                              <Button
+                                className="p-1"
+                                color="danger"
+                                size="sm"
+                                onClick={() => {
+                                  deleteComment(comment.id);
+                                }}
+                              >
+                                <span>Delete</span>
+                              </Button>
+                            </Row>
                           </CardTitle>
                           <CardText>{comment.comment}</CardText>
                         </Card>
@@ -123,6 +162,26 @@ export default function SelectedTicket({
                   ) : (
                     <></>
                   )}
+                  <Row className="m-3">
+                    <Form
+                      className="input-group"
+                      onSubmit={handleCommentSubmit}
+                    >
+                      <Input
+                        id="comment"
+                        type="text"
+                        name="comment"
+                        placeholder="Enter comment"
+                        value={comment}
+                        onChange={handleCommentChange}
+                      />
+                      <div className="input-group-append">
+                        <Button type="submit" color="primary">
+                          Comment
+                        </Button>
+                      </div>
+                    </Form>
+                  </Row>
                 </Card>
               </Col>
             </Row>
