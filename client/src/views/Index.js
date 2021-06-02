@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -31,8 +31,11 @@ import {
 
 import Header from "components/Headers/Header.js";
 import ProjectsTable from "../components/Tables/ProjectsTable";
+import TicketsByType from "components/Charts/TicketsByType";
+import API from "../utils/API";
 
 const Index = (props) => {
+  const [userTickets, setUserTickets] = useState([]);
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
 
@@ -45,6 +48,32 @@ const Index = (props) => {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+
+  useEffect(() => {
+    //flag for async useEffect cleanup
+    const abortController = new AbortController();
+
+    //TODO: fetch user tickets. create backend and front end route
+    async function fetchUserTickets() {
+      try {
+        const userTicketsRes = await (
+          await API.getUserTickets(abortController)
+        ).json();
+
+        setUserTickets(userTicketsRes);
+      } catch (err) {
+        if (!abortController.signal.aborted) {
+          console.log("Error fetching user tickets", err);
+        }
+      }
+    }
+
+    fetchUserTickets();
+    return () => {
+      abortController.abort();
+    };
+  }, []);
+
   return (
     <>
       <Header />
@@ -55,27 +84,7 @@ const Index = (props) => {
             <ProjectsTable />
           </Col>
           <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="bg-transparent">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
-                    </h6>
-                    <h2 className="mb-0">Total orders</h2>
-                  </div>
-                </Row>
-              </CardHeader>
-              <CardBody>
-                {/* Chart */}
-                <div className="chart">
-                  <Bar
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                </div>
-              </CardBody>
-            </Card>
+            <TicketsByType userTickets={userTickets} />
           </Col>
         </Row>
         <Row className="mt-5">

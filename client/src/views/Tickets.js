@@ -29,23 +29,27 @@ const Tickets = () => {
 
   useEffect(() => {
     //flag for async useEffect cleanup
-    let isRendered = true;
+    const abortController = new AbortController();
 
     //TODO: fetch user tickets. create backend and front end route
     async function fetchUserTickets() {
       try {
-        const userTicketsRes = await (await API.getUserTickets()).json();
+        const userTicketsRes = await (
+          await API.getUserTickets(abortController)
+        ).json();
 
-        if (isRendered === true) setUserTickets(userTicketsRes);
+        setUserTickets(userTicketsRes);
       } catch (err) {
-        console.log("Error fetching user tickets", err);
+        if (!abortController.signal.aborted) {
+          console.log("Error fetching user tickets", err);
+        }
       }
     }
 
     fetchUserTickets();
 
     return () => {
-      isRendered = false;
+      abortController.abort();
     };
   }, []);
 
