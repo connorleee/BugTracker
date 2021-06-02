@@ -11,8 +11,8 @@ import {
   CardBody,
 } from "reactstrap";
 
-function TicketsByType({ userTickets }) {
-  const [ticketTypesQuantities, setTicketTypeQuantities] = useState([]);
+function TicketsPieChart({ focus, userTickets }) {
+  const [pieChartData, setPieChartData] = useState([]);
 
   //capitalization function
   const capitalize = (s) => {
@@ -23,20 +23,20 @@ function TicketsByType({ userTickets }) {
   useEffect(() => {
     console.log(userTickets);
 
-    let typeMap = {}; //{ticketType: quantity}
+    let map = {}; //{ticketType: quantity}
 
     userTickets.forEach((ticket) => {
-      if (typeMap[capitalize(ticket.type)]) {
-        typeMap[capitalize(ticket.type)]++;
+      if (map[capitalize(ticket[focus])]) {
+        map[capitalize(ticket[focus])]++;
       } else {
-        typeMap[capitalize(ticket.type)] = 1;
+        map[capitalize(ticket[focus])] = 1;
       }
     });
 
-    console.log(typeMap);
-    setTicketTypeQuantities(Object.entries(typeMap));
+    console.log(map);
+    setPieChartData(Object.entries(map));
 
-    console.log(ticketTypesQuantities);
+    console.log(pieChartData);
   }, [userTickets]);
 
   return (
@@ -45,10 +45,10 @@ function TicketsByType({ userTickets }) {
         <CardHeader className="bg-transparent">
           <Row className="align-items-center">
             <div className="col">
-              <h6 className="text-uppercase text-muted ls-1 mb-1">
+              {/* <h6 className="text-uppercase text-muted ls-1 mb-1">
                 Performance
-              </h6>
-              <h2 className="mb-0">Tickets by Type</h2>
+              </h6> */}
+              <h2 className="mb-0">Tickets by {capitalize(focus)}</h2>
             </div>
           </Row>
         </CardHeader>
@@ -59,16 +59,16 @@ function TicketsByType({ userTickets }) {
             chartType="PieChart"
             loader={<div>Loading Chart</div>}
             data={
-              ticketTypesQuantities.length > 0
+              pieChartData.length > 0
                 ? [
-                    ["Ticket Type", "Number of Tickets"],
-                    ...ticketTypesQuantities,
+                    [`Ticket ${capitalize(focus)}`, "Number of Tickets"],
+                    ...pieChartData,
                   ]
-                : ["Ticket Type", "Number of Tickets"]
+                : [`Ticket ${capitalize(focus)}`, "Number of Tickets"]
             }
-            options={{
-              title: "My Daily Activities",
-            }}
+            // options={{
+            //   title: "Tickets by Type",
+            // }}
             rootProps={{ "data-testid": "1" }}
           />
         </CardBody>
@@ -77,4 +77,4 @@ function TicketsByType({ userTickets }) {
   );
 }
 
-export default TicketsByType;
+export default TicketsPieChart;

@@ -31,7 +31,7 @@ import {
 
 import Header from "components/Headers/Header.js";
 import ProjectsTable from "../components/Tables/ProjectsTable";
-import TicketsByType from "components/Charts/TicketsByType";
+import TicketsPieChart from "components/Charts/TicketsPieChart";
 import API from "../utils/API";
 
 const Index = (props) => {
@@ -84,7 +84,9 @@ const Index = (props) => {
             <ProjectsTable />
           </Col>
           <Col xl="4">
-            <TicketsByType userTickets={userTickets} />
+            <TicketsPieChart userTickets={userTickets} focus={"type"} />
+            <TicketsPieChart userTickets={userTickets} focus={"status"} />
+            <TicketsPieChart userTickets={userTickets} focus={"priority"} />
           </Col>
         </Row>
         <Row className="mt-5">
