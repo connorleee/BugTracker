@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Chart from "react-google-charts";
 
-import {
-  Card,
-  CardHeader,
-  Row,
-  Nav,
-  NavItem,
-  NavLink,
-  CardBody,
-} from "reactstrap";
+import { Card, CardHeader, Row, CardBody } from "reactstrap";
 
 function TicketsPieChart({ focus, userTickets }) {
   const [pieChartData, setPieChartData] = useState([]);
@@ -21,8 +13,6 @@ function TicketsPieChart({ focus, userTickets }) {
   };
 
   useEffect(() => {
-    console.log(userTickets);
-
     let map = {}; //{ticketType: quantity}
 
     userTickets.forEach((ticket) => {
@@ -33,10 +23,7 @@ function TicketsPieChart({ focus, userTickets }) {
       }
     });
 
-    console.log(map);
     setPieChartData(Object.entries(map));
-
-    console.log(pieChartData);
   }, [userTickets]);
 
   return (
@@ -54,8 +41,8 @@ function TicketsPieChart({ focus, userTickets }) {
         </CardHeader>
         <CardBody>
           <Chart
-            // width={"500px"}
-            // height={"300px"}
+            // width={"100%"}
+            // height={"100%"}
             chartType="PieChart"
             loader={<div>Loading Chart</div>}
             data={
@@ -64,7 +51,7 @@ function TicketsPieChart({ focus, userTickets }) {
                     [`Ticket ${capitalize(focus)}`, "Number of Tickets"],
                     ...pieChartData,
                   ]
-                : [`Ticket ${capitalize(focus)}`, "Number of Tickets"]
+                : [[`Ticket ${capitalize(focus)}`, "Number of Tickets"]]
             }
             // options={{
             //   title: "Tickets by Type",

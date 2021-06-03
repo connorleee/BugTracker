@@ -3,6 +3,7 @@ import API from "../utils/API";
 import moment from "moment";
 import PaginationComponent from "../components/Tables/PaginationComponent";
 import "./Tables.css";
+import { useHistory } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -17,7 +18,7 @@ import {
 
 import Header from "components/Headers/Header.js";
 
-const Tickets = () => {
+const Tickets = (props) => {
   const [userTickets, setUserTickets] = useState([{}]);
   const [totalTickets, setTotalTickets] = useState(0);
   const [currentTicketsPage, setCurrentTicketsPage] = useState(1);
@@ -64,6 +65,11 @@ const Tickets = () => {
     );
   }, [userTickets, currentTicketsPage]);
 
+  let history = useHistory();
+  const handleLink = (projectId) => {
+    history.push(`/admin/project/${projectId}`); //TODO: dynaically load user accessibillity in place of admnin
+  };
+
   return (
     <>
       <Header />
@@ -90,7 +96,12 @@ const Tickets = () => {
                 <tbody>
                   {ticketsData.map((ticket, key) => {
                     return (
-                      <tr key={key} id={ticket.id} className="ticketRow">
+                      <tr
+                        key={key}
+                        id={ticket.id}
+                        className="ticketRow"
+                        onClick={() => handleLink(ticket.project_id)}
+                      >
                         <th scope="row">
                           <Media>
                             <span className="mb-0 text-sm">
