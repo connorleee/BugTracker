@@ -3,6 +3,7 @@ import API from "../utils/API";
 import moment from "moment";
 import PaginationComponent from "../components/Tables/PaginationComponent";
 import "./Tables.css";
+import { useHistory } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -17,7 +18,7 @@ import {
 
 import Header from "components/Headers/Header.js";
 
-const Tickets = () => {
+const Tickets = (props) => {
   const [userTickets, setUserTickets] = useState([{}]);
   const [totalTickets, setTotalTickets] = useState(0);
   const [currentTicketsPage, setCurrentTicketsPage] = useState(1);
@@ -29,23 +30,27 @@ const Tickets = () => {
 
   useEffect(() => {
     //flag for async useEffect cleanup
-    let isRendered = true;
+    const abortController = new AbortController();
 
     //TODO: fetch user tickets. create backend and front end route
     async function fetchUserTickets() {
       try {
-        const userTicketsRes = await (await API.getUserTickets()).json();
+        const userTicketsRes = await (
+          await API.getUserTickets(abortController)
+        ).json();
 
-        if (isRendered === true) setUserTickets(userTicketsRes);
+        setUserTickets(userTicketsRes);
       } catch (err) {
-        console.log("Error fetching user tickets", err);
+        if (!abortController.signal.aborted) {
+          console.log("Error fetching user tickets", err);
+        }
       }
     }
 
     fetchUserTickets();
 
     return () => {
-      isRendered = false;
+      abortController.abort();
     };
   }, []);
 
@@ -59,6 +64,11 @@ const Tickets = () => {
       (currentTicketsPage - 1) * ticketsPerPage + ticketsPerPage
     );
   }, [userTickets, currentTicketsPage]);
+
+  let history = useHistory();
+  const handleLink = (projectId) => {
+    history.push(`/admin/project/${projectId}`); //TODO: dynaically load user accessibillity in place of admnin
+  };
 
   return (
     <>
@@ -86,7 +96,12 @@ const Tickets = () => {
                 <tbody>
                   {ticketsData.map((ticket, key) => {
                     return (
-                      <tr key={key} id={ticket.id} className="ticketRow">
+                      <tr
+                        key={key}
+                        id={ticket.id}
+                        className="ticketRow"
+                        onClick={() => handleLink(ticket.project_id)}
+                      >
                         <th scope="row">
                           <Media>
                             <span className="mb-0 text-sm">

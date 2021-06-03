@@ -218,8 +218,12 @@ const API = {
       body: JSON.stringify(userData),
     });
   },
-  getUserTickets: function () {
+  getUserTickets: function (abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
     return fetch("/api/tickets", {
+      signal,
       method: "GET",
       headers: {
         "Content-Type": "application/json",

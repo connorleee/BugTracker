@@ -37,7 +37,16 @@ const Admin = (props) => {
 
   const getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
-      if (
+      if (routes[i].path.indexOf(":") !== -1) {
+        if (
+          props.location.pathname.indexOf(
+            routes[i].layout +
+              routes[i].path.slice(0, routes[i].path.indexOf(":"))
+          ) !== -1
+        ) {
+          return routes[i].name;
+        }
+      } else if (
         props.location.pathname.indexOf(routes[i].layout + routes[i].path) !==
         -1
       ) {
