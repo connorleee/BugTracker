@@ -46,7 +46,7 @@ Before you can install Node, you’ll need to install two other applications. Fo
 - Open a new issue [here](https://github.com/connorlee/BugTracker/issues/new) for support.
 
 ## Team
-- **Connor Lee** (Back-End Design & Development) - <a href="https://connorleee.github.io/portfolio-official/" target="_blank">https://connorleee.github.io/portfolio-official/</a>
+- **Connor Lee** - <a href="https://connorleee.github.io/portfolio-official/" target="_blank">https://connorleee.github.io/portfolio-official/</a>
 
 
 ## Acknowledgments
