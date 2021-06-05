@@ -1,70 +1,58 @@
-# Getting Started with Create React App
+# BugTracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+*Project Management - Clean and Responsive*
 
-## Available Scripts
+## Purpose
+Bug Tracker is a project management tool to track progress of multiple projects and teams. Users are able to create projects and assign developers to the project. Within a project, users can generate tickets for bugs, feature requests, etc and follow comment streams on individual tickets.
 
-In the project directory, you can run:
+## Usage
+Log into BugTracker after creating an account and begin by adding a new project from the dashboard.
 
-### `npm start`
+## Technologies Used
+- React 
+- Node.js
+- PostgreSQL
+- Authorization / Authentication utilizing JSON Web Tokens
+- Deployed through Heroku
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Development Notes
+### Prerequisites
+**Node**
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Before you can install Node, you’ll need to install two other applications. Fortunately, once you have these on your machine, installing Node takes just a few minutes.[1]
+ 
+**Mac OS**
+> - **XCode** Apple’s XCode development software is used to build Mac and iOS apps, but it also includes the tools you need to compile software for use on your Mac. XCode is free and you can find it in the Apple App Store.
+> 
+> - Via Terminal `xcode-select --install`
+> 
+> - **Homebrew** Homebrew is a package manager for the Mac — it makes installing most open source sofware (like Node) as simple as writing `brew install node`.
+> - To install Homebrew just open Terminal and type `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`. You’ll see messages in the Terminal explaining what you need to do to complete the installation process. Now type `brew install node`.
 
-### `npm test`
+**Windows Installation Steps**[2]
+> - Download the Windows installer from the [Nodes.js®](http://nodejs.org/) web site.
+> - Run the installer (the .msi file you downloaded in the previous step.)
+> - Follow the prompts in the installer (Accept the license agreement, click the NEXT button a bunch of times and accept the default installation settings).
+> - Restart your computer. You won’t be able to run Node.js until you restart your computer.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Contributing
+- Fork it (https://github.com/connorleee/BugTracker/fork)
+- Create your feature branch `git checkout -b feature/newFeature`
+- Commit your changes `git commit -am 'Add your Message Here'`
+- Push to the branch `git push origin feature/newFeature`
+- Create a new Pull Request within Github
 
-### `npm run build`
+## Support
+- Open a new issue [here](https://github.com/connorlee/BugTracker/issues/new) for support.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Team
+- **Connor Lee** (Back-End Design & Development) - <a href="https://connorleee.github.io/portfolio-official/" target="_blank">https://connorleee.github.io/portfolio-official/</a>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Acknowledgments
 
-### `npm run eject`
+[1] Adapted from instructions found here: <a href="https://blog.teamtreehouse.com/install-node-js-npm-mac" target="_blank">https://blog.teamtreehouse.com/install-node-js-npm-mac</a>
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+[2] Adapted from instructions found here: <a href="https://blog.teamtreehouse.com/install-node-js-npm-windows" target="_blank">https://blog.teamtreehouse.com/install-node-js-npm-windows</a>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[3] Utilizes Front End Template by Creative-Tim: <a href="https://www.creative-tim.com/product/argon-dashboard-react" target="_blank">https://www.creative-tim.com/product/argon-dashboard-react</a>
