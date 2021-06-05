@@ -43,7 +43,7 @@ Before you can install Node, you’ll need to install two other applications. Fo
 - Create a new Pull Request within Github
 
 ## Support
-- Open a new issue [here](https://github.com/connorlee/BugTracker/issues/new) for support.
+- Open a new issue [here](https://github.com/connorleee/BugTracker/issues/) for support.
 
 ## Team
 - **Connor Lee** - <a href="https://connorleee.github.io/portfolio-official/" target="_blank">https://connorleee.github.io/portfolio-official/</a>
