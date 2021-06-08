@@ -188,8 +188,11 @@ const API = {
       },
     });
   },
-  getUsers: function () {
-    return fetch("/api/users").then((res) => res.json());
+  getUsers: function (abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
+    return fetch("/api/users", { signal }).then((res) => res.json());
   },
   lookupUserByEmail: function (email) {
     return fetch(`/api/auth/user/`, {
