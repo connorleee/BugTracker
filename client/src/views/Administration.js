@@ -2,24 +2,18 @@ import React, { useEffect, useState } from "react";
 
 // reactstrap components
 import {
-  // Badge,
   Card,
   CardHeader,
-  // CardFooter,
-  // DropdownMenu,
-  // DropdownItem,
-  // UncontrolledDropdown,
-  // DropdownToggle,
-  // Media,
-  // Pagination,
-  // PaginationItem,
-  // PaginationLink,
-  // Progress,
-  // Table,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  ListGroup,
+  ListGroupItem,
   Container,
   Row,
   Col,
-  // UncontrolledTooltip,
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
@@ -27,7 +21,14 @@ import API from "../utils/API";
 
 const Administration = () => {
   const [allDevs, setAllDevs] = useState([]);
-  const [dev, setDev] = useState({});
+  const [selectedDev, setSelectedDev] = useState({});
+  const [authValue, setAuthValue] = useState(selectedDev.user_authority);
+
+  //capitalization function
+  const capitalize = (s) => {
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -37,8 +38,6 @@ const Administration = () => {
         const organization = await API.getUsers(abortController);
 
         setAllDevs(organization);
-
-        console.log(organization);
       } catch (err) {
         console.log(err);
       }
@@ -51,6 +50,27 @@ const Administration = () => {
     };
   }, []);
 
+  const handleChange = (e) => {
+    let value = e.target.value;
+
+    setAuthValue(value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await API.updateUserAuthority(selectedDev.id, { authValue });
+
+      const organization = await API.getUsers();
+      setAllDevs(organization);
+      setSelectedDev(selectedDev.id);
+
+      console.log("User authority updated");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <Header />
@@ -58,29 +78,79 @@ const Administration = () => {
       <Container className="mt--7" fluid>
         <Row>
           <Col md="6">
-            <Card>
-              <CardHeader>Organization</CardHeader>
-              <ul>
+            <Card className="shadow">
+              <CardHeader className="mb-2">Organization</CardHeader>
+              <ListGroup className="m-2">
                 {allDevs.map((dev, key) => {
                   return (
-                    <li
+                    <ListGroupItem
+                      as="li"
                       key={key}
                       id={dev.id}
                       onClick={() => {
-                        setDev(dev);
+                        setSelectedDev(dev);
                       }}
+                      active={dev.id === selectedDev.id}
                     >
                       {dev.first_name} {dev.last_name}
-                    </li>
+                    </ListGroupItem>
                   );
                 })}
-              </ul>
+              </ListGroup>
             </Card>
           </Col>
           <Col md="6">
-            <Card>
-              <CardHeader>Developer</CardHeader>
-              {dev ? <h4>{dev.first_name}</h4> : <h4>No Dev Selected</h4>}
+            <Card className="shadow">
+              <CardHeader className="mb-2">Developer</CardHeader>
+              <Row className="m-2 justify-content-center">
+                {selectedDev.id ? (
+                  <div>
+                    <Row>
+                      <h1>
+                        {selectedDev.first_name} {selectedDev.last_name}
+                      </h1>
+                    </Row>
+
+                    <Row>
+                      <Col md="12" className="mb-0">
+                        <h6 className="text-muted text-capitlized">
+                          Current User Authority
+                        </h6>
+                      </Col>
+
+                      <Col md="12">
+                        {capitalize(selectedDev.user_authority)}
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Form>
+                        <FormGroup>
+                          <Label>Authorization Level</Label>
+                          <Input
+                            type="select"
+                            name="authority"
+                            id="authority"
+                            value={authValue}
+                            onChange={handleChange}
+                          >
+                            <option value="admin">Admin</option>
+                            <option value="project manager">
+                              Project Manager
+                            </option>
+                            <option value="developer">Developer</option>
+                          </Input>
+                          <Button type="submit" onClick={handleSubmit}>
+                            Submit
+                          </Button>
+                        </FormGroup>
+                      </Form>
+                    </Row>
+                  </div>
+                ) : (
+                  <h4>No Dev Selected</h4>
+                )}
+              </Row>
             </Card>
           </Col>
         </Row>

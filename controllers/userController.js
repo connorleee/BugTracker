@@ -141,4 +141,23 @@ module.exports = {
       await client.release();
     }
   },
+  updateAuthority: async (req, res) => {
+    const { id } = req.params;
+    const { authValue } = req.body;
+    const client = await pool.connect();
+
+    try {
+      await client.query("UPDATE users SET user_authority = $1 WHERE id = $2", [
+        authValue,
+        id,
+      ]);
+
+      res.status(200).json({ msg: "User authority updated" });
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } finally {
+      await client.release();
+    }
+  },
 };
