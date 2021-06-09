@@ -8,6 +8,10 @@ import {
   FormGroup,
   Label,
   Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Table,
   Button,
   ListGroup,
   ListGroupItem,
@@ -50,6 +54,12 @@ const Administration = () => {
     };
   }, []);
 
+  const editUser = (id) => {
+    console.log("edit");
+  };
+
+  const removeUser = async (id) => {};
+
   const handleChange = (e) => {
     let value = e.target.value;
 
@@ -77,10 +87,55 @@ const Administration = () => {
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
-          <Col md="6">
+          <Col md="6" className="mb-4">
             <Card className="shadow">
               <CardHeader className="mb-2">Organization</CardHeader>
-              <ListGroup className="m-2">
+              <Table className="p-2">
+                <thead>
+                  <tr>
+                    <th>User Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allDevs.map((dev, key) => {
+                    return (
+                      <tr
+                        key={key}
+                        id={dev.id}
+                        onClick={() => {
+                          setSelectedDev(dev);
+                        }}
+                      >
+                        <td>
+                          {dev.first_name} {dev.last_name}
+                        </td>
+                        <td>
+                          <Button
+                            size="sm"
+                            color="warning"
+                            onClick={() => {
+                              editUser(dev.id);
+                            }}
+                          >
+                            <i class="fas fa-edit" />{" "}
+                          </Button>
+                          <Button
+                            size="sm"
+                            color="danger"
+                            onClick={() => {
+                              removeUser(dev.id);
+                            }}
+                          >
+                            <i class="fas fa-trash-alt" />
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+              <ListGroup className="m-4">
                 {allDevs.map((dev, key) => {
                   return (
                     <ListGroupItem
@@ -101,56 +156,65 @@ const Administration = () => {
           </Col>
           <Col md="6">
             <Card className="shadow">
-              <CardHeader className="mb-2">Developer</CardHeader>
-              <Row className="m-2 justify-content-center">
-                {selectedDev.id ? (
-                  <div>
-                    <Row>
-                      <h1>
+              <CardHeader className="mb-2">User Authority Level</CardHeader>
+              {selectedDev.id ? (
+                <div>
+                  <Row className="m-4 ">
+                    <Col md="3">
+                      <h2 className="text-primary">
                         {selectedDev.first_name} {selectedDev.last_name}
-                      </h1>
-                    </Row>
+                      </h2>
+                    </Col>
+                    <Col md="3">
+                      <h6 className="text-muted text-capitlized">
+                        Current User Authority
+                      </h6>
+                      <span>{capitalize(selectedDev.user_authority)}</span>
+                    </Col>
 
-                    <Row>
-                      <Col md="12" className="mb-0">
-                        <h6 className="text-muted text-capitlized">
-                          Current User Authority
-                        </h6>
-                      </Col>
-
-                      <Col md="12">
-                        {capitalize(selectedDev.user_authority)}
-                      </Col>
-                    </Row>
-
-                    <Row>
+                    <Col md="6" className="mb-0">
                       <Form>
                         <FormGroup>
-                          <Label>Authorization Level</Label>
-                          <Input
-                            type="select"
-                            name="authority"
-                            id="authority"
-                            value={authValue}
-                            onChange={handleChange}
-                          >
-                            <option value="admin">Admin</option>
-                            <option value="project manager">
-                              Project Manager
-                            </option>
-                            <option value="developer">Developer</option>
-                          </Input>
-                          <Button type="submit" onClick={handleSubmit}>
-                            Submit
-                          </Button>
+                          <Label className="text-muted">
+                            Update Authorization Level
+                          </Label>
+                          <InputGroup>
+                            <Input
+                              type="select"
+                              name="authority"
+                              id="authority"
+                              value={authValue}
+                              onChange={handleChange}
+                            >
+                              <option value="admin">Admin</option>
+                              <option value="project manager">
+                                Project Manager
+                              </option>
+                              <option value="developer">Developer</option>
+                            </Input>
+
+                            <InputGroupAddon addonType="append">
+                              <Button
+                                color="success"
+                                type="submit"
+                                onClick={handleSubmit}
+                              >
+                                Submit
+                              </Button>
+                            </InputGroupAddon>
+                          </InputGroup>
                         </FormGroup>
                       </Form>
-                    </Row>
-                  </div>
-                ) : (
-                  <h4>No Dev Selected</h4>
-                )}
-              </Row>
+                    </Col>
+                  </Row>
+                </div>
+              ) : (
+                <div>
+                  <Row className="m-4 ">
+                    <h4>No Dev Selected</h4>
+                  </Row>
+                </div>
+              )}
             </Card>
           </Col>
         </Row>

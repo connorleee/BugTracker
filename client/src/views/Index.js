@@ -86,13 +86,13 @@ const Index = (props) => {
         </Row>
 
         <Row className="mt-5">
-          <Col xl="4">
+          <Col xl="4" className="mb-2">
             <TicketsPieChart userTickets={userTickets} focus={"type"} />
           </Col>
-          <Col xl="4">
+          <Col xl="4" className="mb-2">
             <TicketsPieChart userTickets={userTickets} focus={"priority"} />
           </Col>
-          <Col xl="4">
+          <Col xl="4" className="mb-2">
             <TicketsPieChart userTickets={userTickets} focus={"status"} />
           </Col>
         </Row>
