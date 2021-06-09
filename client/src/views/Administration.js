@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react";
+// core components
+import Header from "components/Headers/Header.js";
+
+import parsePhoneNumber, { AsYouType } from "libphonenumber-js";
+import API from "../utils/API";
 
 // reactstrap components
 import {
@@ -8,10 +13,6 @@ import {
   FormGroup,
   Label,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Table,
   Button,
   ListGroup,
   ListGroupItem,
@@ -19,17 +20,12 @@ import {
   Row,
   Col,
 } from "reactstrap";
-// core components
-import Header from "components/Headers/Header.js";
-import API from "../utils/API";
 
 const Administration = () => {
   const [allDevs, setAllDevs] = useState([]);
   const [selectedDev, setSelectedDev] = useState({});
-  const [values, setValues] = useState(selectedDev);
-  const [isEditUserOpen, setIsEditUserOpen] = useState(false);
-
-  const toggleEditUser = () => setIsEditUserOpen(!isEditUserOpen);
+  const [values, setValues] = useState({});
+  const asYouType = new AsYouType("US");
 
   //capitalization function
   const capitalize = (s) => {
@@ -39,8 +35,6 @@ const Administration = () => {
 
   useEffect(() => {
     setValues(selectedDev);
-
-    console.log(values);
   }, [selectedDev]);
 
   useEffect(() => {
@@ -63,10 +57,6 @@ const Administration = () => {
     };
   }, []);
 
-  const editUser = (id) => {
-    console.log("edit");
-  };
-
   const removeUser = async (id) => {
     if (window.confirm("Are you sure you want to remove user?")) {
       try {
@@ -83,14 +73,22 @@ const Administration = () => {
   };
 
   const handleChange = (e) => {
-    let value = e.target.value;
-    let name = e.target.name;
+    if (e.target.getAttribute("type") === "phone") {
+      let phone = asYouType.input(e.target.value);
 
-    setValues({ ...values, [name]: value });
+      setValues({ ...values, phone });
+    } else {
+      let value = e.target.value;
+      let name = e.target.name;
+
+      setValues({ ...values, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(values);
 
     try {
       // await API.updateUserAuthority(selectedDev.id, { authValue });
@@ -113,52 +111,6 @@ const Administration = () => {
           <Col md="6" className="mb-4">
             <Card className="shadow">
               <CardHeader className="mb-2">Organization</CardHeader>
-              {/* <Table className="p-2">
-                <thead>
-                  <tr>
-                    <th>User Name</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {allDevs.map((dev, key) => {
-                    return (
-                      <tr
-                        key={key}
-                        id={dev.id}
-                        onClick={() => {
-                          setSelectedDev(dev);
-                        }}
-                      >
-                        <td>
-                          {dev.first_name} {dev.last_name}
-                        </td>
-                        <td>
-                          <Button
-                            size="sm"
-                            color="warning"
-                            onClick={() => {
-                              editUser();
-                            }}
-                          >
-                            <i className="fas fa-edit" />{" "}
-                          </Button>
-                          <Button
-                            size="sm"
-                            color="danger"
-                            onClick={() => {
-                              removeUser(dev.id);
-                            }}
-                          >
-                            <i className="fas fa-trash-alt" />
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table> */}
-
               <ListGroup className="m-4">
                 {allDevs.map((dev, key) => {
                   return (
@@ -206,7 +158,7 @@ const Administration = () => {
                                 id="firstName"
                                 value={values.first_name}
                                 onChange={handleChange}
-                              ></Input>
+                              />
                             </FormGroup>
                           </Col>
                           <Col md="6" className="m-0">
@@ -220,7 +172,7 @@ const Administration = () => {
                                 id="lastName"
                                 value={values.last_name}
                                 onChange={handleChange}
-                              ></Input>
+                              />
                             </FormGroup>
                           </Col>
                         </Row>
@@ -236,7 +188,7 @@ const Administration = () => {
                                 id="phone"
                                 value={values.phone}
                                 onChange={handleChange}
-                              ></Input>
+                              />
                             </FormGroup>
                           </Col>
                           <Col md="6">
@@ -271,7 +223,7 @@ const Administration = () => {
                             id="email"
                             value={values.email}
                             onChange={handleChange}
-                          ></Input>
+                          />
                         </FormGroup>
                         <Button
                           color="success"
