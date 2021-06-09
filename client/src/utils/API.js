@@ -63,6 +63,15 @@ const API = {
   saveUser: function (userData) {
     return axios.post("/api/users", userData);
   },
+  removeUser: function (userId) {
+    return fetch(`/api/users/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
+  },
   addContact: function (id, data) {
     return axios.put("/api/users/" + id, data);
   },

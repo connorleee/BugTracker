@@ -10,7 +10,7 @@ router
   .route("/:id")
   .get(userController.getUser)
   .put(userController.updateUser)
-  .delete(userController.deleteUser);
+  .delete(authorization, userController.deleteUser);
 
 router
   .route("/authorityLevel/:id")
