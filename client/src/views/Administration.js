@@ -99,11 +99,11 @@ const Administration = () => {
     console.log(values);
 
     try {
-      // await API.updateUserAuthority(selectedDev.id, { authValue });
+      await API.updateUser(selectedDev.id, values);
 
       const organization = await API.getUsers();
       setAllDevs(organization);
-      setSelectedDev(selectedDev.id);
+      setSelectedDev(selectedDev);
 
       console.log("User authority updated");
     } catch (err) {

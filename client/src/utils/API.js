@@ -262,14 +262,14 @@ const API = {
       },
     });
   },
-  updateUserAuthority: function (userId, userAuthority) {
-    return fetch(`/api/users/authorityLevel/${userId}`, {
+  updateUser: function (userId, payload) {
+    return fetch(`/api/users/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         token: localStorage.getItem("token"),
       },
-      body: JSON.stringify(userAuthority),
+      body: JSON.stringify(payload),
     }).then((res) => res.json());
   },
 };

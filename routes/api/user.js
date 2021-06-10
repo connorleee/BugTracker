@@ -9,11 +9,7 @@ router.route("/").get(userController.getAll).post(userController.addUser);
 router
   .route("/:id")
   .get(userController.getUser)
-  .put(userController.updateUser)
+  .put(authorization, userController.updateUser)
   .delete(authorization, userController.deleteUser);
-
-router
-  .route("/authorityLevel/:id")
-  .put(authorization, userController.updateAuthority);
 
 module.exports = router;

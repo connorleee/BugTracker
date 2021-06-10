@@ -103,20 +103,16 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     const { id } = req.params;
-    const { firstName, lastName, phone, email, password, userAuth } = req.body;
+    const { first_name, last_name, phone, email, user_authority } = req.body;
     const client = await pool.connect();
-
-    //password encryption before adding to DB
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
 
     try {
       const updateUser = await client.query(
-        "UPDATE users SET (first_name, last_name, phone, email, password_hash, user_authority) = ($1, $2, $3, $4, $5, $6) WHERE id = $7",
-        [firstName, lastName, phone, email, hash, userAuth, id]
+        "UPDATE users SET (first_name, last_name, phone, email, user_authority) = ($1, $2, $3, $4, $5) WHERE id = $6",
+        [first_name, last_name, phone, email, user_authority, id]
       );
 
-      res.json(`${firstName} ${lastName} profile: updated successfully`);
+      res.json(`${first_name} ${last_name} profile: updated successfully`);
     } catch (err) {
       console.log(`Failed to update user ${id}: `, "\n", err);
       res.status(400).json({ msg: "Please review user update query" });
@@ -137,25 +133,6 @@ module.exports = {
     } catch (err) {
       console.log(`Failed to delete user ${id}: `, "\n", err);
       res.status(500).json({ msg: `Project deletion of ${id} failed` });
-    } finally {
-      await client.release();
-    }
-  },
-  updateAuthority: async (req, res) => {
-    const { id } = req.params;
-    const { authValue } = req.body;
-    const client = await pool.connect();
-
-    try {
-      await client.query("UPDATE users SET user_authority = $1 WHERE id = $2", [
-        authValue,
-        id,
-      ]);
-
-      res.status(200).json({ msg: "User authority updated" });
-    } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
     } finally {
       await client.release();
     }
