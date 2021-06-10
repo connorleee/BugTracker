@@ -26,7 +26,8 @@ export default function SelectedTicket({
   const handleCommentChange = (e) => {
     let { value, name } = e.target;
 
-    setComment((name = value));
+    console.log(value);
+    setComment(value);
   };
 
   const deleteComment = async (commentId) => {
@@ -172,13 +173,13 @@ export default function SelectedTicket({
                                   deleteComment(comment.id);
                                 }}
                               >
-                                <i class="fas fa-trash-alt"></i>
+                                <i className="fas fa-trash-alt"></i>
                                 {/* <span>Delete</span> */}
                               </Button>
                             </Row>
                           </CardTitle>
-                          <CardText>
-                            <Row className="mt-0 mx-2">{comment.comment}</Row>
+                          <CardText className="ml-1">
+                            {comment.comment}
                           </CardText>
                         </Card>
                       );

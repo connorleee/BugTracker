@@ -28,7 +28,15 @@ const UpdateTicket = (props) => {
       status: props.ticketData.status || "new",
       timeEstimate: props.ticketData.time_estimate || 0,
     };
-  }, []);
+  }, [
+    props.ticketData.title,
+    props.ticketData.description,
+    props.assignedDevs,
+    props.ticketData.priority,
+    props.ticketData.type,
+    props.ticketData.status,
+    props.ticketData.time_estimate,
+  ]);
 
   const { handleChange, handleSubmit, values, errors } = useForm(
     submit,

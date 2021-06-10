@@ -24,7 +24,7 @@ function TicketsPieChart({ focus, userTickets }) {
     });
 
     setPieChartData(Object.entries(map));
-  }, [userTickets]);
+  }, [userTickets, focus]);
 
   return (
     <div>
