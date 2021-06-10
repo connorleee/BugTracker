@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./Tables.css";
 
 // core components
 import Header from "components/Headers/Header.js";
@@ -53,7 +54,9 @@ const Administration = () => {
 
         setAllDevs(organization);
       } catch (err) {
-        console.log(err);
+        if (!DOMException) {
+          console.log(err);
+        }
       }
     };
 
@@ -109,7 +112,6 @@ const Administration = () => {
       email: values.email,
       user_authority: values.user_authority,
     };
-    console.log(formattedValues);
 
     try {
       await API.updateUser(selectedDev.id, formattedValues);
@@ -144,6 +146,7 @@ const Administration = () => {
                 {allDevs.map((dev, key) => {
                   return (
                     <ListGroupItem
+                      className="listItem"
                       as="li"
                       key={key}
                       id={dev.id}

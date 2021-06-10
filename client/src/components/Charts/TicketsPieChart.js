@@ -13,6 +13,7 @@ function TicketsPieChart({ focus, userTickets }) {
   };
 
   useEffect(() => {
+    let isRendered = true;
     let map = {}; //{ticketType: quantity}
 
     userTickets.forEach((ticket) => {
@@ -23,7 +24,11 @@ function TicketsPieChart({ focus, userTickets }) {
       }
     });
 
-    setPieChartData(Object.entries(map));
+    if (isRendered) {
+      setPieChartData(Object.entries(map));
+    }
+
+    return (isRendered = false);
   }, [userTickets, focus]);
 
   return (
