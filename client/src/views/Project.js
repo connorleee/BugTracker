@@ -147,7 +147,6 @@ const Project = () => {
                 toggleNewMember={toggleNewMember}
                 isNewMemberOpen={isNewMemberOpen}
                 projectId={projectId}
-                setProjectTeam={setProjectTeam}
               />
             </Col>
             <Col xl="8" className="mt-3">

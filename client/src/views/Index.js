@@ -36,18 +36,10 @@ import API from "../utils/API";
 
 const Index = (props) => {
   const [userTickets, setUserTickets] = useState([]);
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
-
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
 
   useEffect(() => {
     //flag for async useEffect cleanup

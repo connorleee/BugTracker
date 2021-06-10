@@ -24,9 +24,8 @@ export default function SelectedTicket({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCommentChange = (e) => {
-    let { value, name } = e.target;
+    let { value } = e.target;
 
-    console.log(value);
     setComment(value);
   };
 
