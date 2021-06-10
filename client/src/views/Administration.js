@@ -236,21 +236,27 @@ const Administration = () => {
                             onChange={handleChange}
                           />
                         </FormGroup>
-                        <Button
-                          color="success"
-                          type="submit"
-                          onClick={handleSubmit}
-                        >
-                          Submit
-                        </Button>
-                        <Button
-                          color="danger"
-                          type="button"
-                          onClick={removeUser}
-                          size="sm"
-                        >
-                          Remove User
-                        </Button>
+                        <Row>
+                          <Col md="6">
+                            <Button
+                              color="success"
+                              type="submit"
+                              onClick={handleSubmit}
+                            >
+                              Submit
+                            </Button>
+                          </Col>
+                          <Col md="6" className="text-right">
+                            <Button
+                              color="danger"
+                              type="button"
+                              onClick={removeUser}
+                              size="sm"
+                            >
+                              Remove User
+                            </Button>
+                          </Col>
+                        </Row>
                       </Form>
                     </Col>
                   </Row>
