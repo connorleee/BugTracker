@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const userController = require("../../controllers/userController");
+const authorization = require("../../middleware/authorization");
 
 // Matches route with "/api/users/"
 router.route("/").get(userController.getAll).post(userController.addUser);
@@ -8,7 +9,7 @@ router.route("/").get(userController.getAll).post(userController.addUser);
 router
   .route("/:id")
   .get(userController.getUser)
-  .put(userController.updateUser)
-  .delete(userController.deleteUser);
+  .put(authorization, userController.updateUser)
+  .delete(authorization, userController.deleteUser);
 
 module.exports = router;

@@ -24,9 +24,9 @@ export default function SelectedTicket({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCommentChange = (e) => {
-    let { value, name } = e.target;
+    let { value } = e.target;
 
-    setComment((name = value));
+    setComment(value);
   };
 
   const deleteComment = async (commentId) => {
@@ -73,8 +73,8 @@ export default function SelectedTicket({
             <Row className=" p-2">
               <Col xl="6" className="mt-3">
                 <Card className="shadow p-4">
-                  <Row className="mb-2">
-                    <Col md="3" className=" rounded p-2">
+                  <Row className=" mb-2">
+                    <Col md="3">
                       <h6 className="text-muted text-uppercase">
                         Ticket Title
                       </h6>
@@ -82,7 +82,7 @@ export default function SelectedTicket({
                         {selectedTicket.title}
                       </h2>
                     </Col>
-                    <Col md="3" className=" rounded p-2">
+                    <Col md="3">
                       <h6 className="text-muted text-uppercase">Author</h6>
                       <p color="primary" className="mb-3">
                         {selectedTicket.first_name} {selectedTicket.last_name}
@@ -94,27 +94,27 @@ export default function SelectedTicket({
                     </Col>
                   </Row>
 
-                  <Row className="justify-content-center mb-2">
-                    <Col xl="3">
+                  <Row className="mb-2">
+                    <Col md="3" sm="3" xs="3">
                       <h6 className="text-muted text-uppercase">Status</h6>
                       <span className="mr-1 mb-2 badge badge-primary badge-pill">
                         {selectedTicket.status}
                       </span>
                     </Col>
-                    <Col xl="3">
+                    <Col md="3" sm="3" xs="3">
                       <h6 className="text-muted text-uppercase">Priority</h6>
                       <span className="mr-1 mb-2 badge badge-primary badge-pill">
                         {selectedTicket.priority}
                       </span>
                     </Col>
-                    <Col xl="3">
+                    <Col md="3" sm="3" xs="3">
                       <h6 className="text-muted text-uppercase">Type</h6>
                       <span className="mr-1 mb-2 badge badge-primary badge-pill">
                         {selectedTicket.type}
                       </span>
                     </Col>
 
-                    <Col xl="3">
+                    <Col md="3">
                       <h6 className="text-muted text-uppercase">
                         Time Estimate (Hours)
                       </h6>
@@ -122,7 +122,7 @@ export default function SelectedTicket({
                     </Col>
                   </Row>
                   <hr className="pt-0" />
-                  <h5>Assigned Devs </h5>
+                  <h6 className="text-muted text-uppercase">Assigned Devs </h6>
                   <List type="unstyled">
                     {assignedDevs ? (
                       assignedDevs.map((dev, index) => {
@@ -172,13 +172,13 @@ export default function SelectedTicket({
                                   deleteComment(comment.id);
                                 }}
                               >
-                                <i class="fas fa-trash-alt"></i>
+                                <i className="fas fa-trash-alt"></i>
                                 {/* <span>Delete</span> */}
                               </Button>
                             </Row>
                           </CardTitle>
-                          <CardText>
-                            <Row className="mt-0 mx-2">{comment.comment}</Row>
+                          <CardText className="ml-1">
+                            {comment.comment}
                           </CardText>
                         </Card>
                       );

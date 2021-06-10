@@ -63,6 +63,15 @@ const API = {
   saveUser: function (userData) {
     return axios.post("/api/users", userData);
   },
+  removeUser: function (userId) {
+    return fetch(`/api/users/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    });
+  },
   addContact: function (id, data) {
     return axios.put("/api/users/" + id, data);
   },
@@ -188,8 +197,11 @@ const API = {
       },
     });
   },
-  getUsers: function () {
-    return fetch("/api/users").then((res) => res.json());
+  getUsers: function (abortController) {
+    let signal = null;
+    if (abortController) signal = abortController.signal;
+
+    return fetch("/api/users", { signal }).then((res) => res.json());
   },
   lookupUserByEmail: function (email) {
     return fetch(`/api/auth/user/`, {
@@ -249,6 +261,16 @@ const API = {
         token: localStorage.getItem("token"),
       },
     });
+  },
+  updateUser: function (userId, payload) {
+    return fetch(`/api/users/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(payload),
+    }).then((res) => res.json());
   },
 };
 

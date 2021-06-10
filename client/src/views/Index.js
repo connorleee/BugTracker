@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 // node.js library that concatenates classes (strings)
-import classnames from "classnames";
+// import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+// import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
+  // Button,
+  // Card,
+  // CardHeader,
+  // CardBody,
+  // NavItem,
+  // NavLink,
+  // Nav,
+  // Progress,
+  // Table,
   Container,
   Row,
   Col,
@@ -25,8 +25,8 @@ import {
 import {
   chartOptions,
   parseOptions,
-  chartExample1,
-  chartExample2,
+  // chartExample1,
+  // chartExample2,
 } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
@@ -36,18 +36,10 @@ import API from "../utils/API";
 
 const Index = (props) => {
   const [userTickets, setUserTickets] = useState([]);
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
-
-  const toggleNavs = (e, index) => {
-    e.preventDefault();
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
 
   useEffect(() => {
     //flag for async useEffect cleanup
@@ -86,13 +78,13 @@ const Index = (props) => {
         </Row>
 
         <Row className="mt-5">
-          <Col xl="4">
+          <Col xl="4" className="mb-2">
             <TicketsPieChart userTickets={userTickets} focus={"type"} />
           </Col>
-          <Col xl="4">
+          <Col xl="4" className="mb-2">
             <TicketsPieChart userTickets={userTickets} focus={"priority"} />
           </Col>
-          <Col xl="4">
+          <Col xl="4" className="mb-2">
             <TicketsPieChart userTickets={userTickets} focus={"status"} />
           </Col>
         </Row>
