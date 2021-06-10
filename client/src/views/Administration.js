@@ -23,7 +23,14 @@ import {
 
 const Administration = () => {
   const [allDevs, setAllDevs] = useState([]);
-  const [selectedDev, setSelectedDev] = useState({});
+  const [selectedDev, setSelectedDev] = useState({
+    id: "",
+    first_name: "",
+    last_name: "",
+    phone: "",
+    email: "",
+    user_authority: "",
+  });
   const [values, setValues] = useState({});
   const asYouType = new AsYouType("US");
 
@@ -78,6 +85,7 @@ const Administration = () => {
 
       setValues({ ...values, phone });
     } else {
+      console.log("here");
       let value = e.target.value;
       let name = e.target.name;
 
@@ -149,13 +157,13 @@ const Administration = () => {
                         <Row>
                           <Col md="6" className="m-0">
                             <FormGroup>
-                              <Label for="firstName" className="text-muted">
+                              <Label for="first_name" className="text-muted">
                                 First Name
                               </Label>
                               <Input
                                 type="text"
-                                name="firstName"
-                                id="firstName"
+                                name="first_name"
+                                id="first_name"
                                 value={values.first_name}
                                 onChange={handleChange}
                               />
@@ -163,13 +171,13 @@ const Administration = () => {
                           </Col>
                           <Col md="6" className="m-0">
                             <FormGroup>
-                              <Label for="lastName" className="text-muted">
+                              <Label for="last_name" className="text-muted">
                                 Last Name
                               </Label>
                               <Input
                                 type="text"
-                                name="lastName"
-                                id="lastName"
+                                name="last_name"
+                                id="last_name"
                                 value={values.last_name}
                                 onChange={handleChange}
                               />
@@ -193,13 +201,16 @@ const Administration = () => {
                           </Col>
                           <Col md="6">
                             <FormGroup>
-                              <Label for="authority" className="text-muted">
+                              <Label
+                                for="user_authority"
+                                className="text-muted"
+                              >
                                 Authorization Level
                               </Label>
                               <Input
                                 type="select"
-                                name="authority"
-                                id="authority"
+                                name="user_authority"
+                                id="user_authority"
                                 value={values.user_authority}
                                 onChange={handleChange}
                               >
