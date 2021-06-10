@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 // core components
 import Header from "components/Headers/Header.js";
 
@@ -32,13 +35,10 @@ const Administration = () => {
     user_authority: "",
   });
   const [values, setValues] = useState({});
-  const asYouType = new AsYouType("US");
 
-  //capitalization function
-  const capitalize = (s) => {
-    if (typeof s !== "string") return "";
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  };
+  //phone number client format handling
+  const asYouType = new AsYouType("US");
+  const parseDigits = (string) => (string.match(/\d+/g) || []).join("");
 
   useEffect(() => {
     setValues(selectedDev);
@@ -69,6 +69,16 @@ const Administration = () => {
       try {
         await API.removeUser(id);
 
+        toast.error("User information updated", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         const organization = await API.getUsers();
         setAllDevs(organization);
       } catch (err) {
@@ -80,32 +90,43 @@ const Administration = () => {
   };
 
   const handleChange = (e) => {
-    if (e.target.getAttribute("type") === "phone") {
-      let phone = asYouType.input(e.target.value);
+    let value = e.target.value;
+    let name = e.target.name;
 
-      setValues({ ...values, phone });
-    } else {
-      console.log("here");
-      let value = e.target.value;
-      let name = e.target.name;
-
-      setValues({ ...values, [name]: value });
-    }
+    setValues({ ...values, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(values);
+    //TODO: add validation, especially for phone number
+
+    const formattedValues = {
+      id: values.id,
+      first_name: values.first_name,
+      last_name: values.last_name,
+      phone: parsePhoneNumber(values.phone, "US").number,
+      email: values.email,
+      user_authority: values.user_authority,
+    };
+    console.log(formattedValues);
 
     try {
-      await API.updateUser(selectedDev.id, values);
+      await API.updateUser(selectedDev.id, formattedValues);
+
+      toast.success("User information updated", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
 
       const organization = await API.getUsers();
       setAllDevs(organization);
       setSelectedDev(selectedDev);
-
-      console.log("User authority updated");
     } catch (err) {
       console.log(err);
     }
@@ -191,10 +212,12 @@ const Administration = () => {
                                 Phone
                               </Label>
                               <Input
-                                type="text"
+                                type="phone"
                                 name="phone"
                                 id="phone"
-                                value={values.phone}
+                                value={asYouType.input(
+                                  parseDigits(values.phone).substr(0, 11)
+                                )}
                                 onChange={handleChange}
                               />
                             </FormGroup>
@@ -271,6 +294,7 @@ const Administration = () => {
             </Card>
           </Col>
         </Row>
+        <ToastContainer />
       </Container>
     </>
   );
