@@ -35,11 +35,12 @@ const Login = (props) => {
     const response = await API.login(values);
 
     if (response.ok) {
-      const { token } = await response.json();
+      const { token, auth } = await response.json();
 
       localStorage.setItem("token", token);
 
       props.setAuth(true);
+      props.setAuthLevel(auth);
 
       values.email = "";
       values.password = "";

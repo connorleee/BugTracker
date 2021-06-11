@@ -5,6 +5,7 @@ import AuthLayout from "layouts/Auth.js";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [authLevel, setAuthLevel] = useState("");
 
   let token = localStorage.getItem("token");
 
@@ -25,7 +26,11 @@ const App = () => {
           path="/admin"
           render={(props) =>
             isAuthenticated && token != null ? (
-              <AdminLayout {...props} setAuth={setAuth} />
+              <AdminLayout
+                {...props}
+                setAuth={setAuth}
+                setAuthLevel={setAuthLevel}
+              />
             ) : (
               <Redirect to="/auth" />
             )
@@ -35,7 +40,11 @@ const App = () => {
           path="/auth"
           render={(props) =>
             !isAuthenticated ? (
-              <AuthLayout {...props} setAuth={setAuth} />
+              <AuthLayout
+                {...props}
+                setAuth={setAuth}
+                setAuthLevel={setAuthLevel}
+              />
             ) : (
               <Redirect to="/admin" />
             )
