@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import AdminLayout from "layouts/Admin.js";
+import NonAdminLayout from "layouts/NonAdmin.js";
 import AuthLayout from "layouts/Auth.js";
 
 const App = () => {
@@ -14,6 +15,12 @@ const App = () => {
       setIsAuthenticated(false);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setAuthLevel("");
+    }
+  }, [isAuthenticated]);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -36,6 +43,20 @@ const App = () => {
             )
           }
         />
+        {/* <Route
+          path="/general"
+          render={(props) =>
+            isAuthenticated && token != null ? (
+              <NonAdminLayout
+                {...props}
+                setAuth={setAuth}
+                setAuthLevel={setAuthLevel}
+              />
+            ) : (
+              <Redirect to="/auth" />
+            )
+          }
+        /> */}
         <Route
           path="/auth"
           render={(props) =>

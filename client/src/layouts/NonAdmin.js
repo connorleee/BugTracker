@@ -21,10 +21,10 @@ const Admin = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "general") {
         return (
           <Route
-            path={prop.layout + prop.path}
+            path={prop.root + prop.path}
             render={() => <prop.component {...props} />}
             key={key}
           />
@@ -58,11 +58,12 @@ const Admin = (props) => {
 
   return (
     <>
+      <h1> NON ADMIN</h1>
       <Sidebar
         {...props}
         routes={routes}
         logo={{
-          innerLink: "/admin/index",
+          innerLink: "/general/index",
           imgSrc: require("../assets/img/brand/bug-tracker-logo.png").default,
           imgAlt: "...",
         }}
@@ -74,7 +75,7 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
-          <Redirect from="*" to="/admin/index" />
+          <Redirect from="*" to="/general/index" />
         </Switch>
         <Container fluid>
           <AdminFooter />

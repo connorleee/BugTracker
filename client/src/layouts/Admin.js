@@ -21,10 +21,10 @@ const Admin = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "admin" || prop.layout === "general") {
         return (
           <Route
-            path={prop.layout + prop.path}
+            path={prop.root + prop.path}
             render={() => <prop.component {...props} />}
             key={key}
           />
