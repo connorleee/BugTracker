@@ -39,8 +39,8 @@ const Login = (props) => {
 
       localStorage.setItem("token", token);
 
-      props.setAuth(true);
       props.setAuthLevel(auth);
+      props.setAuth(true);
 
       values.email = "";
       values.password = "";

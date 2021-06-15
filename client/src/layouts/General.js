@@ -5,11 +5,11 @@ import { Container } from "reactstrap";
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
-import Sidebar from "components/Sidebar/Sidebar.js";
+import GeneralSidebar from "components/Sidebar/GeneralSidebar.js";
 
 import routes from "routes.js";
 
-const Admin = (props) => {
+const General = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -59,7 +59,7 @@ const Admin = (props) => {
   return (
     <>
       <h1> NON ADMIN</h1>
-      <Sidebar
+      <GeneralSidebar
         {...props}
         routes={routes}
         logo={{
@@ -85,4 +85,4 @@ const Admin = (props) => {
   );
 };
 
-export default Admin;
+export default General;

@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import AdminLayout from "layouts/Admin.js";
-import NonAdminLayout from "layouts/NonAdmin.js";
+import GeneralLayout from "layouts/General.js";
 import AuthLayout from "layouts/Auth.js";
+import PrivateRoute from "layouts/PrivateRoute";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [authLevel, setAuthLevel] = useState("");
 
   let token = localStorage.getItem("token");
+
+  useEffect(() => {
+    console.log(authLevel);
+    console.log(
+      isAuthenticated &&
+        (authLevel === "developer" || authLevel === "project manager") &&
+        token != null
+    );
+  }, [authLevel]);
 
   useEffect(() => {
     if (token == null) {
@@ -32,7 +42,7 @@ const App = () => {
         <Route
           path="/admin"
           render={(props) =>
-            isAuthenticated && token != null ? (
+            isAuthenticated && authLevel === "admin" && token != null ? (
               <AdminLayout
                 {...props}
                 setAuth={setAuth}
@@ -43,11 +53,13 @@ const App = () => {
             )
           }
         />
-        {/* <Route
+        <Route
           path="/general"
           render={(props) =>
-            isAuthenticated && token != null ? (
-              <NonAdminLayout
+            isAuthenticated &&
+            (authLevel === "developer" || authLevel === "project manager") &&
+            token != null ? (
+              <GeneralLayout
                 {...props}
                 setAuth={setAuth}
                 setAuthLevel={setAuthLevel}
@@ -56,19 +68,42 @@ const App = () => {
               <Redirect to="/auth" />
             )
           }
-        /> */}
+        />
         <Route
           path="/auth"
-          render={(props) =>
-            !isAuthenticated ? (
-              <AuthLayout
-                {...props}
-                setAuth={setAuth}
-                setAuthLevel={setAuthLevel}
-              />
-            ) : (
-              <Redirect to="/admin" />
-            )
+          render={
+            (props) => {
+              if (!isAuthenticated) {
+                return (
+                  <AuthLayout
+                    {...props}
+                    setAuth={setAuth}
+                    setAuthLevel={setAuthLevel}
+                  />
+                );
+              } else {
+                if (authLevel === "admin") {
+                  return <Redirect to="/admin" />;
+                } else if (
+                  authLevel === "developer" ||
+                  authLevel === "project manager"
+                ) {
+                  return <Redirect to="/general" />;
+                }
+              }
+            }
+
+            // !isAuthenticated ? (
+            //     <AuthLayout
+            //       {...props}
+            //       setAuth={setAuth}
+            //       setAuthLevel={setAuthLevel}
+            //     />
+            //   ) : authLevel === "admin" ? (
+            //     <Redirect to="/admin" />
+            //   ) : (
+            //     <Redirect to="/admin" />
+            //   )
           }
         />
         <Redirect from="/" to="/admin/index" />
