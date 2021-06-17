@@ -42,7 +42,7 @@ const App = () => {
         <Route
           path="/admin"
           render={(props) =>
-            isAuthenticated && isAdmin ? (
+            isAuthenticated && token !== null ? (
               <AdminLayout
                 {...props}
                 setAuth={setAuth}
@@ -55,7 +55,7 @@ const App = () => {
           }
         />
 
-        <Route
+        {/* <Route
           path="/general"
           render={(props) =>
             isAuthenticated && !isAdmin ? (
@@ -68,7 +68,7 @@ const App = () => {
               <Redirect to="/auth" />
             )
           }
-        />
+        /> */}
 
         <Route
           path="/auth"
