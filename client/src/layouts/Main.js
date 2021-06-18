@@ -5,7 +5,7 @@ import { Container } from "reactstrap";
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
-import AdminSidebar from "components/Sidebar/AdminSidebar.js";
+import UniversalSidebar from "components/Sidebar/UniversalSidebar.js";
 
 // import { useAuth } from "../contexts/AuthContext";
 import routes from "routes.js";
@@ -69,7 +69,7 @@ const Admin = (props) => {
 
   return (
     <>
-      <AdminSidebar
+      <UniversalSidebar
         {...props}
         routes={routes}
         logo={{

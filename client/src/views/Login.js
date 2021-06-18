@@ -43,9 +43,6 @@ const Login = (props) => {
 
       props.setAuthLevel(auth);
       props.setAuth(true);
-      if (auth === "admin") {
-        props.setIsAdmin(true);
-      }
 
       if (auth === "admin") {
         props.history.push("/admin");

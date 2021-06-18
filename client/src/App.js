@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import AdminLayout from "layouts/Admin.js";
+import MainLayout from "layouts/Main.js";
 import AuthLayout from "layouts/Auth.js";
-// import { AuthProvider } from "./contexts/AuthContext";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [authLevel, setAuthLevel] = useState("");
 
   let token = localStorage.getItem("token");
@@ -16,12 +14,6 @@ const App = () => {
       setIsAuthenticated(false);
     }
   }, [token]);
-
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     setAuthLevel("");
-  //   }
-  // }, [isAuthenticated]);
 
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
@@ -39,7 +31,6 @@ const App = () => {
                   {...props}
                   setAuth={setAuth}
                   setAuthLevel={setAuthLevel}
-                  setIsAdmin={setIsAdmin}
                 />
               );
             }
@@ -50,7 +41,7 @@ const App = () => {
           path="/"
           render={(props) =>
             isAuthenticated && token !== null ? (
-              <AdminLayout
+              <MainLayout
                 {...props}
                 setAuth={setAuth}
                 authLevel={authLevel}
@@ -62,21 +53,10 @@ const App = () => {
           }
         />
 
-        {/* <Route exact path="/">
-          {!isAuthenticated ? (
-            <Redirect to="/auth" />
-          ) : (
-            <Redirect to="/admin/index" />
-          )}
-        </Route> */}
-
-        {/* <Redirect from="/" to="/auth" exact /> */}
-
         <Route path="*">
           <h1>404 No page found</h1>
         </Route>
       </Switch>
-      {/* </AuthProvider> */}
     </BrowserRouter>
   );
 };

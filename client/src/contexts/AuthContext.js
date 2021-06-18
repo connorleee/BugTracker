@@ -1,3 +1,8 @@
+/* 
+This file is not currently in use, but might be implemented for a 
+more global access to auth states
+*/
+
 import React, { useContext, useState, useEffect } from "react";
 
 const AuthContext = React.createContext();
