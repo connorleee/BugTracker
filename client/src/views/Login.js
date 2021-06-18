@@ -35,12 +35,21 @@ const Login = (props) => {
     const response = await API.login(values);
 
     if (response.ok) {
+      // const { token, auth } = await response.json();
       const { token, auth } = await response.json();
 
       localStorage.setItem("token", token);
+      localStorage.setItem("auth", auth);
 
       props.setAuthLevel(auth);
       props.setAuth(true);
+
+      if (auth === "admin") {
+        props.history.push("/admin");
+      } else if (auth === "developer" || auth === "project manager") {
+        console.log("here");
+        props.history.push("/index");
+      }
 
       values.email = "";
       values.password = "";

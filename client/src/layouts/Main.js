@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
-import AdminSidebar from "components/Sidebar/AdminSidebar.js";
+import UniversalSidebar from "components/Sidebar/UniversalSidebar.js";
 
+// import { useAuth } from "../contexts/AuthContext";
 import routes from "routes.js";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();
 
-  React.useEffect(() => {
+  // let auth = useAuth();
+
+  useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     mainContent.current.scrollTop = 0;
@@ -25,6 +28,14 @@ const Admin = (props) => {
         return (
           <Route
             path={prop.root + prop.path}
+            render={() => <prop.component {...props} />}
+            key={key}
+          />
+        );
+      } else if (prop.layout === "general") {
+        return (
+          <Route
+            path={prop.path}
             render={() => <prop.component {...props} />}
             key={key}
           />
@@ -58,7 +69,7 @@ const Admin = (props) => {
 
   return (
     <>
-      <AdminSidebar
+      <UniversalSidebar
         {...props}
         routes={routes}
         logo={{

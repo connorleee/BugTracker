@@ -51,27 +51,52 @@ const AdminSidebar = (props) => {
   };
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
-    return routes.map((prop, key) => {
-      if (prop.layout === "admin" && prop.display) {
-        return (
-          <NavItem key={key}>
-            <NavLink
-              to={prop.root + prop.path}
-              tag={NavLinkRRD}
-              onClick={closeCollapse}
-              activeClassName="active"
-            >
-              <i className={prop.icon} />
-              {prop.name}
-            </NavLink>
-          </NavItem>
-        );
-      }
-    });
+    //TODO: figure out more elegant/secure way to manage admin persistence vs local storage
+    if (
+      props.authLevel === "admin" ||
+      localStorage.getItem("auth") === "admin"
+    ) {
+      return routes.map((prop, key) => {
+        if (prop.layout === "admin" && prop.display) {
+          return (
+            <NavItem key={key}>
+              <NavLink
+                to={prop.root + prop.path}
+                tag={NavLinkRRD}
+                onClick={closeCollapse}
+                activeClassName="active"
+              >
+                <i className={prop.icon} />
+                {prop.name}
+              </NavLink>
+            </NavItem>
+          );
+        }
+      });
+    } else {
+      return routes.map((prop, key) => {
+        if (prop.layout === "general" && prop.display) {
+          return (
+            <NavItem key={key}>
+              <NavLink
+                to={prop.path}
+                tag={NavLinkRRD}
+                onClick={closeCollapse}
+                activeClassName="active"
+              >
+                <i className={prop.icon} />
+                {prop.name}
+              </NavLink>
+            </NavItem>
+          );
+        }
+      });
+    }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("auth");
     props.setAuth(false);
     props.setAuthLevel("");
   };
