@@ -22,14 +22,20 @@ const Admin = (props) => {
     mainContent.current.scrollTop = 0;
   }, [location]);
 
-  console.log(props.authLevel);
-
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "admin") {
         return (
           <Route
             path={prop.root + prop.path}
+            render={() => <prop.component {...props} />}
+            key={key}
+          />
+        );
+      } else if (prop.layout === "general") {
+        return (
+          <Route
+            path={prop.path}
             render={() => <prop.component {...props} />}
             key={key}
           />

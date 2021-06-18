@@ -75,7 +75,7 @@ const AdminSidebar = (props) => {
           return (
             <NavItem key={key}>
               <NavLink
-                to={prop.root + prop.path}
+                to={prop.path}
                 tag={NavLinkRRD}
                 onClick={closeCollapse}
                 activeClassName="active"

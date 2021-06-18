@@ -47,11 +47,12 @@ const Login = (props) => {
         props.setIsAdmin(true);
       }
 
-      // if (auth === "admin") {
-      props.history.push("/admin");
-      // } else if (auth === "developer" || auth === "project manager") {
-      //   props.history.push("/general");
-      // }
+      if (auth === "admin") {
+        props.history.push("/admin");
+      } else if (auth === "developer" || auth === "project manager") {
+        console.log("here");
+        props.history.push("/index");
+      }
 
       values.email = "";
       values.password = "";
