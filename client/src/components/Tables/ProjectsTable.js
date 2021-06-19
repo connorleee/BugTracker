@@ -39,7 +39,7 @@ const ProjectsTable = () => {
   const [selectedProjectData, setSelectedProjectData] = useState([]);
   const [selectedProjectTeam, setSelectedProjectTeam] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-  const [q, setQ] = useState(""); //table search value
+  // const [q, setQ] = useState(""); //table search value
 
   //pagination
   const [totalProjects, setTotalProjects] = useState(0);
@@ -140,19 +140,17 @@ const ProjectsTable = () => {
     );
   }, [projects, currentProjectPage]);
 
-  const filteredProjectData = (rows) => {
-    console.log(rows);
+  // const filteredProjectData = (rows) => {
+  //   const columns = rows[0] && ["name", "description"];
 
-    const columns = rows[0] && ["name", "description"];
+  //   return rows.filter((row) =>
+  //     columns.some(
+  //       (column) => row[column].toString().toLowerCase().indexOf(q) > -1
+  //     )
+  //   );
+  // };
 
-    return rows.filter((row) =>
-      columns.some(
-        (column) => row[column].toString().toLowerCase().indexOf(q) > -1
-      )
-    );
-  };
-
-  filteredProjectData(projectData);
+  // filteredProjectData(projectData);
 
   if (projects) {
     return (
@@ -171,14 +169,16 @@ const ProjectsTable = () => {
                   New Project
                 </Button>
 
-                <Modal isOpen={isNewProjectOpen} onClose={toggleNewProject}>
-                  <ModalHeader toggle={toggleNewProject}>
-                    Add New Project
+                <Modal isOpen={isNewProjectOpen} toggle={toggleNewProject}>
+                  <Container className="m-4 align-self-center" fluid>
+                    <ModalHeader toggle={toggleNewProject}>
+                      Add New Project
+                    </ModalHeader>
                     <CreateProject
                       toggle={toggleNewProject}
                       setProjects={setProjects}
                     />
-                  </ModalHeader>
+                  </Container>
                 </Modal>
               </div>
             </Row>
