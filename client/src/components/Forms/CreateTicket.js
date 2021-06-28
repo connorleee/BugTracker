@@ -158,7 +158,6 @@ const CreateTicket = (props) => {
               >
                 <option>issue</option>
                 <option>bug</option>
-                <option>high</option>
                 <option>error</option>
                 <option>feature request</option>
                 <option>other</option>
