@@ -18,6 +18,7 @@
   "author": "Connor Lee",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^4.2.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -30,6 +31,7 @@
     "react-toastify": "^7.0.4"
   },
   "devDependencies": {
-    "concurrently": "^5.2.0"
+    "concurrently": "^5.2.0",
+    "prisma": "^4.2.1"
   }
 }

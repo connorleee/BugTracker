@@ -1,12 +1,12 @@
 const Pool = require("pg").Pool;
 require("dotenv").config();
-
+const process = require("process")
 const devConfig = {
-  user: process.env.PGUSER,
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: process.env.PGPASSWORD,
-  port: process.env.PGPORT,
+  user: process.env.PGUSER || "pgrootuser",
+  host: process.env.PGHOST || "localhost",
+  database: process.env.PGDATABASE || "bugtracker",
+  password: process.env.PGPASSWORD || "passwod",
+  port: process.env.PGPORT || 5432,
   max: 20,
   connectionTimeoutMillis: 0,
   idleTimeoutMillis: 0,
@@ -26,5 +26,5 @@ pool.on("error", (err, client) => {
   console.error("Unexpected error on idle client", err);
   process.exit(-1);
 });
-
+// console.log(process.env)
 module.exports = pool;
