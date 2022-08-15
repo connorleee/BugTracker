@@ -8,7 +8,7 @@ function jwtGenerator(user_id) {
 
   return jwt.sign(
     payload,
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET || 'hello'
     // { expiresIn: "1hr" }
   );
 }

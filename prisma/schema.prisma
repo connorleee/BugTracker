@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TODO Add Models ticket_history and devAssginments
+
+model Users {
+  id               String     @id @default(uuid())
+  email            String     @unique()
+  phone            String     @unique()
+  passwordHash     String
+  lastName         String     @db.VarChar(32)
+  firstName        String     @db.VarChar(32)
+  otherName        String?    @db.VarChar(32)
+  userAuthority    UserRoles  @default(DEVELOPER)
+  createdAt        DateTime   @default(now()) @db.Timestamptz()
+  updatedAt        DateTime   @updatedAt
+  comments         Comments[]
+  projects         Projects[]
+  Tickets          Tickets[]
+  assigned_tickets Tickets[]  @relation("ticketAssigned", map: "assignedTicket")
+
+  // @@unique([email, phone])
+  @@map(name: "users")
+}
+
+model Tickets {
+  id            Int          @id @default(autoincrement())
+  title         String
+  projectId     Int?
+  description   String?      @default("No description")
+  priority      Priorities   @default(LOW)
+  type          TicketType   @default(SUPPORT)
+  status        TicketStatus @default(UNASSIGNED)
+  time_estimate DateTime?    @map("timeEstimate")
+  project       Projects?    @relation(fields: [projectId], references: [id])
+  Comments      Comments[]
+  Users         Users?       @relation(fields: [userId], references: [id])
+  userId        String?
+  assginee      Users?       @relation("ticketAssigned", fields: [assignedTo], references: [id])
+  assignedTo    String?
+
+  @@map(name: "tickets")
+}
+
+model Comments {
+  id           Int      @id @default(autoincrement())
+  descriptions String
+  authorId     String
+  ticketId     Int
+  createdAt    DateTime @default(now()) @db.Timestamptz()
+  updatedAt    DateTime @updatedAt
+  user         Users    @relation(fields: [authorId], references: [id])
+  ticket       Tickets  @relation(fields: [ticketId], references: [id])
+
+  @@map(name: "comments")
+}
+
+// model UserProject {
+//   user_id    Int
+//   project_id Int
+
+//   user    Users    @relation(fields: [user_id], references: [id])
+//   project Projects @relation(fields: [project_id], references: [id])
+
+//   @@map("user")
+// }
+
+model Projects {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  Tickets     Tickets[]
+  Users       Users?    @relation(fields: [userId], references: [id])
+  userId      String?
+
+  @@map("projects")
+}
+
+enum TicketStatus {
+  UNASSIGNED
+  ASSIGNED
+}
+
+enum UserRoles {
+  DEVELOPER
+  ADMIN
+  OPERATOR
+}
+
+enum TicketType {
+  BUG
+  STORY
+  STORY_POINT
+  SUPPORT
+}
+
+enum Priorities {
+  LOW
+  MEDIUM
+  HIGH
+}

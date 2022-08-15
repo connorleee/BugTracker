@@ -6,7 +6,7 @@ const path = require("path");
 const PORT = process.env.PORT || 3001;
 require("dotenv").config();
 const cors = require("cors");
-
+console.log(process.env.PORT)
 app.use(express.json()); // middleware to acces req.body
 app.use(express.urlencoded({ extended: false }));
 //middleware to handle any CORS issues
@@ -23,6 +23,11 @@ app.use((req, res, next) => {
   }
   next();
 });
+const pool = require("./db")
+pool
+  .query('SELECT NOW() as now')
+  .then(res => console.log(res.rows[0]))
+  .catch(e => console.error(e.stack))
 
 app.use(routes);
 
