@@ -63,9 +63,5 @@
     "jquery": "3.5.1",
     "typescript": "4.1.3"
   },
-  "proxy": {
-    "/api": {
-      "target": "http://localhost:3001"
-    }
-  }
-}
+  "proxy": "http://localhost:3001"
+} 

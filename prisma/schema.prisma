@@ -11,38 +11,39 @@ datasource db {
 
 model Users {
   id               String     @id @default(uuid())
-  email            String
-  phone            String
-  password_hash    String     @map("passwordHash")
-  last_name        String     @map("lastName") @db.VarChar(32)
-  first_name       String     @map("firstName") @db.VarChar(32)
-  other_name       String?    @map("otherName") @db.VarChar(32)
-  created_at       DateTime   @default(now()) @map("createdAt") @db.Timestamptz()
-  updated_at       DateTime   @updatedAt @map("updatedAt")
+  email            String     @unique()
+  phone            String     @unique()
+  passwordHash     String
+  lastName         String     @db.VarChar(32)
+  firstName        String     @db.VarChar(32)
+  otherName        String?    @db.VarChar(32)
+  userAuthority    UserRoles  @default(DEVELOPER)
+  createdAt        DateTime   @default(now()) @db.Timestamptz()
+  updatedAt        DateTime   @updatedAt
   comments         Comments[]
   projects         Projects[]
   Tickets          Tickets[]
-  assigned_tickets Tickets[]  @relation("ticket_assigned", map: "assignedTicket")
+  assigned_tickets Tickets[]  @relation("ticketAssigned", map: "assignedTicket")
 
-  @@unique([email, phone])
+  // @@unique([email, phone])
   @@map(name: "users")
 }
 
 model Tickets {
   id            Int          @id @default(autoincrement())
   title         String
-  project_id    Int?         @map("projectId")
+  projectId     Int?
   description   String?      @default("No description")
   priority      Priorities   @default(LOW)
   type          TicketType   @default(SUPPORT)
   status        TicketStatus @default(UNASSIGNED)
   time_estimate DateTime?    @map("timeEstimate")
-  project       Projects?    @relation(fields: [project_id], references: [id])
+  project       Projects?    @relation(fields: [projectId], references: [id])
   Comments      Comments[]
-  Users         Users?       @relation(fields: [users_id], references: [id])
-  users_id      String?      @map("userId")
-  assginee      Users?       @relation("ticket_assigned", fields: [assigned_to], references: [id])
-  assigned_to   String?      @map("assignedTo")
+  Users         Users?       @relation(fields: [userId], references: [id])
+  userId        String?
+  assginee      Users?       @relation("ticketAssigned", fields: [assignedTo], references: [id])
+  assignedTo    String?
 
   @@map(name: "tickets")
 }
@@ -50,12 +51,12 @@ model Tickets {
 model Comments {
   id           Int      @id @default(autoincrement())
   descriptions String
-  author_id    String   @map("authorId")
-  ticket_id    Int      @map("ticketId")
-  created_at   DateTime @default(now()) @map("createdAt") @db.Timestamptz()
-  updated_at   DateTime @updatedAt @map("updatedAt")
-  user         Users    @relation(fields: [author_id], references: [id])
-  ticket       Tickets  @relation(fields: [ticket_id], references: [id])
+  authorId     String
+  ticketId     Int
+  createdAt    DateTime @default(now()) @db.Timestamptz()
+  updatedAt    DateTime @updatedAt
+  user         Users    @relation(fields: [authorId], references: [id])
+  ticket       Tickets  @relation(fields: [ticketId], references: [id])
 
   @@map(name: "comments")
 }
@@ -75,8 +76,8 @@ model Projects {
   title       String
   description String
   Tickets     Tickets[]
-  Users       Users?    @relation(fields: [users_id], references: [id])
-  users_id    String?
+  Users       Users?    @relation(fields: [userId], references: [id])
+  userId      String?
 
   @@map("projects")
 }
@@ -84,6 +85,12 @@ model Projects {
 enum TicketStatus {
   UNASSIGNED
   ASSIGNED
+}
+
+enum UserRoles {
+  DEVELOPER
+  ADMIN
+  OPERATOR
 }
 
 enum TicketType {

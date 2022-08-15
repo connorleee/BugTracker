@@ -12,6 +12,7 @@ Log into BugTracker after creating an account and begin by adding a new project 
 - React 
 - Node.js
 - PostgreSQL
+- ORM (Prisma)
 - Authorization / Authentication utilizing JSON Web Tokens
 - Deployed through Heroku
 
@@ -34,6 +35,21 @@ Before you can install Node, you’ll need to install two other applications. Fo
 > - Run the installer (the .msi file you downloaded in the previous step.)
 > - Follow the prompts in the installer (Accept the license agreement, click the NEXT button a bunch of times and accept the default installation settings).
 > - Restart your computer. You won’t be able to run Node.js until you restart your computer.
+
+**PostgresSQL**
+**Mac OS**
+> - run `brew update`
+> - run `brew install postgresql`
+> - run `brew services start postgresql`
+> - run `psql postgres` (if this fails close and reopen your terminal)
+> - run `CREATE ROLE pgrootuser WITH LOGIN PASSWORD 'password';`
+> - run `ALTER ROLE pgrootuser CREATEDB;`
+
+### Project setup
+<!-- ### Install posgress -->
+> - run `npm install` in your project directory
+> - run `npx prisma migration dev --name init`
+> - run `npx prisma generate`
 
 ## Contributing
 - Fork it (https://github.com/connorleee/BugTracker/fork)

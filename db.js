@@ -5,7 +5,7 @@ const devConfig = {
   user: process.env.PGUSER || "pgrootuser",
   host: process.env.PGHOST || "localhost",
   database: process.env.PGDATABASE || "bugtracker",
-  password: process.env.PGPASSWORD || "passwod",
+  password: process.env.PGPASSWORD || "password",
   port: process.env.PGPORT || 5432,
   max: 20,
   connectionTimeoutMillis: 0,
